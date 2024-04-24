@@ -12,11 +12,12 @@ class Profile(abc.ABC):
     name: str
     role: ROLE
     systems: List[str]
+    enabled: bool
 
     MIN_NAME_LENGTH = 2
     PROFILE_ID_LENGTH = 36
 
-    def __init__(self, profile_id: str, email: str, name: str, role: ROLE, systems: List[str]):
+    def __init__(self, profile_id: str, email: str, name: str, role: ROLE, systems: List[str], enabled: bool):
         if not Profile.validate_profile_id(profile_id):
             raise EntityError("profile_id")
         self.profile_id = profile_id
@@ -40,6 +41,10 @@ class Profile(abc.ABC):
         if not all(isinstance(system, str) for system in systems):
             raise EntityError("systems")
         self.systems = systems
+
+        if type(enabled) != bool:
+            raise EntityError("enabled")
+        self.enabled = enabled
         
         
     @staticmethod

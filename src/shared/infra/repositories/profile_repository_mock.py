@@ -9,9 +9,9 @@ class ProfileRepositoryMock(IProfileRepository):
 
     def __init__(self):
         self.profiles = [
-            Profile(profile_id='d61dbf66-a10f-11ed-a8fc-0242ac120001', name='Gabriel Godoy', email="gabriel@hotmail.com", role=ROLE.FILLER, systems=['GAIA', 'JUNDIAI', 'FORMULARIOS']),
-            Profile(profile_id='d61dbf66-a10f-11ed-a8fc-0242ac120002', name='Gabriel Godoy', email="gabriel@gmail.com", role=ROLE.FILLER, systems=['GAIA', 'JUNDIAI', 'FORMULARIOS']),
-            Profile(profile_id='d61dbf66-a10f-11ed-a8fc-0242ac120003', name='Gabriel Godoy', email="gabriel@outlook.com", role=ROLE.COORDINATOR, systems=['GAIA', 'JUNDIAI', 'FORMULARIOS']),
+            Profile(profile_id='d61dbf66-a10f-11ed-a8fc-0242ac120001', name='Gabriel Godoy', email="gabriel@hotmail.com", role=ROLE.FILLER, systems=['GAIA', 'JUNDIAI', 'FORMULARIOS'], enabled=True),
+            Profile(profile_id='d61dbf66-a10f-11ed-a8fc-0242ac120002', name='Gabriel Godoy', email="gabriel@gmail.com", role=ROLE.FILLER, systems=['GAIA', 'JUNDIAI', 'FORMULARIOS'], enabled=True),
+            Profile(profile_id='d61dbf66-a10f-11ed-a8fc-0242ac120003', name='Gabriel Godoy', email="gabriel@outlook.com", role=ROLE.COORDINATOR, systems=['GAIA', 'JUNDIAI', 'FORMULARIOS'], enabled=False),
         ]
     
     def get_profile_by_id(self, profile_id: str) -> Optional[Profile]:

@@ -29,7 +29,8 @@ class Test_ProfileRepositoryMock:
             name='Gabriel Godoy',
             email='gabriel.godoy@hotmail.com',
             role=ROLE.COORDINATOR,
-            systems=['GAIA', 'JUNDIAI', 'FORMULARIOS']
+            systems=['GAIA', 'JUNDIAI', 'FORMULARIOS'],
+            enabled=True
         )
 
         profile = repo.create_profile(profile_to_create)
@@ -39,6 +40,7 @@ class Test_ProfileRepositoryMock:
         assert profile.email == 'gabriel.godoy@hotmail.com'
         assert profile.role == ROLE.COORDINATOR
         assert profile.systems == ['GAIA', 'JUNDIAI', 'FORMULARIOS']
+        assert profile.enabled == True
     
     def test_update_profile(self):
         repo = ProfileRepositoryMock()
@@ -47,6 +49,7 @@ class Test_ProfileRepositoryMock:
             'email': 'gabriel_update@gmail.com',
             'role': ROLE.COORDINATOR,
             'systems': ['FORMULARIOS'],
+            'enabled': False
         }
 
         profile = repo.update_profile('d61dbf66-a10f-11ed-a8fc-0242ac120001', profile_to_update)
@@ -56,6 +59,7 @@ class Test_ProfileRepositoryMock:
         assert profile.email == 'gabriel_update@gmail.com'
         assert profile.role == ROLE.COORDINATOR
         assert profile.systems == ['FORMULARIOS']
+        assert profile.enabled == False
 
 
         
