@@ -7,39 +7,39 @@ from src.shared.helpers.errors.domain_errors import EntityError
 
 class Test_Field:
 
-    def test_form_field_cannot_be_instanciated(self):
+    def test_field_cannot_be_instanciated(self):
         with pytest.raises(TypeError):
             Field(field_type=FIELD_TYPE.TEXT_FIELD, placeholder='placeholder', required=True, key='key', regex='regex', formatting='formatting')
 
-    def test_form_field_placeholder_is_none(self):
+    def test_field_placeholder_is_none(self):
         with pytest.raises(EntityError):
             TextField(placeholder=None, required=True, key='key', regex='regex', formatting='formatting', max_length=10, value='value')
     
-    def test_form_field_placeholder_is_not_str(self):
+    def test_field_placeholder_is_not_str(self):
         with pytest.raises(EntityError):
             TextField(placeholder=1, required=True, key='key', regex='regex', formatting='formatting', max_length=10, value='value')
     
-    def test_form_field_required_is_none(self):
+    def test_field_required_is_none(self):
         with pytest.raises(EntityError):
             TextField(placeholder='placeholder', required=None, key='key', regex='regex', formatting='formatting', max_length=10, value='value')
     
-    def test_form_field_required_is_not_bool(self):
+    def test_field_required_is_not_bool(self):
         with pytest.raises(EntityError):
             TextField(placeholder='placeholder', required='True', key='key', regex='regex', formatting='formatting', max_length=10, value='value')
 
-    def test_form_field_key_is_none(self):
+    def test_field_key_is_none(self):
         with pytest.raises(EntityError):
             TextField(placeholder='placeholder', required=True, key=None, regex='regex', formatting='formatting', max_length=10, value='value')
     
-    def test_form_field_key_is_not_str(self):
+    def test_field_key_is_not_str(self):
         with pytest.raises(EntityError):
             TextField(placeholder='placeholder', required=True, key=1, regex='regex', formatting='formatting', max_length=10, value='value')
     
-    def test_form_field_regex_is_not_str(self):
+    def test_field_regex_is_not_str(self):
         with pytest.raises(EntityError):
             TextField(placeholder='placeholder', required=True, key='key', regex=1, formatting='formatting', max_length=10, value='value')
 
-    def test_form_field_formatting_is_not_str(self):
+    def test_field_formatting_is_not_str(self):
         with pytest.raises(EntityError):
             TextField(placeholder='placeholder', required=True, key='key', regex='regex', formatting=1, max_length=10, value='value')
 

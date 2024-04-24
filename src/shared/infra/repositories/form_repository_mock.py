@@ -2,6 +2,7 @@ from datetime import datetime, timedelta
 from typing import List
 from src.shared.domain.entities.field import TextField
 from src.shared.domain.entities.form import Form
+from src.shared.domain.entities.information_field import TextInformationField
 from src.shared.domain.entities.section import Section
 from src.shared.domain.enums.form_status_enum import FORM_STATUS
 from src.shared.domain.enums.priority_enum import PRIORITY
@@ -23,7 +24,10 @@ class FormRepositoryMock(IFormRepository):
 
         text_field = TextField(placeholder='placeholder', required=True, key='key', regex='regex', formatting='formatting', max_length=10, value='value')
         section = Section(section_id='99999', fields=[text_field, text_field])
-        
+        information_field = TextInformationField(
+            value='value'
+        )
+
         self.forms = [
             Form(
                 extern_form_id='1',
@@ -50,7 +54,11 @@ class FormRepositoryMock(IFormRepository):
                 conclusion_date=timestamp_yesterday(),
                 justificative=None,
                 comments=None,
-                sections=[section, section]
+                sections=[section, section],
+                information_fields=[
+                    information_field,
+                    information_field,
+                ]
             ),
             Form(
                 extern_form_id='1',
@@ -77,7 +85,11 @@ class FormRepositoryMock(IFormRepository):
                 conclusion_date=946407600000,
                 justificative=None,
                 comments=None,
-                sections=[section]
+                sections=[section],
+                information_fields=[
+                    information_field,
+                    information_field,
+                ]
             ),
         ]
     

@@ -1,6 +1,7 @@
 import abc
 from typing import List, Optional
 
+from src.shared.domain.entities.information_field import InformationField
 from src.shared.domain.entities.section import Section
 from src.shared.domain.enums.form_status_enum import FORM_STATUS
 from src.shared.domain.enums.priority_enum import PRIORITY
@@ -33,8 +34,9 @@ class Form(abc.ABC):
     justificative: Optional[str]
     comments: Optional[str]
     sections: List[Section]
+    information_fields: Optional[List[InformationField]]
 
-    def __init__(self, extern_form_id: str, internal_form_id: str, creator_user_id: str, user_id: str, coordinators_id: List[str], vinculation_form_id: Optional[str], template: str, area: str, system: str, street: str, city: str, number: int, latitude: float, longitude: float, region: str, description: Optional[str], priority: PRIORITY, status: FORM_STATUS, expiration_date: int, creation_date: int, start_date: Optional[int], conclusion_date: Optional[int], justificative: Optional[str], comments: Optional[str], sections: List[Section]):
+    def __init__(self, extern_form_id: str, internal_form_id: str, creator_user_id: str, user_id: str, coordinators_id: List[str], vinculation_form_id: Optional[str], template: str, area: str, system: str, street: str, city: str, number: int, latitude: float, longitude: float, region: str, description: Optional[str], priority: PRIORITY, status: FORM_STATUS, expiration_date: int, creation_date: int, start_date: Optional[int], conclusion_date: Optional[int], justificative: Optional[str], comments: Optional[str], sections: List[Section], information_fields: Optional[List[InformationField]] = None):
 
         if type(extern_form_id) is not str:
             raise EntityError('extern_form_id')
@@ -147,4 +149,12 @@ class Form(abc.ABC):
         if not all(isinstance(section, Section) for section in sections):
             raise EntityError('sections')
         self.sections = sections
+
+        if information_fields is not None:
+            if not isinstance(information_fields, list):
+                raise EntityError('information_fields')
+            if not information_fields:
+                raise EntityError('information_fields')
+            if not all(isinstance(information_field, InformationField) for information_field in information_fields):
+                raise EntityError('information_fields')
     
