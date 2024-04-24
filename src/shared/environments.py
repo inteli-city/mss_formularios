@@ -33,7 +33,7 @@ class Environments:
 
     def load_envs(self):
         if "STAGE" not in os.environ:
-            os.environ["STAGE"] = os.environ.get("STAGE") or STAGE.DEV.value
+            self._configure_local()
 
         self.stage = STAGE[os.environ.get("STAGE")]
 
