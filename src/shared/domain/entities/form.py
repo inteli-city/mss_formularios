@@ -112,21 +112,21 @@ class Form(abc.ABC):
             raise EntityError('status')
         self.status = status
 
-        if not Form.validate_timestamp(expiration_date):
+        if type(expiration_date) is not int:
             raise EntityError('expiration_date')
         self.expiration_date = expiration_date
 
-        if not Form.validate_timestamp(creation_date):
+        if type(creation_date) is not int:
             raise EntityError('creation_date')
         self.creation_date = creation_date
 
-        if start_date is not None and not Form.validate_timestamp(start_date):
+        if start_date is not None and type(start_date) is not int:
             raise EntityError('start_date')
         if status == FORM_STATUS.IN_PROGRESS and start_date is None:
             raise EntityError('start_date')
         self.start_date = start_date
 
-        if conclusion_date is not None and not Form.validate_timestamp(conclusion_date):
+        if conclusion_date is not None and type(conclusion_date) is not int:
             raise EntityError('conclusion_date')
         if status == FORM_STATUS.CONCLUDED and conclusion_date is None:
             raise EntityError('conclusion_date')
@@ -148,10 +148,3 @@ class Form(abc.ABC):
             raise EntityError('sections')
         self.sections = sections
     
-    @staticmethod
-    def validate_timestamp(date: int):
-        if type(date) != int:
-            return False
-        elif len(str(date)) != 12:
-            return False
-        return True

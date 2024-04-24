@@ -1,5 +1,3 @@
-
-
 import pytest
 from src.shared.domain.entities.field import TextField
 from src.shared.domain.entities.form import Form
@@ -100,25 +98,13 @@ class Test_Form:
         with pytest.raises(EntityError):
             Form(extern_form_id='99999', internal_form_id='99999', creator_user_id='99999', user_id='99999', coordinators_id=['99999'], vinculation_form_id='99999', template='template', area='area', system='system', street='street', city='city', number=99999, latitude=99999.99, longitude=99999.99, region='region', description='description', priority=PRIORITY.EMERGENCY, status=FORM_STATUS.IN_PROGRESS, expiration_date='946407600000', creation_date=946407600000, start_date=None, conclusion_date=None, justificative='justificative', comments='comments', sections=[section, section])
     
-    def test_expiration_date_not_timestamp(self):
-        with pytest.raises(EntityError):
-            Form(extern_form_id='99999', internal_form_id='99999', creator_user_id='99999', user_id='99999', coordinators_id=['99999'], vinculation_form_id='99999', template='template', area='area', system='system', street='street', city='city', number=99999, latitude=99999.99, longitude=99999.99, region='region', description='description', priority=PRIORITY.EMERGENCY, status=FORM_STATUS.IN_PROGRESS, expiration_date=123, creation_date=946407600000, start_date=None, conclusion_date=None, justificative='justificative', comments='comments', sections=[section, section])
-    
     def test_creation_date_not_int(self):
         with pytest.raises(EntityError):
             Form(extern_form_id='99999', internal_form_id='99999', creator_user_id='99999', user_id='99999', coordinators_id=['99999'], vinculation_form_id='99999', template='template', area='area', system='system', street='street', city='city', number=99999, latitude=99999.99, longitude=99999.99, region='region', description='description', priority=PRIORITY.EMERGENCY, status=FORM_STATUS.IN_PROGRESS, expiration_date=946407600000, creation_date='946407600000', start_date=946407600000, conclusion_date=946407600000, justificative='justificative', comments='comments', sections=[section, section])
     
-    def test_creation_date_not_timestamp(self):
-        with pytest.raises(EntityError):
-            Form(extern_form_id='99999', internal_form_id='99999', creator_user_id='99999', user_id='99999', coordinators_id=['99999'], vinculation_form_id='99999', template='template', area='area', system='system', street='street', city='city', number=99999, latitude=99999.99, longitude=99999.99, region='region', description='description', priority=PRIORITY.EMERGENCY, status=FORM_STATUS.IN_PROGRESS, expiration_date=946407600000, creation_date=123, start_date=946407600000, conclusion_date=946407600000, justificative='justificative', comments='comments', sections=[section, section])
-    
     def test_start_date_not_int(self):
         with pytest.raises(EntityError):
             Form(extern_form_id='99999', internal_form_id='99999', creator_user_id='99999', user_id='99999', coordinators_id=['99999'], vinculation_form_id='99999', template='template', area='area', system='system', street='street', city='city', number=99999, latitude=99999.99, longitude=99999.99, region='region', description='description', priority=PRIORITY.EMERGENCY, status=FORM_STATUS.IN_PROGRESS, expiration_date=946407600000, creation_date=946407600000, start_date='946407600000', conclusion_date=946407600000, justificative='justificative', comments='comments', sections=[section, section])
-    
-    def test_start_date_not_timestamp(self):
-        with pytest.raises(EntityError):
-            Form(extern_form_id='99999', internal_form_id='99999', creator_user_id='99999', user_id='99999', coordinators_id=['99999'], vinculation_form_id='99999', template='template', area='area', system='system', street='street', city='city', number=99999, latitude=99999.99, longitude=99999.99, region='region', description='description', priority=PRIORITY.EMERGENCY, status=FORM_STATUS.IN_PROGRESS, expiration_date=946407600000, creation_date=946407600000, start_date=123, conclusion_date=946407600000, justificative='justificative', comments='comments', sections=[section, section])
     
     def test_start_date_status_in_progress_not_none(self):
         with pytest.raises(EntityError):
@@ -127,10 +113,6 @@ class Test_Form:
     def test_conclusion_date_not_int(self):
         with pytest.raises(EntityError):
             Form(extern_form_id='99999', internal_form_id='99999', creator_user_id='99999', user_id='99999', coordinators_id=['99999'], vinculation_form_id='99999', template='template', area='area', system='system', street='street', city='city', number=99999, latitude=99999.99, longitude=99999.99, region='region', description='description', priority=PRIORITY.EMERGENCY, status=FORM_STATUS.IN_PROGRESS, expiration_date=946407600000, creation_date=946407600000, start_date=946407600000, conclusion_date='946407600000', justificative='justificative', comments='comments', sections=[section, section])
-    
-    def test_conclusion_date_not_timestamp(self):
-        with pytest.raises(EntityError):
-            Form(extern_form_id='99999', internal_form_id='99999', creator_user_id='99999', user_id='99999', coordinators_id=['99999'], vinculation_form_id='99999', template='template', area='area', system='system', street='street', city='city', number=99999, latitude=99999.99, longitude=99999.99, region='region', description='description', priority=PRIORITY.EMERGENCY, status=FORM_STATUS.IN_PROGRESS, expiration_date=946407600000, creation_date=946407600000, start_date=946407600000, conclusion_date=123, justificative='justificative', comments='comments', sections=[section, section])
     
     def test_conclusion_date_status_concluded_not_none(self):
         with pytest.raises(EntityError):

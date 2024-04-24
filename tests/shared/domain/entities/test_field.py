@@ -154,17 +154,9 @@ class Test_Field:
         with pytest.raises(EntityError):
             DateField(placeholder='placeholder', required=True, key='key', regex='regex', formatting='formatting', min_date='946407600000', max_date=946407600000, value=946407600000)
     
-    def test_date_field_min_date_is_not_timestamp(self):
-        with pytest.raises(EntityError):
-            DateField(placeholder='placeholder', required=True, key='key', regex='regex', formatting='formatting', min_date=123, max_date=946407600000, value=946407600000)
-    
     def test_date_field_max_date_is_not_int(self):
         with pytest.raises(EntityError):
             DateField(placeholder='placeholder', required=True, key='key', regex='regex', formatting='formatting', min_date=946407600000, max_date='946407600000', value=946407600000)
-    
-    def test_date_field_max_date_is_not_timestamp(self):
-        with pytest.raises(EntityError):
-            DateField(placeholder='placeholder', required=True, key='key', regex='regex', formatting='formatting', min_date=946407600000, max_date=123, value=946407600000)
     
     def test_date_field_value_is_not_int(self):
         with pytest.raises(EntityError):

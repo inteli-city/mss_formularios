@@ -134,25 +134,18 @@ class DateField(Field):
 
     def __init__(self, placeholder: str, required: bool, key: str, regex: Optional[str], formatting: Optional[str], min_date: Optional[int], max_date: Optional[int], value: Optional[int]):
         super().__init__(FIELD_TYPE.DATE_FIELD, placeholder, required, key, regex, formatting)
-        if min_date is not None and not DateField.validate_timestamp(min_date):
+        if min_date is not None and type(min_date) is not int:
             raise EntityError('min_date')
         self.min_date = min_date
 
-        if max_date is not None and not DateField.validate_timestamp(max_date):
+        if max_date is not None and type(max_date) is not int:
             raise EntityError('max_date')
         self.max_date = max_date
 
-        if value is not None and not DateField.validate_timestamp(value):
+        if value is not None and type(value) is not int:
             raise EntityError('value')
         self.value = value
     
-    @staticmethod
-    def validate_timestamp(date: int):
-        if type(date) != int:
-            return False
-        elif len(str(date)) != 12:
-            return False
-        return True
 
 class CheckboxField(Field):
     value: Optional[bool]
