@@ -4,8 +4,11 @@ from src.shared.helpers.errors.usecase_errors import ForbiddenAction
 
 class UserFormulariosApiGatewayDTO:
     user_id: str
+    name: str
+    email: str
+    systems: List[str]
 
-    def __init__(self, user_id: str):
+    def __init__(self, user_id: str, name: str, email: str, systems: List[str]):
         self.user_id = user_id
 
     @staticmethod
@@ -20,6 +23,9 @@ class UserFormulariosApiGatewayDTO:
 
         return UserFormulariosApiGatewayDTO(
             user_id=user_data['sub'],
+            name=user_data['name'],
+            email=user_data['email'],
+            systems=groups
         )
     
     def __eq__(self, other):

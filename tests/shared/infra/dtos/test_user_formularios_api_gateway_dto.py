@@ -16,7 +16,10 @@ class Test_UserFormulariosApiGatewayDto:
         user_dto = UserFormulariosApiGatewayDTO.from_api_gateway(user_data)
 
         excepted_user_dto = UserFormulariosApiGatewayDTO(
-            user_id='d61dbf66-a10f-11ed-a8fc-0242ac120002'
+            user_id='d61dbf66-a10f-11ed-a8fc-0242ac120002',
+            name='Gabriel Godoy',
+            email='gabriel.godoy@gmail.com',
+            systems=['GAIA','JUNDIAI','FORMULARIOS']
         )
 
         assert user_dto == excepted_user_dto
