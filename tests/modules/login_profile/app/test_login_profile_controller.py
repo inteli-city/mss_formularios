@@ -61,3 +61,22 @@ class Test_LoginProfileController:
         print(response)
         assert response.status_code == 403
         assert response.body == "Ação não permitida: Usuário não esta apto para o sistema"
+    
+    def test_login_profile_controller_user_not_in_formularios(self):
+        repo = ProfileRepositoryMock()
+        usecase = LoginProfileUsecase(repo)
+
+        controller = LoginProfileController(usecase)
+
+        data = HttpRequest(body={"requester_user": {
+                "sub": '1',
+                "name": 'a',
+                "email": repo.profiles[0].email,
+                "cognito:groups": "FORMULARIOS"
+            },   
+        })
+
+        response = controller(data)
+        print(response)
+        assert response.status_code == 400
+        assert response.body == "Parâmetro inválido: profile_id"
