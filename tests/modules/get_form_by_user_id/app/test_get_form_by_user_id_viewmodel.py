@@ -1,6 +1,7 @@
-from src.modules.get_form_by_user_id.app.get_form_by_user_id_viewmodel import FieldViewmodel, FormViewmodel, GetFormByUserIdViewmodel, SectionViewmodel
+from src.modules.get_form_by_user_id.app.get_form_by_user_id_viewmodel import FieldViewmodel, FormViewmodel, GetFormByUserIdViewmodel, InformationFieldViewmodel, SectionViewmodel
 from src.shared.domain.entities.field import FileField, TextField
 from src.shared.domain.entities.form import Form
+from src.shared.domain.entities.information_field import ImageInformationField, MapInformationField, TextInformationField
 from src.shared.domain.entities.section import Section
 from src.shared.domain.enums.file_type_enum import FILE_TYPE
 from src.shared.domain.enums.form_status_enum import FORM_STATUS
@@ -12,7 +13,7 @@ class Test_GetFormByUserIdViewmodel:
     def test_field_viewmodel(self):
         viewmodel = FieldViewmodel(field=TextField(placeholder='placeholder', required=True, key='key', regex='regex', formatting='formatting', max_length=10, value='value'))
 
-        respose = viewmodel.to_dict()
+        response = viewmodel.to_dict()
 
         excepted = {
             'field_type': 'TEXT_FIELD',
@@ -25,12 +26,12 @@ class Test_GetFormByUserIdViewmodel:
             'value': 'value'
         }
 
-        assert respose == excepted
+        assert response == excepted
     
     def test_field_viewmodel_with_enum(self):
         viewmodel = FieldViewmodel(field=FileField(placeholder='placeholder', required=True, key='key', regex='regex', formatting='formatting', file_type=FILE_TYPE.IMAGE, min_quantity=1, max_quantity=10, value=['value']))
 
-        respose = viewmodel.to_dict()
+        response = viewmodel.to_dict()
 
         excepted = {
             'field_type': 'FILE_FIELD',
@@ -45,12 +46,24 @@ class Test_GetFormByUserIdViewmodel:
             'value': ['value']
         }
 
-        assert respose == excepted
+        assert response == excepted
+
+    def test_informarion_field_viewmodel(self):
+        viewmodel = InformationFieldViewmodel(information_field=TextInformationField(value='value'))
+
+        response = viewmodel.to_dict()
+
+        excepted = {
+            'information_field_type': 'TEXT_INFORMATION_FIELD',
+            'value': 'value'
+        }
+
+        assert response == excepted
     
     def test_field_viewmodel_with_none(self):
         viewmodel = FieldViewmodel(field=TextField(placeholder='placeholder', required=True, key='key', regex='regex', formatting='formatting', max_length=None, value=None))
 
-        respose = viewmodel.to_dict()
+        response = viewmodel.to_dict()
 
         excepted = {
             'field_type': 'TEXT_FIELD',
@@ -63,7 +76,7 @@ class Test_GetFormByUserIdViewmodel:
             'value': None
         }
 
-        assert respose == excepted
+        assert response == excepted
     
     def test_section_viewmodel(self):
 
@@ -76,7 +89,7 @@ class Test_GetFormByUserIdViewmodel:
             )
         )
 
-        respose = viewmodel.to_dict()
+        response = viewmodel.to_dict()
 
         excepted = {
             'section_id': 'section_id',
@@ -94,7 +107,7 @@ class Test_GetFormByUserIdViewmodel:
             }]
         }
 
-        assert respose == excepted
+        assert response == excepted
     
     def test_form_viewmodel(self):
         field = FileField(placeholder='placeholder', required=True, key='key', regex='regex', formatting='formatting', file_type=FILE_TYPE.IMAGE, min_quantity=1, max_quantity=10, value=['value'])
@@ -130,11 +143,16 @@ class Test_GetFormByUserIdViewmodel:
                 conclusion_date=1,
                 justificative='justificative',
                 comments='comments',
-                sections=[section]
+                sections=[section],
+                information_fields=[
+                    TextInformationField(value='value'),
+                    MapInformationField(latitude=1.0, longitude=1.0),
+                    ImageInformationField(file_path='file_path')
+                ]
             )
         )
 
-        respose = viewmodel.to_dict()
+        response = viewmodel.to_dict()
 
         excepted = {
             'extern_form_id': 'extern_form_id',
@@ -175,10 +193,25 @@ class Test_GetFormByUserIdViewmodel:
                     'max_quantity': 10,
                     'value': ['value']
                 }]
-            }]
+            }],
+            'information_fields': [
+                {
+                    'information_field_type': 'TEXT_INFORMATION_FIELD',
+                    'value': 'value'
+                },
+                {
+                    'information_field_type': 'MAP_INFORMATION_FIELD',
+                    'latitude': 1.0,
+                    'longitude': 1.0
+                },
+                {
+                    'information_field_type': 'IMAGE_INFORMATION_FIELD',
+                    'file_path': 'file_path'
+                }
+            ]
         }
 
-        assert respose == excepted
+        assert response == excepted
     
     def test_get_form_by_user_id_viewmodel(self):
         field = FileField(placeholder='placeholder', required=True, key='key', regex='regex', formatting='formatting', file_type=FILE_TYPE.IMAGE, min_quantity=1, max_quantity=10, value=['value'])
@@ -213,14 +246,19 @@ class Test_GetFormByUserIdViewmodel:
                 conclusion_date=1,
                 justificative='justificative',
                 comments='comments',
-                sections=[section]
+                sections=[section],
+                information_fields=[
+                    TextInformationField(value='value'),
+                    MapInformationField(latitude=1.0, longitude=1.0),
+                    ImageInformationField(file_path='file_path')
+                ]
             )
 
         viewmodel = GetFormByUserIdViewmodel(
             form_list=[form]
         )
 
-        respose = viewmodel.to_dict()
+        response = viewmodel.to_dict()
 
         excepted = {
             'form_list': [
@@ -267,8 +305,25 @@ class Test_GetFormByUserIdViewmodel:
                                 }
                             ]
                         }
+                    ],
+                    'information_fields': [
+                        {
+                            'information_field_type': 'TEXT_INFORMATION_FIELD',
+                            'value': 'value'
+                        },
+                        {
+                            'information_field_type': 'MAP_INFORMATION_FIELD',
+                            'latitude': 1.0,
+                            'longitude': 1.0
+                        },
+                        {
+                            'information_field_type': 'IMAGE_INFORMATION_FIELD',
+                            'file_path': 'file_path'
+                        }
                     ]
                 }
             ],
             'message': 'Formulários retornados com sucesso!'
         }
+
+        assert response == excepted

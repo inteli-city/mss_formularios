@@ -3,6 +3,7 @@ from typing import List, Optional
 
 from src.shared.domain.entities.field import Field
 from src.shared.domain.entities.form import Form
+from src.shared.domain.entities.information_field import InformationField
 from src.shared.domain.entities.section import Section
 from src.shared.domain.enums.fields_enum import FIELD_TYPE
 from src.shared.domain.enums.form_status_enum import FORM_STATUS
@@ -17,6 +18,15 @@ class FieldViewmodel:
     
     def to_dict(self):
         return {attr: getattr(self.field, attr).value if isinstance(getattr(self.field, attr), Enum) else getattr(self.field, attr) for attr in vars(self.field)}
+
+class InformationFieldViewmodel:
+    information_field: InformationField
+
+    def __init__(self, information_field: Field):
+        self.information_field = information_field
+    
+    def to_dict(self):
+        return {attr: getattr(self.information_field, attr).value if isinstance(getattr(self.information_field, attr), Enum) else getattr(self.information_field, attr) for attr in vars(self.information_field)}
 
 class SectionViewmodel:
     section_id: str
@@ -58,6 +68,7 @@ class FormViewmodel:
     justificative: Optional[str]
     comments: Optional[str]
     sections: List[Section]
+    information_fields: Optional[List[InformationField]]
 
     def __init__(self, form: Form):
         self.extern_form_id = form.extern_form_id
@@ -85,6 +96,7 @@ class FormViewmodel:
         self.justificative = form.justificative
         self.comments = form.comments
         self.sections = form.sections
+        self.information_fields = form.information_fields
 
     def to_dict(self):
         return {
@@ -112,13 +124,15 @@ class FormViewmodel:
             'conclusion_date': self.conclusion_date,
             'justificative': self.justificative,
             'comments': self.comments,
-            'sections': [SectionViewmodel(section).to_dict() for section in self.sections]
+            'sections': [SectionViewmodel(section).to_dict() for section in self.sections],
+            'information_fields': [InformationFieldViewmodel(information_field).to_dict() for information_field in self.information_fields]
         }
     
 class GetFormByUserIdViewmodel:
     form_list: List[Form]
 
     def __init__(self, form_list: List[Form]):
+        print(form_list[0].information_fields)
         self.form_list = form_list
     
     def to_dict(self):
