@@ -56,8 +56,8 @@ class Environments:
             from src.shared.infra.repositories.form_repository_mock import FormRepositoryMock
             return FormRepositoryMock
         elif Environments.get_envs().stage in [STAGE.PROD, STAGE.DEV, STAGE.HOMOLOG]:
-            # from src.shared.infra.repositories.form_repository_dynamo import UserRepositoryDynamo
-            return FormRepositoryMock
+            from src.shared.infra.repositories.form_repository_dynamo import FormRepositoryDynamo
+            return FormRepositoryDynamo
         else:
             raise Exception("No repository found for this stage")
 
