@@ -19,7 +19,7 @@ class Profile(abc.ABC):
     def __init__(self, profile_id: str, email: str, name: str, role: ROLE, systems: List[str]):
         if not Profile.validate_profile_id(profile_id):
             raise EntityError("profile_id")
-        self.user_id = profile_id
+        self.profile_id = profile_id
 
         if not Profile.validate_email(email):
             raise EntityError("email")
