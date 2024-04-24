@@ -10,6 +10,9 @@ class UserFormulariosApiGatewayDTO:
 
     def __init__(self, user_id: str, name: str, email: str, systems: List[str]):
         self.user_id = user_id
+        self.name = name
+        self.email = email
+        self.systems = systems
 
     @staticmethod
     def from_api_gateway(user_data: dict) -> 'UserFormulariosApiGatewayDTO':

@@ -31,7 +31,6 @@ class Test_GetFormByUserIdController:
 
         response = controller(data)
 
-        print(response.body)
 
         assert response.status_code == 200
         assert response.body == {
