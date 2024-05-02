@@ -42,11 +42,8 @@ class IacStack(Stack):
 
         ENVIRONMENT_VARIABLES = {
             "STAGE": self.github_ref_name.upper(),
-            "DYNAMO_TABLE_NAME": self.dynamo_stack.dynamo_table.table_name,
+            "DYNAMO_TABLE_NAME_PROFILE": self.dynamo_stack.dynamo_table_profile.table_name,
             "DYNAMO_PARTITION_KEY": "PK",
-            "DYNAMO_SORT_KEY": "SK",
-            "DYNAMO_GSI_PARTITION_KEY": "GSI1-PK",
-            "DYNAMO_GSI_SORT_KEY": "GSI1-SK",
             "REGION": self.region,
         }
 
@@ -59,19 +56,10 @@ class IacStack(Stack):
 
         self.lambda_stack = LambdaStack(self, api_gateway_resource=api_gateway_resource,
                                         environment_variables=ENVIRONMENT_VARIABLES, authorizer=self.cognito_auth)
+          
         
-        for f in self.lambda_stack.functions_that_need_dynamo_permissions:
-            self.dynamo_stack.dynamo_table.grant_read_write_data(f)
+        for f in self.lambda_stack.functions_that_need_dynamo_profile_permissions:
+            self.dynamo_stack.dynamo_table_profile.grant_read_write_data(f)
         
-        cognito_admin_policy = aws_iam.PolicyStatement(
-            effect=aws_iam.Effect.ALLOW,
-            actions=[
-                "cognito-idp:*",
-            ],
-            resources=[
-                self.user_pool_arn
-            ]
-        )
-
-        for f in self.lambda_stack.functions_that_need_cognito_permissions:
-            f.add_to_role_policy(cognito_admin_policy)
+        # for f in self.lambda_stack.functions_that_need_dynamo_forms_permissions:
+        #     self.dynamo_stack.dynamo_table_forms.grant_read_write_data(f)

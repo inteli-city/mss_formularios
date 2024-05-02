@@ -24,6 +24,7 @@ class Environments:
     region: str
     endpoint_url: str = None
     dynamo_table_name: str
+    dynamo_table_name_profile: str
     dynamo_partition_key: str
     dynamo_sort_key: str
 
@@ -70,8 +71,8 @@ class Environments:
             from src.shared.infra.repositories.profile_repository_mock import ProfileRepositoryMock
             return ProfileRepositoryMock
         elif Environments.get_envs().stage in [STAGE.PROD, STAGE.DEV, STAGE.HOMOLOG]:
-            # from src.shared.infra.repositories.profile_repository_dynamo import ProfileRepositoryDynamo
-            return ProfileRepositoryMock
+            from src.shared.infra.repositories.profile_repository_dynamo import ProfileRepositoryDynamo
+            return ProfileRepositoryDynamo
         else:
             raise Exception("No repository found for this stage")
 
