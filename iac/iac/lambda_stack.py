@@ -40,16 +40,16 @@ class LambdaStack(Construct):
                                                  compatible_runtimes=[lambda_.Runtime.PYTHON_3_9]
                                                  )
         
-        self.get_form_by_user_id = self.create_lambda_api_gateway_integration(
-            module_name="get_form_by_user_id",
-            method="GET",
+        self.login_profile = self.create_lambda_api_gateway_integration(
+            module_name="login_profile",
+            method="POST",
             api_resource=api_gateway_resource,
             environment_variables=environment_variables,
             authorizer=authorizer
         )
 
         self.functions_that_need_dynamo_profile_permissions = [
-            self.get_form_by_user_id
+            self.login_profile
         ]
 
         self.functions_that_need_dynamo_forms_permissions = [
