@@ -19,6 +19,8 @@ class IacStack(Stack):
         super().__init__(scope, construct_id, **kwargs)
 
         self.user_pool_arn = os.environ.get("USER_POOL_ARN")
+        self.user_pool_id = os.environ.get("USER_POOL_ID")
+        self.app_client_id = os.environ.get("APP_CLIENT_ID")
         self.github_ref_name = os.environ.get("GITHUB_REF_NAME")
 
         self.dynamo_stack = DynamoStack(self)
@@ -45,6 +47,9 @@ class IacStack(Stack):
             "DYNAMO_TABLE_NAME_PROFILE": self.dynamo_stack.dynamo_table_profile.table_name,
             "DYNAMO_PARTITION_KEY": "PK",
             "REGION": self.region,
+            "USER_POOL_ID": self.user_pool_id,
+            "USER_POOL_ARN": self.user_pool_arn,
+            "APP_CLIENT_ID": self.app_client_id,
         }
 
         api_gateway_resource = self.rest_api.root.add_resource("mss-formularios", default_cors_preflight_options={
@@ -57,9 +62,21 @@ class IacStack(Stack):
         self.lambda_stack = LambdaStack(self, api_gateway_resource=api_gateway_resource,
                                         environment_variables=ENVIRONMENT_VARIABLES, authorizer=self.cognito_auth)
           
-        
+        cognito_admin_policy = aws_iam.PolicyStatement(
+            effect=aws_iam.Effect.ALLOW,
+            actions=[
+                "cognito-idp:*",
+            ],
+            resources=[
+                self.user_pool_arn
+            ]
+        )
+
         for f in self.lambda_stack.functions_that_need_dynamo_profile_permissions:
             self.dynamo_stack.dynamo_table_profile.grant_read_write_data(f)
+        
+        for f in self.lambda_stack.functions_that_need_cognito_permissions:
+            f.add_to_role_policy(cognito_admin_policy)
         
         # for f in self.lambda_stack.functions_that_need_dynamo_forms_permissions:
         #     self.dynamo_stack.dynamo_table_forms.grant_read_write_data(f)

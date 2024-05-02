@@ -9,6 +9,7 @@ from aws_cdk.aws_apigateway import Resource, LambdaIntegration, CognitoUserPools
 class LambdaStack(Construct):
     functions_that_need_dynamo_profile_permissions = []
     functions_that_need_dynamo_forms_permissions = []
+    functions_that_need_cognito_permissions = []
 
     def create_lambda_api_gateway_integration(self, module_name: str, method: str, api_resource: Resource,
                                               environment_variables: dict = {"STAGE": "DEV"}, authorizer=None):
@@ -53,4 +54,8 @@ class LambdaStack(Construct):
         ]
 
         self.functions_that_need_dynamo_forms_permissions = [
+        ]
+
+        self.functions_that_need_cognito_permissions = [
+            self.login_profile
         ]
