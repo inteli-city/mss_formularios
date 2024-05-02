@@ -14,12 +14,12 @@ class LoginProfileUsecase:
         profile = self.repo.get_profile_by_id(requester_user_id)
 
         if profile is not None:
+            if not profile.enabled:
+                raise ForbiddenAction("Usuário desabilitado")
             if not systems == profile.systems:
                 systems_to_include = [system for system in systems if system not in profile.systems]
                 systems_to_exclude = [system for system in profile.systems if system not in systems]
                 self.repo.update_profile(profile_id=requester_user_id, systems_to_include=systems_to_include, systems_to_exclude=systems_to_exclude)
-            if not profile.enabled:
-                raise ForbiddenAction("Usuário desabilitado")
             return profile
         
         profile = Profile(
