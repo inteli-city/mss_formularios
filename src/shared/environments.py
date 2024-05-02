@@ -52,6 +52,7 @@ class Environments:
             self.dynamo_table_name = os.environ.get("DYNAMO_TABLE_NAME")
             self.dynamo_table_name_profile = os.environ.get("DYNAMO_TABLE_NAME_PROFILE")
             self.dynamo_partition_key = os.environ.get("DYNAMO_PARTITION_KEY")
+            self.dynamo_sort_key = os.environ.get("DYNAMO_SORT_KEY")
             self.user_pool_id = os.environ.get("USER_POOL_ID")
 
     @staticmethod
