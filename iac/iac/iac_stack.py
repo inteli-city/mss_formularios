@@ -44,12 +44,12 @@ class IacStack(Stack):
 
         ENVIRONMENT_VARIABLES = {
             "STAGE": self.github_ref_name.upper(),
-            "DYNAMO_TABLE_NAME_PROFILE": self.dynamo_stack.dynamo_table_profile.table_name,
-            "DYNAMO_PARTITION_KEY": "PK",
-            "REGION": self.region,
             "USER_POOL_ID": self.user_pool_id,
             "USER_POOL_ARN": self.user_pool_arn,
             "APP_CLIENT_ID": self.app_client_id,
+            "DYNAMO_TABLE_NAME_PROFILE": self.dynamo_stack.dynamo_table_profile.table_name,
+            "DYNAMO_PARTITION_KEY": "PK",
+            "REGION": self.region,
         }
 
         api_gateway_resource = self.rest_api.root.add_resource("mss-formularios", default_cors_preflight_options={
