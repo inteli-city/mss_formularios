@@ -27,7 +27,7 @@ class Test_LoginProfileController:
         assert response.body["profile"]["name"] == repo.profiles[0].name
         assert response.body["profile"]["email"] == repo.profiles[0].email
         assert response.body["profile"]["role"] == 'FILLER'
-        assert response.body["profile"]["systems"] == ['GAIA', 'JUNDIAI', 'FORMULARIOS']
+        assert response.body["profile"]["systems"] == ['GAIA', 'JUNDIAI']
         assert response.body["profile"]["enabled"] == True
 
     def test_login_profile_controller_no_requester_user(self):

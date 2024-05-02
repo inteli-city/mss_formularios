@@ -23,6 +23,8 @@ class UserFormulariosApiGatewayDTO:
 
         if "FORMULARIOS" not in groups:
             raise ForbiddenAction('Usuário não esta apto para o sistema')
+        
+        groups.remove("FORMULARIOS")
 
         return UserFormulariosApiGatewayDTO(
             user_id=user_data['sub'],

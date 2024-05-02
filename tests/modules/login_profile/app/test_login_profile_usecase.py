@@ -37,6 +37,23 @@ class Test_LoginProfileUsecase:
                 email=repo.profiles[2].email,
                 systems=repo.profiles[2].systems
             )
+    
+    def test_login_profile_usecase_different_systems(self):
+        repo = ProfileRepositoryMock()
+        usecase = LoginProfileUsecase(repo=repo)
+
+        profile = usecase(
+            requester_user_id=repo.profiles[0].profile_id,
+            name=repo.profiles[0].name,
+            email=repo.profiles[0].email,
+            systems=['FORMULARIOS']
+        )
+
+        assert profile.profile_id == repo.profiles[0].profile_id
+        assert profile.name == repo.profiles[0].name
+        assert profile.email == repo.profiles[0].email
+        assert profile.role == repo.profiles[0].role
+        assert profile.systems == ['FORMULARIOS']
 
     
     def test_login_profile_usecase_create_user(self):
