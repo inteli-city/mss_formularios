@@ -1,5 +1,5 @@
-from src.modules.login_profile.app.login_profile_usecase import LoginProfileUsecase
-from src.modules.login_profile.app.login_profile_viewmodel import LoginProfileViewmodel
+from .login_profile_usecase import LoginProfileUsecase
+from .login_profile_viewmodel import LoginProfileViewmodel
 from src.shared.helpers.errors.controller_errors import MissingParameters
 from src.shared.helpers.errors.domain_errors import EntityError
 from src.shared.helpers.external_interfaces.external_interface import IRequest, IResponse
