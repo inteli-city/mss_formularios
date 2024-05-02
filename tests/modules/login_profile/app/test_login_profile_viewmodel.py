@@ -11,7 +11,7 @@ class Test_LoginProfileViewmodel:
             name='Gabriel Godoy',
             email='gabriel@gmail.com',
             role=ROLE.COORDINATOR,
-            systems=['GAIA', 'JUNDIAI', 'FORMULARIOS'],
+            systems=['GAIA', 'JUNDIAI', 'TEST'],
             enabled=True
         )
 
@@ -22,7 +22,7 @@ class Test_LoginProfileViewmodel:
             "email": 'gabriel@gmail.com',
             "name": 'Gabriel Godoy',
             "role": 'COORDINATOR',
-            "systems": ['GAIA', 'JUNDIAI', 'FORMULARIOS'],
+            "systems": ['GAIA', 'JUNDIAI', 'TEST'],
             "enabled": True
         }
 
@@ -34,7 +34,7 @@ class Test_LoginProfileViewmodel:
             name='Gabriel Godoy',
             email='gabriel@gmail.com',
             role=ROLE.COORDINATOR,
-            systems=['GAIA', 'JUNDIAI', 'FORMULARIOS'],
+            systems=['GAIA', 'JUNDIAI', 'TEST'],
             enabled=True
         )
 
@@ -46,7 +46,7 @@ class Test_LoginProfileViewmodel:
                 "email": 'gabriel@gmail.com',
                 "name": 'Gabriel Godoy',
                 "role": 'COORDINATOR',
-                "systems": ['GAIA', 'JUNDIAI', 'FORMULARIOS'],
+                "systems": ['GAIA', 'JUNDIAI', 'TEST'],
                 "enabled": True
             },
             'message': 'Login realizado com sucesso!'

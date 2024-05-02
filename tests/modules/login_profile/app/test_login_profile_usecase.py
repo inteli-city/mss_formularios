@@ -46,14 +46,15 @@ class Test_LoginProfileUsecase:
             requester_user_id=repo.profiles[0].profile_id,
             name=repo.profiles[0].name,
             email=repo.profiles[0].email,
-            systems=['FORMULARIOS']
+            systems=['TEST', 'JUNDIAI']
         )
 
         assert profile.profile_id == repo.profiles[0].profile_id
         assert profile.name == repo.profiles[0].name
         assert profile.email == repo.profiles[0].email
         assert profile.role == repo.profiles[0].role
-        assert profile.systems == ['FORMULARIOS']
+        assert profile.systems.__contains__('TEST')
+        assert profile.systems.__contains__('JUNDIAI')
 
     
     def test_login_profile_usecase_create_user(self):

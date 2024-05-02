@@ -2,6 +2,7 @@ from abc import ABC, abstractmethod
 from typing import List, Optional
 
 from src.shared.domain.entities.profile import Profile
+from src.shared.domain.enums.role_enum import ROLE
 
 
 class IProfileRepository(ABC):
@@ -15,7 +16,7 @@ class IProfileRepository(ABC):
         pass
 
     @abstractmethod
-    def update_profile(self, profile_id: str, new_profile_data: dict) -> Profile:
+    def update_profile(self, profile_id: str, new_role: Optional[ROLE] = None, systems_to_include: Optional[List[str]] = None, systems_to_exclude: Optional[List[str]] = None, new_enabled: Optional[bool] = None) -> Profile:
         pass
 
     @abstractmethod

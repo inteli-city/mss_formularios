@@ -13,7 +13,7 @@ class Test_ProfileRepositoryMock:
         assert profile.name == 'Gabriel Godoy'
         assert profile.email == 'gabriel@hotmail.com'
         assert profile.role == ROLE.FILLER
-        assert profile.systems == ['GAIA', 'JUNDIAI', 'FORMULARIOS']
+        assert profile.systems == ['GAIA', 'JUNDIAI']
     
     def test_get_all_profiles(self):
         repo = ProfileRepositoryMock()
@@ -29,7 +29,7 @@ class Test_ProfileRepositoryMock:
             name='Gabriel Godoy',
             email='gabriel.godoy@hotmail.com',
             role=ROLE.COORDINATOR,
-            systems=['GAIA', 'JUNDIAI', 'FORMULARIOS'],
+            systems=['GAIA', 'JUNDIAI'],
             enabled=True
         )
 
@@ -39,26 +39,25 @@ class Test_ProfileRepositoryMock:
         assert profile.name == 'Gabriel Godoy'
         assert profile.email == 'gabriel.godoy@hotmail.com'
         assert profile.role == ROLE.COORDINATOR
-        assert profile.systems == ['GAIA', 'JUNDIAI', 'FORMULARIOS']
+        assert profile.systems == ['GAIA', 'JUNDIAI']
         assert profile.enabled == True
     
     def test_update_profile(self):
         repo = ProfileRepositoryMock()
         profile_to_update = {
-            'name': 'Gabriel',
-            'email': 'gabriel_update@gmail.com',
-            'role': ROLE.COORDINATOR,
-            'systems': ['FORMULARIOS'],
-            'enabled': False
+            'new_role': ROLE.COORDINATOR,
+            'systems_to_include': ['UPDATE'],
+            'systems_to_exclude': ['GAIA', 'JUNDIAI'],
+            'new_enabled': False
         }
 
-        profile = repo.update_profile('d61dbf66-a10f-11ed-a8fc-0242ac120001', profile_to_update)
+        profile = repo.update_profile(profile_id='d61dbf66-a10f-11ed-a8fc-0242ac120001', **profile_to_update)
 
         assert profile.profile_id == 'd61dbf66-a10f-11ed-a8fc-0242ac120001'
-        assert profile.name == 'Gabriel'
-        assert profile.email == 'gabriel_update@gmail.com'
+        assert profile.name == 'Gabriel Godoy'
+        assert profile.email == 'gabriel@hotmail.com'
         assert profile.role == ROLE.COORDINATOR
-        assert profile.systems == ['FORMULARIOS']
+        assert profile.systems == ['UPDATE']
         assert profile.enabled == False
 
 

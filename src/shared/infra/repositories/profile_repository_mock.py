@@ -9,9 +9,9 @@ class ProfileRepositoryMock(IProfileRepository):
 
     def __init__(self):
         self.profiles = [
-            Profile(profile_id='d61dbf66-a10f-11ed-a8fc-0242ac120001', name='Gabriel Godoy', email="gabriel@hotmail.com", role=ROLE.FILLER, systems=['GAIA', 'JUNDIAI', 'FORMULARIOS'], enabled=True),
-            Profile(profile_id='d61dbf66-a10f-11ed-a8fc-0242ac120002', name='Gabriel Godoy', email="gabriel@gmail.com", role=ROLE.FILLER, systems=['GAIA', 'JUNDIAI', 'FORMULARIOS'], enabled=True),
-            Profile(profile_id='d61dbf66-a10f-11ed-a8fc-0242ac120003', name='Gabriel Godoy', email="gabriel@outlook.com", role=ROLE.COORDINATOR, systems=['GAIA', 'JUNDIAI', 'FORMULARIOS'], enabled=False),
+            Profile(profile_id='d61dbf66-a10f-11ed-a8fc-0242ac120001', name='Gabriel Godoy', email="gabriel@hotmail.com", role=ROLE.FILLER, systems=['GAIA', 'JUNDIAI'], enabled=True),
+            Profile(profile_id='d61dbf66-a10f-11ed-a8fc-0242ac120002', name='Gabriel Godoy', email="gabriel@gmail.com", role=ROLE.FILLER, systems=['GAIA', 'JUNDIAI'], enabled=True),
+            Profile(profile_id='d61dbf66-a10f-11ed-a8fc-0242ac120003', name='Gabriel Godoy', email="gabriel@outlook.com", role=ROLE.COORDINATOR, systems=['GAIA', 'JUNDIAI'], enabled=False),
         ]
     
     def get_profile_by_id(self, profile_id: str) -> Optional[Profile]:
@@ -30,10 +30,17 @@ class ProfileRepositoryMock(IProfileRepository):
         self.profiles.append(profile)
         return profile
 
-    def update_profile(self, profile_id: str, new_profile_data: dict) -> Profile:
-        for index, profilex in enumerate(self.profiles):
-            if profilex.profile_id == profile_id:
-                for key, value in new_profile_data.items():
-                    setattr(profilex, key, value)
-                return profilex
+    def update_profile(self, profile_id: str, new_role: Optional[ROLE] = None, systems_to_include: Optional[List[str]] = None, systems_to_exclude: Optional[List[str]] = None, new_enabled: Optional[bool] = None) -> Profile:
+        for profile in self.profiles:
+            if profile.profile_id == profile_id:
+                if new_role is not None:
+                    profile.role = new_role
+                if systems_to_include is not None:
+                    profile.systems.extend(systems_to_include)
+                if systems_to_exclude is not None:
+                    for system in systems_to_exclude:
+                        profile.systems.remove(system)
+                if new_enabled is not None:
+                    profile.enabled = new_enabled
+                return profile
         return None

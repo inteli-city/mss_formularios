@@ -11,7 +11,7 @@ class Test_Profile:
                     name='Gabriel Godoy',
                     email='gabriel.godoy@gmail.com',
                     role=ROLE.COORDINATOR,
-                    systems=['GAIA', 'JUNDIAI', 'FORMULARIOS'],
+                    systems=['GAIA', 'JUNDIAI', 'TEST'],
                     enabled=True
                 )
     
@@ -21,7 +21,7 @@ class Test_Profile:
                  name='Gabriel Godoy',
                     email='gabriel.godoy@gmail.com',
                     role=ROLE.COORDINATOR,
-                    systems=['GAIA', 'JUNDIAI', 'FORMULARIOS'],
+                    systems=['GAIA', 'JUNDIAI', 'TEST'],
                     enabled=True
                 )
     
@@ -31,7 +31,7 @@ class Test_Profile:
                  name='Gabriel Godoy',
                     email='gabriel.godoy@gmail.com',
                     role=ROLE.COORDINATOR,
-                    systems=['GAIA', 'JUNDIAI', 'FORMULARIOS'],
+                    systems=['GAIA', 'JUNDIAI', 'TEST'],
                     enabled=True
                 )
     
@@ -41,7 +41,7 @@ class Test_Profile:
                         name='Gabriel Godoy',
                         email='gabriel.godoy@gmail.com',
                         role=ROLE.COORDINATOR,
-                        systems=['GAIA', 'JUNDIAI', 'FORMULARIOS'],
+                        systems=['GAIA', 'JUNDIAI', 'TEST'],
                         enabled=True
                     )
     
@@ -51,7 +51,7 @@ class Test_Profile:
                  name='Gabriel Godoy',
                     email=None,
                     role=ROLE.COORDINATOR,
-                    systems=['GAIA', 'JUNDIAI', 'FORMULARIOS'],
+                    systems=['GAIA', 'JUNDIAI', 'TEST'],
                     enabled=True
                 )
     
@@ -61,7 +61,7 @@ class Test_Profile:
                  name='Gabriel Godoy',
                     email=1,
                     role=ROLE.COORDINATOR,
-                    systems=['GAIA', 'JUNDIAI', 'FORMULARIOS'],
+                    systems=['GAIA', 'JUNDIAI', 'TEST'],
                     enabled=True
                 )
     
@@ -71,7 +71,7 @@ class Test_Profile:
                  name='Gabriel Godoy',
                     email='gabriel',
                     role=ROLE.COORDINATOR,
-                    systems=['GAIA', 'JUNDIAI', 'FORMULARIOS'],
+                    systems=['GAIA', 'JUNDIAI', 'TEST'],
                     enabled=True
                 )
     
@@ -81,7 +81,7 @@ class Test_Profile:
                  name=None,
                     email='gabriel.godoy@gmail.com',
                     role=ROLE.COORDINATOR,
-                    systems=['GAIA', 'JUNDIAI', 'FORMULARIOS'],
+                    systems=['GAIA', 'JUNDIAI', 'TEST'],
                     enabled=True
                 )
     
@@ -91,7 +91,7 @@ class Test_Profile:
                  name=1,
                     email='gabriel.godoy@gmail.com',
                     role=ROLE.COORDINATOR,
-                    systems=['GAIA', 'JUNDIAI', 'FORMULARIOS'],
+                    systems=['GAIA', 'JUNDIAI', 'TEST'],
                     enabled=True
                 )
     
@@ -101,7 +101,7 @@ class Test_Profile:
                  name='a',
                     email='gabriel.godoy@gmail.com',
                     role=ROLE.COORDINATOR,
-                    systems=['GAIA', 'JUNDIAI', 'FORMULARIOS'],
+                    systems=['GAIA', 'JUNDIAI', 'TEST'],
                     enabled=True
                 )
     
@@ -111,7 +111,7 @@ class Test_Profile:
                  name='Gabriel 122332',
                     email='gabriel.godoy@gmail.com',
                     role=ROLE.COORDINATOR,
-                    systems=['GAIA', 'JUNDIAI', 'FORMULARIOS'],
+                    systems=['GAIA', 'JUNDIAI', 'TEST'],
                     enabled=True
                 )
     
@@ -121,7 +121,7 @@ class Test_Profile:
                  name='Gabriel Godoy',
                     email='gabriel.godoy@gmail.com',
                     role=None,
-                    systems=['GAIA', 'JUNDIAI', 'FORMULARIOS'],
+                    systems=['GAIA', 'JUNDIAI', 'TEST'],
                     enabled=True
                 )
     
@@ -131,7 +131,7 @@ class Test_Profile:
                  name='Gabriel Godoy',
                     email='gabriel.godoy@gmail.com',
                     role='ROLE.COORDINATOR',
-                    systems=['GAIA', 'JUNDIAI', 'FORMULARIOS'],
+                    systems=['GAIA', 'JUNDIAI', 'TEST'],
                     enabled=True
                 )
     
