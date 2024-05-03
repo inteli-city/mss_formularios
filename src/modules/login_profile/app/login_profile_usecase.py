@@ -19,7 +19,7 @@ class LoginProfileUsecase:
             if not systems == profile.systems:
                 systems_to_include = [system for system in systems if system not in profile.systems]
                 systems_to_exclude = [system for system in profile.systems if system not in systems]
-                self.repo.update_profile(profile_id=requester_user_id, systems_to_include=systems_to_include, systems_to_exclude=systems_to_exclude)
+                profile = self.repo.update_profile(profile_id=requester_user_id, systems_to_include=systems_to_include, systems_to_exclude=systems_to_exclude)
             return profile
         
         profile = Profile(
