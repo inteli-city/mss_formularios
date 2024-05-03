@@ -30,7 +30,7 @@ class Test_ProfileDynamoDTO:
             email='email@email.com',
             name='name',
             role=ROLE.FILLER,
-            systems=['systems'],
+            systems=['systems', 'system2'],
             enabled=True
         )
 
@@ -39,7 +39,7 @@ class Test_ProfileDynamoDTO:
             'email': 'email@email.com',
             'name': 'name',
             'role': 'FILLER',
-            'systems': ['systems'],
+            'systems': ['systems', 'system2'],
             'enabled': True
         }
 
@@ -51,7 +51,7 @@ class Test_ProfileDynamoDTO:
             'email': 'email@email.com',
             'name': 'name',
             'role': 'FILLER',
-            'systems': ['systems'],
+            'systems': ['systems', 'system2'],
             'enabled': True
         }
 
@@ -61,7 +61,7 @@ class Test_ProfileDynamoDTO:
         assert profile_dto.email == 'email@email.com'
         assert profile_dto.name == 'name'
         assert profile_dto.role == ROLE.FILLER
-        assert profile_dto.systems == ['systems']
+        assert profile_dto.systems == ['systems', 'system2']
         assert profile_dto.enabled == True
     
     def test_profile_dynamo_dto_to_entity(self):

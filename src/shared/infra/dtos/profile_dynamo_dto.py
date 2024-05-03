@@ -50,7 +50,7 @@ class ProfileDynamoDTO:
             email=profile_data['email'],
             name=profile_data['name'],
             role=ROLE(profile_data['role']),
-            systems=profile_data['systems'],
+            systems=[system for system in profile_data['systems']],
             enabled=profile_data['enabled']
         )
     
