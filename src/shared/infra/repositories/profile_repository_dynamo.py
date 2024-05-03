@@ -55,7 +55,7 @@ class ProfileRepositoryDynamo(IProfileRepository):
         
         update_dict = ProfileDynamoDTO.from_entity(profile_to_update).to_dynamo()
 
-        resp = self.dynamo.update_item(partition_key=self.profile_primary_key_format(profile_id=profile_to_update.profile_id), update_dict=update_dict)
+        resp = self.dynamo.update_item(partition_key=self.profile_primary_key_format(profile_id=profile_to_update.profile_id), sort_key=None, update_dict=update_dict)
 
         if "Attributes" not in resp:
             return None
