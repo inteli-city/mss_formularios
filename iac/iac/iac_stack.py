@@ -75,8 +75,8 @@ class IacStack(Stack):
         for f in self.lambda_stack.functions_that_need_dynamo_profile_permissions:
             self.dynamo_stack.dynamo_table_profile.grant_read_write_data(f)
         
-        # for f in self.lambda_stack.functions_that_need_cognito_permissions:
-        #     f.add_to_role_policy(cognito_admin_policy)
+        for f in self.lambda_stack.functions_that_need_cognito_permissions:
+            f.add_to_role_policy(cognito_admin_policy)
         
         # for f in self.lambda_stack.functions_that_need_dynamo_forms_permissions:
         #     self.dynamo_stack.dynamo_table_forms.grant_read_write_data(f)

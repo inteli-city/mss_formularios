@@ -1,5 +1,6 @@
 from typing import List
 
+from src.shared.environments import Environments
 from src.shared.helpers.errors.usecase_errors import ForbiddenAction
 
 class UserFormulariosApiGatewayDTO:
@@ -19,7 +20,9 @@ class UserFormulariosApiGatewayDTO:
         """
         This method is used to convert the user data from the API Gateway to a UserApiGatewayDTO object.
         """
-        groups = [group.strip().upper() for group in user_data.get('cognito:groups', '').split(',') if group.strip()]
+        user_repo = Environments.get_user_repo()()
+
+        groups = user_repo.get_groups_for_user(user_data['email'])
 
         if "FORMULARIOS" not in groups:
             raise ForbiddenAction('Usuário não esta apto para o sistema')

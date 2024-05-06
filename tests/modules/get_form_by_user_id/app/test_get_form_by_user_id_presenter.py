@@ -29,7 +29,7 @@ class Test_GetFormByUserPresenter:
                         {
                             "sub": "1",
                             "name": "Gabriel Godoy",
-                            "email": "gabriel.godoy@gmail.com",
+                            "email": "gabriel@gmail.com",
                             "cognito:groups": "FORMULARIOS"
                         }
                 },

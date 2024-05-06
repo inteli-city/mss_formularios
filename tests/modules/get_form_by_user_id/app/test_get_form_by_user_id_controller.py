@@ -24,7 +24,7 @@ class Test_GetFormByUserIdController:
         data = HttpRequest(body={"requester_user": {
                 "sub": '1',
                 "name": 'Gabriel Godoy',
-                "email": 'test@gmail.com',
+                "email": 'gabriel@gmail.com',
                 "cognito:groups": "GAIA, JUNDIAI,FORMULARIOS"
             },   
         })
@@ -149,7 +149,7 @@ class Test_GetFormByUserIdController:
         data = HttpRequest(body={"requester_user": {
                 "sub": '1',
                 "name": 'Gabriel Godoy',
-                "email": 'test@gmail.com',
+                "email": 'gabriel@outlook.com',
                 "cognito:groups": ""
             },   
         })
@@ -168,7 +168,7 @@ class Test_GetFormByUserIdController:
         data = HttpRequest(body={"requester_user": {
                 "sub": '1',
                 "name": 'Gabriel Godoy',
-                "email": 'test@gmail.com',
+                "email": 'gabriel@gmail.com',
                 "cognito:groups": "FORMULARIOS"
             },   
         })
