@@ -39,10 +39,7 @@ class DynamoStack(Construct):
                 billing_mode=aws_dynamodb.BillingMode.PAY_PER_REQUEST,
                 removal_policy=REMOVAL_POLICY,
                 stream=aws_dynamodb.StreamViewType.NEW_IMAGE,
-                time_to_live_attribute=aws_dynamodb.CfnTable.TimeToLiveSpecificationProperty(
-                        enabled=True,
-                        attribute_name="TTL"
-                    ),
+                time_to_live_attribute="TTL"
             )
             
             CfnOutput(self, 'DynamoFormulariosProfileRemovalPolicy',
