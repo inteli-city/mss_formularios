@@ -39,7 +39,7 @@ class DynamoStack(Construct):
                 billing_mode=aws_dynamodb.BillingMode.PAY_PER_REQUEST,
                 removal_policy=REMOVAL_POLICY,
                 stream=aws_dynamodb.StreamViewType.NEW_IMAGE,
-                time_to_live_specification=aws_dynamodb.CfnTable.TimeToLiveSpecificationProperty(
+                time_to_live_specification_property=aws_dynamodb.CfnTable.TimeToLiveSpecificationProperty(
                         enabled=True,
                         attribute_name="TTL"
                     ),
