@@ -29,7 +29,7 @@ class DynamoStack(Construct):
                 removal_policy=REMOVAL_POLICY,
             )
 
-            self.dynamo_table_profile = aws_dynamodb.Table(
+            self.dynamo_table_forms = aws_dynamodb.Table(
                 self, "Formularios_Table",
                 partition_key=aws_dynamodb.Attribute(
                     name="PK",
