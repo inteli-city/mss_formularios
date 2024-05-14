@@ -4,7 +4,8 @@ import os
 from aws_cdk import (
     CfnOutput,
     aws_dynamodb,
-    RemovalPolicy
+    RemovalPolicy,
+    CfnGlobalTable
 )
 from constructs import Construct
 from aws_cdk.aws_apigateway import Resource, LambdaIntegration
@@ -28,7 +29,27 @@ class DynamoStack(Construct):
                 billing_mode=aws_dynamodb.BillingMode.PAY_PER_REQUEST,
                 removal_policy=REMOVAL_POLICY,
             )
+
+            self.dynamo_table_profile = aws_dynamodb.Table(
+                self, "Formularios_Table",
+                partition_key=aws_dynamodb.Attribute(
+                    name="PK",
+                    type=aws_dynamodb.AttributeType.STRING
+                ),
+                point_in_time_recovery=True,
+                billing_mode=aws_dynamodb.BillingMode.PAY_PER_REQUEST,
+                removal_policy=REMOVAL_POLICY,
+                stream=aws_dynamodb.StreamViewType.NEW_IMAGE,
+                time_to_live_specification=CfnGlobalTable.TimeToLiveSpecificationProperty(
+                        enabled=True,
+                        attribute_name="TTL"
+                    ),
+            )
             
             CfnOutput(self, 'DynamoFormulariosProfileRemovalPolicy',
                         value=REMOVAL_POLICY.value,
                         export_name=f'FormulariosProfile{self.github_ref_name}DynamoRemovalPolicyValue')
+
+            CfnOutput(self, 'DynamoFormulariosRemovalPolicy',
+                        value=REMOVAL_POLICY.value,
+                        export_name=f'Formularios{self.github_ref_name}DynamoRemovalPolicyValue')

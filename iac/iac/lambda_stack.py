@@ -49,13 +49,23 @@ class LambdaStack(Construct):
             authorizer=authorizer
         )
 
+        self.get_form_by_user_id = self.create_lambda_api_gateway_integration(
+            module_name="get_form_by_user_id",
+            method="GET",
+            api_resource=api_gateway_resource,
+            environment_variables=environment_variables,
+            authorizer=authorizer
+        )
+
         self.functions_that_need_dynamo_profile_permissions = [
             self.login_profile
         ]
 
         self.functions_that_need_dynamo_forms_permissions = [
+            self.get_form_by_user_id
         ]
 
         self.functions_that_need_cognito_permissions = [
-            self.login_profile
+            self.login_profile,
+            self.get_form_by_user_id
         ]
