@@ -5,7 +5,6 @@ from aws_cdk import (
     CfnOutput,
     aws_dynamodb,
     RemovalPolicy,
-    CfnGlobalTable
 )
 from constructs import Construct
 from aws_cdk.aws_apigateway import Resource, LambdaIntegration
@@ -40,7 +39,7 @@ class DynamoStack(Construct):
                 billing_mode=aws_dynamodb.BillingMode.PAY_PER_REQUEST,
                 removal_policy=REMOVAL_POLICY,
                 stream=aws_dynamodb.StreamViewType.NEW_IMAGE,
-                time_to_live_specification=CfnGlobalTable.TimeToLiveSpecificationProperty(
+                time_to_live_specification=aws_dynamodb.CfnTable.TimeToLiveSpecificationProperty(
                         enabled=True,
                         attribute_name="TTL"
                     ),
