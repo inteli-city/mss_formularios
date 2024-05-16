@@ -321,7 +321,7 @@ class Test_CreateFormViewmodel:
                         }
                     ]
                 },
-            'message': 'Formulários retornados com sucesso!'
+            'message': 'Formulário criado com sucesso!'
         }
 
         assert response == excepted

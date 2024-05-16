@@ -125,7 +125,7 @@ class FormViewmodel:
             'justificative': self.justificative,
             'comments': self.comments,
             'sections': [SectionViewmodel(section).to_dict() for section in self.sections],
-            'information_fields': [InformationFieldViewmodel(information_field).to_dict() for information_field in self.information_fields]
+            'information_fields': [InformationFieldViewmodel(information_field).to_dict() for information_field in self.information_fields] if self.information_fields is not None else None
         }
     
 class CreateFormViewmodel:
@@ -137,5 +137,5 @@ class CreateFormViewmodel:
     def to_dict(self):
         return {
             'form': FormViewmodel(self.form).to_dict(),
-            'message': 'Formulários retornados com sucesso!'
+            'message': 'Formulário criado com sucesso!'
         }

@@ -10,7 +10,6 @@ def timestamp_yesterday():
 
         timestamp_yesterday_seconds = int(yesterday_date.timestamp())
         timestamp_yesterday_milliseconds = timestamp_yesterday_seconds * 1000
-        print(timestamp_yesterday_milliseconds)
         return timestamp_yesterday_milliseconds
 class Test_GetFormByUserIdController:
 
@@ -30,9 +29,6 @@ class Test_GetFormByUserIdController:
         })
 
         response = controller(data)
-
-        print(response.body)
-
 
         assert response.status_code == 200
         assert response.body == {

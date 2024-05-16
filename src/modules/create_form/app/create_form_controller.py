@@ -1,10 +1,13 @@
 from src.modules.create_form.app.create_form_usecase import CreateFormUsecase
+from src.modules.create_form.app.create_form_viewmodel import CreateFormViewmodel
+from src.shared.domain.entities.information_field import TextInformationField
 from src.shared.domain.enums.priority_enum import PRIORITY
 from src.shared.helpers.errors.controller_errors import MissingParameters
 from src.shared.helpers.errors.domain_errors import EntityError
 from src.shared.helpers.errors.usecase_errors import DuplicatedItem, ForbiddenAction, NoItemsFound
 from src.shared.helpers.external_interfaces.external_interface import IRequest, IResponse
-from src.shared.helpers.external_interfaces.http_codes import BadRequest, Conflict, Forbidden, InternalServerError, NotFound
+from src.shared.helpers.external_interfaces.http_codes import BadRequest, Conflict, Created, Forbidden, InternalServerError, NotFound
+from src.shared.infra.dtos.section_dto import SectionDto
 from src.shared.infra.dtos.user_formularios_api_gateway_dto import UserFormulariosApiGatewayDTO
 
 
@@ -84,14 +87,15 @@ class CreateFormController:
                 expiration_date=request.data.get('expiration_date'),
                 comments=request.data.get('comments'),
                 sections=[
-                    {
-                        'section_id': section.get('section_id'),
-                        'fields': section.get('fields')
-                    }
+                    SectionDto.from_request(section).to_entity()
                     for section in request.data.get('sections')
                 ],
-                information_fields=request.data.get('information_fields')
+                information_fields=None
             )
+
+            viewmodel = CreateFormViewmodel(form=form)
+            
+            return Created(viewmodel.to_dict())
         
         except NoItemsFound as err:
             return NotFound(body=f'{err.message}')

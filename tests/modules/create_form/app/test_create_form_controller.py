@@ -87,5 +87,5 @@ class Test_CreateFormController:
 
         response = controller(data)
 
-        assert response.status_code == 200
-        assert response.body['message'] == 'Form created successfully.'
+        assert response.status_code == 201
+        assert response.body['message'] == 'Formulário criado com sucesso!'
