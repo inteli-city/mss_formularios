@@ -7,7 +7,7 @@ from src.shared.helpers.errors.domain_errors import EntityError
 from src.shared.helpers.errors.usecase_errors import DuplicatedItem, ForbiddenAction, NoItemsFound
 from src.shared.helpers.external_interfaces.external_interface import IRequest, IResponse
 from src.shared.helpers.external_interfaces.http_codes import BadRequest, Conflict, Created, Forbidden, InternalServerError, NotFound
-from src.shared.infra.dtos.section_dto import SectionDto
+from src.shared.infra.dtos.section_dto import SectionDTO
 from src.shared.infra.dtos.user_formularios_api_gateway_dto import UserFormulariosApiGatewayDTO
 
 
@@ -61,6 +61,9 @@ class CreateFormController:
             if request.data.get('priority') is None:
                 raise MissingParameters('priority')
             
+            if request.data.get('priority') not in [enum.value for enum in PRIORITY]:
+                raise EntityError('priority')
+            
             if request.data.get('expiration_date') is None:
                 raise MissingParameters('expiration_date')
             
@@ -87,7 +90,7 @@ class CreateFormController:
                 expiration_date=request.data.get('expiration_date'),
                 comments=request.data.get('comments'),
                 sections=[
-                    SectionDto.from_request(section).to_entity()
+                    SectionDTO.from_request(section).to_entity()
                     for section in request.data.get('sections')
                 ],
                 information_fields=None
@@ -98,19 +101,19 @@ class CreateFormController:
             return Created(viewmodel.to_dict())
         
         except NoItemsFound as err:
-            return NotFound(body=f'{err.message}')
+            return NotFound(body={'message': err.message})
         
         except DuplicatedItem as err:
-            return Conflict(body=f'{err.message}')
+            return Conflict(body={'message': err.message})
 
         except MissingParameters as err:
-            return BadRequest(body=err.message)
+            return BadRequest(body={'message': err.message})
 
         except ForbiddenAction as err:
-            return Forbidden(body=err.message)
+            return Forbidden(body={'message': err.message})
         
         except EntityError as err:
-            return BadRequest(body=f"Parâmetro inválido: {err.message}")
+            return BadRequest(body={'message': f"Parâmetro inválido: {err.message}"})
         
         except Exception as err:
             return InternalServerError(body=err.args[0])

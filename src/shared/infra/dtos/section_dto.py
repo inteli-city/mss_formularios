@@ -5,7 +5,7 @@ from src.shared.domain.enums.fields_enum import FIELD_TYPE
 from src.shared.helpers.errors.domain_errors import EntityError
 from src.shared.domain.entities.field import CheckBoxGroupField, CheckboxField, DateField, DropDownField, FileField, NumberField, RadioGroupField, SwitchButtonField, TextField, TypeAheadField
 
-class SectionDto:
+class SectionDTO:
     section_id: str
     fields: List[Field]
 
@@ -13,7 +13,7 @@ class SectionDto:
         self.section_id = section_id
         self.fields = fields
     
-    def from_request(section_dict: dict) -> "SectionDto":
+    def from_request(section_dict: dict) -> "SectionDTO":
         if section_dict.get('section_id') is None:
                 raise EntityError('section_id')
         section_id = section_dict.get('section_id')
@@ -61,7 +61,7 @@ class SectionDto:
 
             fields.append(field)
 
-        return SectionDto(section_id=section_id, fields=fields)
+        return SectionDTO(section_id=section_id, fields=fields)
 
     def to_entity(self) -> Section:
         return Section(section_id=self.section_id, fields=self.fields)
