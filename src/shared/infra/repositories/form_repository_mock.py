@@ -7,6 +7,7 @@ from src.shared.domain.entities.section import Section
 from src.shared.domain.enums.form_status_enum import FORM_STATUS
 from src.shared.domain.enums.priority_enum import PRIORITY
 from src.shared.domain.repositories.form_repository_interface import IFormRepository
+from src.shared.helpers.errors.usecase_errors import DuplicatedItem
 
 
 class FormRepositoryMock(IFormRepository):
@@ -19,7 +20,6 @@ class FormRepositoryMock(IFormRepository):
 
             timestamp_yesterday_seconds = int(yesterday_date.timestamp())
             timestamp_yesterday_milliseconds = timestamp_yesterday_seconds * 1000
-            print(timestamp_yesterday_milliseconds)
             return timestamp_yesterday_milliseconds
 
         text_field = TextField(placeholder='placeholder', required=True, key='key', regex='regex', formatting='formatting', max_length=10, value='value')
@@ -30,15 +30,15 @@ class FormRepositoryMock(IFormRepository):
 
         self.forms = [
             Form(
-                extern_form_id='1',
-                internal_form_id='1',
-                creator_user_id='1',
-                user_id='1',
-                coordinators_id=['1'],
-                vinculation_form_id=None,
+                extern_form_id='d61dbf66-a10f-11ed-a8fc-0242ac120010',
+                internal_form_id='d61dbf66-a10f-11ed-a8fc-0242ac120010',
+                creator_user_id='d61dbf66-a10f-11ed-a8fc-0242ac120001',
+                user_id='d61dbf66-a10f-11ed-a8fc-0242ac120001',
+                coordinators_id=['d61dbf66-a10f-11ed-a8fc-0242ac120001'],
+                vinculation_form_id='d61dbf66-a10f-11ed-a8fc-0242ac120010',
                 template='TEMPLATE',
                 area='1',
-                system='1',
+                system='GAIA',
                 street='1',
                 city='1',
                 number=1,
@@ -61,15 +61,15 @@ class FormRepositoryMock(IFormRepository):
                 ]
             ),
             Form(
-                extern_form_id='1',
-                internal_form_id='1',
-                creator_user_id='1',
-                user_id='1',
-                coordinators_id=['1'],
+                extern_form_id='d61dbf66-a10f-11ed-a8fc-0242ac120011',
+                internal_form_id='d61dbf66-a10f-11ed-a8fc-0242ac120011',
+                creator_user_id='d61dbf66-a10f-11ed-a8fc-0242ac120001',
+                user_id='d61dbf66-a10f-11ed-a8fc-0242ac120002',
+                coordinators_id=['d61dbf66-a10f-11ed-a8fc-0242ac120011'],
                 vinculation_form_id=None,
                 template='TEMPLATE',
                 area='1',
-                system='1',
+                system='GAIA',
                 street='1',
                 city='1',
                 number=1,
@@ -93,19 +93,20 @@ class FormRepositoryMock(IFormRepository):
             ),
         ]
     
-    @staticmethod
-    def timestamp_to_datetime(timestamp: int) -> datetime:
-        return datetime.fromtimestamp(timestamp / 1000)
-    
     def get_form_by_user_id(self, user_id: str) -> List[Form]:
         current_date = datetime.now()
 
-        cutoff_date = current_date - timedelta(days=7)
 
         filtered_forms = []
         for form in self.forms:
             if form.user_id == user_id:
-                if form.status != FORM_STATUS.CONCLUDED or self.timestamp_to_datetime(form.conclusion_date) >= cutoff_date:
-                    filtered_forms.append(form)
+                filtered_forms.append(form)
 
         return filtered_forms
+    
+    def create_form(self, form: Form) -> Form:
+        for item in self.forms:
+            if form.extern_form_id == item.extern_form_id:
+                raise DuplicatedItem('Formulário já existe')
+        self.forms.append(form)
+        return form

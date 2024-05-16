@@ -1,4 +1,4 @@
-from src.modules.get_form_by_user_id.app.get_form_by_user_id_viewmodel import FieldViewmodel, FormViewmodel, GetFormByUserIdViewmodel, InformationFieldViewmodel, SectionViewmodel
+from src.modules.create_form.app.create_form_viewmodel import CreateFormViewmodel, FieldViewmodel, FormViewmodel, InformationFieldViewmodel, SectionViewmodel
 from src.shared.domain.entities.field import FileField, TextField
 from src.shared.domain.entities.form import Form
 from src.shared.domain.entities.information_field import ImageInformationField, MapInformationField, TextInformationField
@@ -8,7 +8,7 @@ from src.shared.domain.enums.form_status_enum import FORM_STATUS
 from src.shared.domain.enums.priority_enum import PRIORITY
 
 
-class Test_GetFormByUserIdViewmodel:
+class Test_CreateFormViewmodel:
 
     def test_field_viewmodel(self):
         viewmodel = FieldViewmodel(field=TextField(placeholder='placeholder', required=True, key='key', regex='regex', formatting='formatting', max_length=10, value='value'))
@@ -254,15 +254,14 @@ class Test_GetFormByUserIdViewmodel:
                 ]
             )
 
-        viewmodel = GetFormByUserIdViewmodel(
-            form_list=[form]
+        viewmodel = CreateFormViewmodel(
+            form=form
         )
 
         response = viewmodel.to_dict()
 
         excepted = {
-            'form_list': [
-                {
+            'form': {
                     'extern_form_id': 'd61dbf66-a10f-11ed-a8fc-0242ac120001',
                     'internal_form_id': 'd61dbf66-a10f-11ed-a8fc-0242ac120001',
                     'creator_user_id': 'd61dbf66-a10f-11ed-a8fc-0242ac120001',
@@ -321,8 +320,7 @@ class Test_GetFormByUserIdViewmodel:
                             'file_path': 'file_path'
                         }
                     ]
-                }
-            ],
+                },
             'message': 'Formulários retornados com sucesso!'
         }
 

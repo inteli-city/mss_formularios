@@ -21,12 +21,11 @@ class Test_LoginProfileController:
         })
 
         response = controller(data)
-        print(response)
         assert response.status_code == 200
         assert response.body["profile"]["profile_id"] == 'd61dbf66-a10f-11ed-a8fc-0242ac120001'
         assert response.body["profile"]["name"] == repo.profiles[0].name
         assert response.body["profile"]["email"] == repo.profiles[0].email
-        assert response.body["profile"]["role"] == 'FILLER'
+        assert response.body["profile"]["role"] == 'COORDINATOR'
         assert response.body["profile"]["systems"] == ['GAIA', 'JUNDIAI']
         assert response.body["profile"]["enabled"] == True
 
@@ -39,7 +38,6 @@ class Test_LoginProfileController:
         data = HttpRequest(body={})
 
         response = controller(data)
-        print(response)
         assert response.status_code == 400
         assert response.body == "Parâmetro ausente: requester_user"
     
@@ -58,7 +56,6 @@ class Test_LoginProfileController:
         })
 
         response = controller(data)
-        print(response)
         assert response.status_code == 403
         assert response.body == "Ação não permitida: Usuário não esta apto para o sistema"
     
@@ -77,6 +74,5 @@ class Test_LoginProfileController:
         })
 
         response = controller(data)
-        print(response)
         assert response.status_code == 400
         assert response.body == "Parâmetro inválido: profile_id"

@@ -9,12 +9,6 @@ class GetFormByUserIdUsecase:
         self.form_repo = form_repo
 
     def __call__(self, requester_user_id: str) -> List[Form]:
-        
-        # Validar se o usuário que está solicitando a operação é um usuário válido
-        # requester_user = self.user_repo.get_user_by_id(user_id=requester_user_id)
-
-        # if requester_user is None:
-        #     raise NoItemsFound("Usuário não cadastrado")
 
         forms = self.form_repo.get_form_by_user_id(user_id=requester_user_id)
 

@@ -12,7 +12,7 @@ class Test_ProfileRepositoryMock:
         assert profile.profile_id == 'd61dbf66-a10f-11ed-a8fc-0242ac120001'
         assert profile.name == 'Gabriel Godoy'
         assert profile.email == 'gabriel@hotmail.com'
-        assert profile.role == ROLE.FILLER
+        assert profile.role == ROLE.COORDINATOR
         assert profile.systems == ['GAIA', 'JUNDIAI']
     
     def test_get_all_profiles(self):

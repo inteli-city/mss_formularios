@@ -128,14 +128,14 @@ class FormViewmodel:
             'information_fields': [InformationFieldViewmodel(information_field).to_dict() for information_field in self.information_fields]
         }
     
-class GetFormByUserIdViewmodel:
-    form_list: List[Form]
+class CreateFormViewmodel:
+    form: Form
 
-    def __init__(self, form_list: List[Form]):
-        self.form_list = form_list
+    def __init__(self, form: Form):
+        self.form = form
     
     def to_dict(self):
         return {
-            'form_list': [FormViewmodel(form).to_dict() for form in self.form_list],
+            'form': FormViewmodel(self.form).to_dict(),
             'message': 'Formulários retornados com sucesso!'
         }

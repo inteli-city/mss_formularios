@@ -22,7 +22,7 @@ class Test_GetFormByUserIdController:
         controller = GetFormByUserIdController(usecase)
 
         data = HttpRequest(body={"requester_user": {
-                "sub": '1',
+                "sub": 'd61dbf66-a10f-11ed-a8fc-0242ac120001',
                 "name": 'Gabriel Godoy',
                 "email": 'gabriel@gmail.com',
                 "cognito:groups": "GAIA, JUNDIAI,FORMULARIOS"
@@ -31,20 +31,22 @@ class Test_GetFormByUserIdController:
 
         response = controller(data)
 
+        print(response.body)
+
 
         assert response.status_code == 200
         assert response.body == {
             'form_list': [
                 {
-                    'extern_form_id': '1',
-                    'internal_form_id': '1',
-                    'creator_user_id': '1',
-                    'user_id': '1',
-                    'coordinators_id': ['1'],
-                    'vinculation_form_id': None,
+                    'extern_form_id': 'd61dbf66-a10f-11ed-a8fc-0242ac120010',
+                    'internal_form_id': 'd61dbf66-a10f-11ed-a8fc-0242ac120010',
+                    'creator_user_id': 'd61dbf66-a10f-11ed-a8fc-0242ac120001',
+                    'user_id': 'd61dbf66-a10f-11ed-a8fc-0242ac120001',
+                    'coordinators_id': ['d61dbf66-a10f-11ed-a8fc-0242ac120001'],
+                    'vinculation_form_id': 'd61dbf66-a10f-11ed-a8fc-0242ac120010',
                     'template': 'TEMPLATE',
                     'area': '1',
-                    'system': '1',
+                    'system': 'GAIA',
                     'street': '1',
                     'city': '1',
                     'number': 1,

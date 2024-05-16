@@ -19,5 +19,6 @@ class Section(abc.ABC):
         if not fields:
             raise EntityError('fields')
         if not all(isinstance(field, Field) for field in fields):
+            print(fields)
             raise EntityError('fields')
         self.fields = fields

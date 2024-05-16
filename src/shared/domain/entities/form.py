@@ -36,21 +36,23 @@ class Form(abc.ABC):
     sections: List[Section]
     information_fields: Optional[List[InformationField]]
 
+    ID_LENGTH = 36
+
     def __init__(self, extern_form_id: str, internal_form_id: str, creator_user_id: str, user_id: str, coordinators_id: List[str], vinculation_form_id: Optional[str], template: str, area: str, system: str, street: str, city: str, number: int, latitude: float, longitude: float, region: str, description: Optional[str], priority: PRIORITY, status: FORM_STATUS, expiration_date: int, creation_date: int, start_date: Optional[int], conclusion_date: Optional[int], justificative: Optional[str], comments: Optional[str], sections: List[Section], information_fields: Optional[List[InformationField]]):
 
-        if type(extern_form_id) is not str:
+        if not Form.validate_id(extern_form_id):
             raise EntityError('extern_form_id')
         self.extern_form_id = extern_form_id
 
-        if type(internal_form_id) is not str:
+        if not Form.validate_id(internal_form_id):
             raise EntityError('internal_form_id')
         self.internal_form_id = internal_form_id
 
-        if type(creator_user_id) is not str:
+        if not Form.validate_id(creator_user_id):
             raise EntityError('creator_user_id')
         self.creator_user_id = creator_user_id
 
-        if type(user_id) is not str:
+        if not Form.validate_id(user_id):
             raise EntityError('user_id')
         self.user_id = user_id
 
@@ -58,11 +60,11 @@ class Form(abc.ABC):
             raise EntityError('coordinators_id')
         if not coordinators_id:
             raise EntityError('coordinators_id')
-        if not all(isinstance(coordinator_id, str) for coordinator_id in coordinators_id):
+        if not all(Form.validate_id(coordinator_id) for coordinator_id in coordinators_id):
             raise EntityError('coordinators_id')
         self.coordinators_id = coordinators_id
 
-        if vinculation_form_id is not None and type(vinculation_form_id) is not str:
+        if vinculation_form_id is not None and not Form.validate_id(vinculation_form_id):
             raise EntityError('vinculation_form_id')
         self.vinculation_form_id = vinculation_form_id
 
@@ -157,5 +159,12 @@ class Form(abc.ABC):
                 raise EntityError('information_fields')
             if not all(isinstance(information_field, InformationField) for information_field in information_fields):
                 raise EntityError('information_fields')
-            self.information_fields = information_fields
+        self.information_fields = information_fields
     
+    @staticmethod
+    def validate_id(id_to_validate: str) -> bool:
+        if type(id_to_validate) != str:
+            return False
+        if len(id_to_validate) != Form.ID_LENGTH:
+            return False
+        return True

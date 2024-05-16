@@ -27,7 +27,7 @@ class Test_GetFormByUserPresenter:
                 "authorizer": {
                     "claims":
                         {
-                            "sub": "1",
+                            "sub": "d61dbf66-a10f-11ed-a8fc-0242ac120001",
                             "name": "Gabriel Godoy",
                             "email": "gabriel@gmail.com",
                             "cognito:groups": "FORMULARIOS"
