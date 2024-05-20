@@ -17,7 +17,7 @@ class Field(abc.ABC):
 
 
     @abc.abstractmethod
-    def __init__(self, field_type: FIELD_TYPE, placeholder: str, required: bool, key: str, regex: Optional[str], formatting: Optional[str]):
+    def __init__(self, field_type: FIELD_TYPE, placeholder: str, required: bool, key: str, regex: Optional[str] = None, formatting: Optional[str] = None):
         if type(field_type) is not FIELD_TYPE:
             raise EntityError('field_type')
         self.field_type = field_type

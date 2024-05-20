@@ -48,7 +48,7 @@ class Test_GetFormByUserIdViewmodel:
 
         assert response == excepted
 
-    def test_informarion_field_viewmodel(self):
+    def test_information_field_viewmodel(self):
         viewmodel = InformationFieldViewmodel(information_field=TextInformationField(value='value'))
 
         response = viewmodel.to_dict()

@@ -63,23 +63,11 @@ class Test_CreateFormController:
             ],
             "information_fields": [
                 {
-                    "field_type": 'TEXT_FIELD',
-                    "placeholder": 'placeholder',
-                    "required": True,
-                    "key": 'key',
-                    "regex": 'regex',
-                    "formatting": 'formatting',
-                    "max_length": 10,
+                    "information_field_type": 'TEXT_INFORMATION_FIELD',
                     "value": 'value'
                 },
                 {
-                    "field_type": 'TEXT_FIELD',
-                    "placeholder": 'placeholder',
-                    "required": True,
-                    "key": 'key',
-                    "regex": 'regex',
-                    "formatting": 'formatting',
-                    "max_length": 10,
+                    "information_field_type": 'TEXT_INFORMATION_FIELD',
                     "value": 'value'
                 }
             ]

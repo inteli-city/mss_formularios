@@ -24,7 +24,7 @@ class Test_SectionDTO:
                     'placeholder': 'placeholder',
                     'required': True,
                     'key': 'key',
-                    'regex': 'regex',
+                    # 'regex': 'regex',
                     'formatting': 'formatting',
                     'max_length': 10,
                     'value': 'value'

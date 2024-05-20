@@ -7,6 +7,7 @@ from src.shared.helpers.errors.domain_errors import EntityError
 from src.shared.helpers.errors.usecase_errors import DuplicatedItem, ForbiddenAction, NoItemsFound
 from src.shared.helpers.external_interfaces.external_interface import IRequest, IResponse
 from src.shared.helpers.external_interfaces.http_codes import BadRequest, Conflict, Created, Forbidden, InternalServerError, NotFound
+from src.shared.infra.dtos.information_field_dto import InformationFieldDTO
 from src.shared.infra.dtos.section_dto import SectionDTO
 from src.shared.infra.dtos.user_formularios_api_gateway_dto import UserFormulariosApiGatewayDTO
 
@@ -93,7 +94,10 @@ class CreateFormController:
                     SectionDTO.from_request(section).to_entity()
                     for section in request.data.get('sections')
                 ],
-                information_fields=None
+                information_fields=[
+                    InformationFieldDTO.from_request(information_field).to_entity()
+                    for information_field in request.data.get('information_fields')
+                ]
             )
 
             viewmodel = CreateFormViewmodel(form=form)
