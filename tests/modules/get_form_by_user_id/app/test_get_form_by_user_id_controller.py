@@ -34,12 +34,12 @@ class Test_GetFormByUserIdController:
         assert response.body == {
             'form_list': [
                 {
-                    'extern_form_id': 'd61dbf66-a10f-11ed-a8fc-0242ac120010',
-                    'internal_form_id': 'd61dbf66-a10f-11ed-a8fc-0242ac120010',
+                    'form_title': 'FORM_TITLE',
+                    'form_id': 'd61dbf66-a10f-11ed-a8fc-0242ac120010',
                     'creator_user_id': 'd61dbf66-a10f-11ed-a8fc-0242ac120001',
                     'user_id': 'd61dbf66-a10f-11ed-a8fc-0242ac120001',
-                    'coordinators_id': ['d61dbf66-a10f-11ed-a8fc-0242ac120001'],
                     'vinculation_form_id': 'd61dbf66-a10f-11ed-a8fc-0242ac120010',
+                    'can_vinculate': True,
                     'template': 'TEMPLATE',
                     'area': '1',
                     'system': 'GAIA',
@@ -56,7 +56,18 @@ class Test_GetFormByUserIdController:
                     'creation_date': 946407600000,
                     'start_date': 946407600000,
                     'conclusion_date': timestamp_yesterday(),
-                    'justificative': None,
+                    'justificative': {
+                        'options': [
+                            {
+                                'option': 'option',
+                                'requiredImage': True,
+                                'requiredText': True
+                            }
+                        ],
+                        'selectedOption': 'selectedOption',
+                        'text': 'text',
+                        'image': 'image'
+                    },
                     'comments': None,
                     'sections': [
                         {

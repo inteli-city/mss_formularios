@@ -4,6 +4,7 @@ from typing import List, Optional
 from src.shared.domain.entities.field import Field
 from src.shared.domain.entities.form import Form
 from src.shared.domain.entities.information_field import InformationField
+from src.shared.domain.entities.justificative import Justificative, JustificativeOption
 from src.shared.domain.entities.section import Section
 from src.shared.domain.enums.fields_enum import FIELD_TYPE
 from src.shared.domain.enums.form_status_enum import FORM_STATUS
@@ -42,13 +43,50 @@ class SectionViewmodel:
             'fields': [FieldViewmodel(field).to_dict() for field in self.fields]
         }
 
+class JustificativeOptionViewmodel:
+    option: str
+    requiredImage: bool
+    requiredText: bool
+
+    def __init__(self, justificative_option: JustificativeOption):
+        self.option = justificative_option.option
+        self.requiredImage = justificative_option.requiredImage
+        self.requiredText = justificative_option.requiredText
+
+    def to_dict(self):
+        return {
+            'option': self.option,
+            'requiredImage': self.requiredImage,
+            'requiredText': self.requiredText
+        }
+
+class JustificativeViewmodel:
+    options: List[JustificativeOptionViewmodel]
+    selectedOption: Optional[str]
+    text: Optional[str]
+    image: Optional[str]
+
+    def __init__(self, justificative: Justificative):
+        self.options = [JustificativeOptionViewmodel(option).to_dict() for option in justificative.options]
+        self.selectedOption = justificative.selectedOption
+        self.text = justificative.text
+        self.image = justificative.image
+
+    def to_dict(self):
+        return {
+            'options': self.options,
+            'selectedOption': self.selectedOption,
+            'text': self.text,
+            'image': self.image
+        }
+
 class FormViewmodel:
-    extern_form_id: str
-    internal_form_id: str
+    form_title: str
+    form_id: str
     creator_user_id: str
     user_id: str
-    coordinators_id: List[str]
     vinculation_form_id: Optional[str]
+    can_vinculate: bool
     template: str
     area: str
     system: str
@@ -65,18 +103,18 @@ class FormViewmodel:
     creation_date: int
     start_date: Optional[int]
     conclusion_date: Optional[int]
-    justificative: Optional[str]
+    justificative: Justificative
     comments: Optional[str]
     sections: List[Section]
     information_fields: Optional[List[InformationField]]
 
     def __init__(self, form: Form):
-        self.extern_form_id = form.extern_form_id
-        self.internal_form_id = form.internal_form_id
+        self.form_title = form.form_title
+        self.form_id = form.form_id
         self.creator_user_id = form.creator_user_id
         self.user_id = form.user_id
-        self.coordinators_id = form.coordinators_id
         self.vinculation_form_id = form.vinculation_form_id
+        self.can_vinculate = form.can_vinculate
         self.template = form.template
         self.area = form.area
         self.system = form.system
@@ -100,12 +138,12 @@ class FormViewmodel:
 
     def to_dict(self):
         return {
-            'extern_form_id': self.extern_form_id,
-            'internal_form_id': self.internal_form_id,
+            'form_title': self.form_title,
+            'form_id': self.form_id,
             'creator_user_id': self.creator_user_id,
             'user_id': self.user_id,
-            'coordinators_id': self.coordinators_id,
             'vinculation_form_id': self.vinculation_form_id,
+            'can_vinculate': self.can_vinculate,
             'template': self.template,
             'area': self.area,
             'system': self.system,
@@ -122,7 +160,7 @@ class FormViewmodel:
             'creation_date': self.creation_date,
             'start_date': self.start_date,
             'conclusion_date': self.conclusion_date,
-            'justificative': self.justificative,
+            'justificative': JustificativeViewmodel(self.justificative).to_dict(),
             'comments': self.comments,
             'sections': [SectionViewmodel(section).to_dict() for section in self.sections],
             'information_fields': [InformationFieldViewmodel(information_field).to_dict() for information_field in self.information_fields] if self.information_fields is not None else None

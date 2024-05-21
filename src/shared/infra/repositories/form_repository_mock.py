@@ -3,6 +3,7 @@ from typing import List
 from src.shared.domain.entities.field import TextField
 from src.shared.domain.entities.form import Form
 from src.shared.domain.entities.information_field import TextInformationField
+from src.shared.domain.entities.justificative import Justificative, JustificativeOption
 from src.shared.domain.entities.section import Section
 from src.shared.domain.enums.form_status_enum import FORM_STATUS
 from src.shared.domain.enums.priority_enum import PRIORITY
@@ -27,15 +28,27 @@ class FormRepositoryMock(IFormRepository):
         information_field = TextInformationField(
             value='value'
         )
+        justificative_option = JustificativeOption(
+            option='option',
+            requiredImage=True,
+            requiredText=True
+        )
+
+        justificative = Justificative(
+            options=[justificative_option],
+            selectedOption='selectedOption',
+            text='text',
+            image='image'
+        )
 
         self.forms = [
             Form(
-                extern_form_id='d61dbf66-a10f-11ed-a8fc-0242ac120010',
-                internal_form_id='d61dbf66-a10f-11ed-a8fc-0242ac120010',
+                form_title='FORM_TITLE',                
+                form_id='d61dbf66-a10f-11ed-a8fc-0242ac120010',
                 creator_user_id='d61dbf66-a10f-11ed-a8fc-0242ac120001',
                 user_id='d61dbf66-a10f-11ed-a8fc-0242ac120001',
-                coordinators_id=['d61dbf66-a10f-11ed-a8fc-0242ac120001'],
                 vinculation_form_id='d61dbf66-a10f-11ed-a8fc-0242ac120010',
+                can_vinculate=True,
                 template='TEMPLATE',
                 area='1',
                 system='GAIA',
@@ -52,7 +65,7 @@ class FormRepositoryMock(IFormRepository):
                 creation_date=946407600000,
                 start_date=946407600000,
                 conclusion_date=timestamp_yesterday(),
-                justificative=None,
+                justificative=justificative,
                 comments=None,
                 sections=[section, section],
                 information_fields=[
@@ -61,12 +74,12 @@ class FormRepositoryMock(IFormRepository):
                 ]
             ),
             Form(
-                extern_form_id='d61dbf66-a10f-11ed-a8fc-0242ac120011',
-                internal_form_id='d61dbf66-a10f-11ed-a8fc-0242ac120011',
+                form_title='FORM_TITLE2',
+                form_id='d61dbf66-a10f-11ed-a8fc-0242ac120011',
                 creator_user_id='d61dbf66-a10f-11ed-a8fc-0242ac120001',
                 user_id='d61dbf66-a10f-11ed-a8fc-0242ac120002',
-                coordinators_id=['d61dbf66-a10f-11ed-a8fc-0242ac120011'],
                 vinculation_form_id=None,
+                can_vinculate=False,
                 template='TEMPLATE',
                 area='1',
                 system='GAIA',
@@ -83,7 +96,7 @@ class FormRepositoryMock(IFormRepository):
                 creation_date=946407600000,
                 start_date=946407600000,
                 conclusion_date=946407600000,
-                justificative=None,
+                justificative=justificative,
                 comments=None,
                 sections=[section],
                 information_fields=[
@@ -94,9 +107,6 @@ class FormRepositoryMock(IFormRepository):
         ]
     
     def get_form_by_user_id(self, user_id: str) -> List[Form]:
-        current_date = datetime.now()
-
-
         filtered_forms = []
         for form in self.forms:
             if form.user_id == user_id:
@@ -106,7 +116,14 @@ class FormRepositoryMock(IFormRepository):
     
     def create_form(self, form: Form) -> Form:
         for item in self.forms:
-            if form.extern_form_id == item.extern_form_id:
+            if form.form_id == item.form_id:
                 raise DuplicatedItem('Formulário já existe')
         self.forms.append(form)
         return form
+    
+    def update_form_status(self, form_id: str, status: FORM_STATUS) -> Form:
+        for form in self.forms:
+            if form.form_id == form_id:
+                form.status = status
+                return form
+        return None

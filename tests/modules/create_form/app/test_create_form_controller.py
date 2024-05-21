@@ -19,9 +19,10 @@ class Test_CreateFormController:
                 "email": 'gabriel@gmail.com',
                 "cognito:groups": "GAIA, JUNDIAI,FORMULARIOS"
             },
-            "extern_form_id": 'd61dbf66-a10f-11ed-a8fc-0242ac120020',
+            "form_title": "FORM TITLE",
+            "form_id": 'd61dbf66-a10f-11ed-a8fc-0242ac120020',
             "user_id": 'd61dbf66-a10f-11ed-a8fc-0242ac120001',
-            "coordinators_id": ['d61dbf66-a10f-11ed-a8fc-0242ac120001'],
+            "can_vinculate": True,
             "template": 'TEMPLATE',
             "area": '1',
             "system": 'GAIA',
@@ -33,6 +34,18 @@ class Test_CreateFormController:
             "region": 'REGION',
             "priority": 'EMERGENCY',
             "expiration_date": 946407600000,
+            "justificative": {
+                "options": [
+                    {
+                        "option": 'option',
+                        "requiredImage": True,
+                        "requiredText": True
+                    }
+                ],
+                "selectedOption": 'selectedOption',
+                "text": 'text',
+                "image": 'image'
+            },
             "comments": '123',
             "sections": [
                     {
@@ -86,9 +99,9 @@ class Test_CreateFormController:
         controller = CreateFormController(usecase)
 
         data = HttpRequest(body={
-            "extern_form_id": 'd61dbf66-a10f-11ed-a8fc-0242ac120020',
+            "form_id": 'd61dbf66-a10f-11ed-a8fc-0242ac120020',
             "user_id": 'd61dbf66-a10f-11ed-a8fc-0242ac120001',
-            "coordinators_id": ['d61dbf66-a10f-11ed-a8fc-0242ac120001'],
+            "can_vinculate": True,
             "template": 'TEMPLATE',
             "area": '1',
             "system": 'GAIA',
@@ -157,7 +170,7 @@ class Test_CreateFormController:
         assert response.status_code == 400
         assert response.body['message'] == 'Parâmetro ausente: requester_user'
     
-    def test_create_form_controller_missing_extern_form_id(self):
+    def test_create_form_controller_missing_form_id(self):
         repo = FormRepositoryMock()
         repo_profile = ProfileRepositoryMock()
         usecase = CreateFormUsecase(repo, repo_profile)
@@ -170,8 +183,9 @@ class Test_CreateFormController:
                 "email": repo_profile.profiles[0].email,
                 "cognito:groups": "GAIA, JUNDIAI,FORMULARIOS"
             },
+            "form_title": "FORM TITLE",
             "user_id": 'd61dbf66-a10f-11ed-a8fc-0242ac120001',
-            "coordinators_id": ['d61dbf66-a10f-11ed-a8fc-0242ac120001'],
+            "can_vinculate": True,
             "template": 'TEMPLATE',
             "area": '1',
             "system": 'GAIA',
@@ -218,7 +232,7 @@ class Test_CreateFormController:
         response = controller(data)
 
         assert response.status_code == 400
-        assert response.body['message'] == 'Parâmetro ausente: extern_form_id'
+        assert response.body['message'] == 'Parâmetro ausente: form_id'
     
     def test_create_form_controller_missing_user_id(self):
         repo = FormRepositoryMock()
@@ -233,8 +247,9 @@ class Test_CreateFormController:
                 "email": repo_profile.profiles[0].email,
                 "cognito:groups": "GAIA, JUNDIAI,FORMULARIOS"
             },
-            "extern_form_id": 'd61dbf66-a10f-11ed-a8fc-0242ac120020',
-            "coordinators_id": ['d61dbf66-a10f-11ed-a8fc-0242ac120001'],
+            "form_title": "FORM TITLE",
+            "form_id": 'd61dbf66-a10f-11ed-a8fc-0242ac120020',
+            "can_vinculate": True,
             "template": 'TEMPLATE',
             "area": '1',
             "system": 'GAIA',
@@ -283,69 +298,6 @@ class Test_CreateFormController:
         assert response.status_code == 400
         assert response.body['message'] == 'Parâmetro ausente: user_id'
     
-    def test_create_form_controller_missing_coordinators_id(self):
-        repo = FormRepositoryMock()
-        repo_profile = ProfileRepositoryMock()
-        usecase = CreateFormUsecase(repo, repo_profile)
-
-        controller = CreateFormController(usecase)
-
-        data = HttpRequest(body={"requester_user": {
-                "sub": 'd61dbf66-a10f-11ed-a8fc-0242ac120001',
-                "name": 'Gabriel Godoy',
-                "email": repo_profile.profiles[0].email,
-                "cognito:groups": "GAIA, JUNDIAI,FORMULARIOS"
-            },
-            "extern_form_id": 'd61dbf66-a10f-11ed-a8fc-0242ac120020',
-            "user_id": 'd61dbf66-a10f-11ed-a8fc-0242ac120001',
-            "template": 'TEMPLATE',
-            "area": '1',
-            "system": 'GAIA',
-            "street": '1',
-            "city": '1',
-            "number": 1,
-            "latitude": 1.0,
-            "longitude": 1.0,
-            "region": 'REGION',
-            "priority": 'EMERGENCY',
-            "expiration_date": 946407600000,
-            "comments": '123',
-            "sections": [
-                    {
-                        'section_id': '99999',
-                        'fields': [
-                            {
-                                'field_type': 'TEXT_FIELD',
-                                'placeholder': 'placeholder',
-                                'required': True,
-                                'key': 'key',
-                                'regex': 'regex',
-                                'formatting': 'formatting',
-                                'max_length': 10,
-                                'value': 'value'
-                            }
-                        ]
-                    },
-            ],
-            "information_fields": [
-                {
-                    "field_type": 'TEXT_FIELD',
-                    "placeholder": 'placeholder',
-                    "required": True,
-                    "key": 'key',
-                    "regex": 'regex',
-                    "formatting": 'formatting',
-                    "max_length": 10,
-                    "value": 'value'
-                }
-            ]
-        })
-
-        response = controller(data)
-
-        assert response.status_code == 400
-        assert response.body['message'] == 'Parâmetro ausente: coordinators_id'
-    
     def test_create_form_controller_missing_template(self):
         repo = FormRepositoryMock()
         repo_profile = ProfileRepositoryMock()
@@ -359,9 +311,10 @@ class Test_CreateFormController:
                 "email": repo_profile.profiles[0].email,
                 "cognito:groups": "GAIA, JUNDIAI,FORMULARIOS"
             },
-            "extern_form_id": 'd61dbf66-a10f-11ed-a8fc-0242ac120020',
+            "form_title": "FORM TITLE",
+            "form_id": 'd61dbf66-a10f-11ed-a8fc-0242ac120020',
             "user_id": 'd61dbf66-a10f-11ed-a8fc-0242ac120001',
-            "coordinators_id": ['d61dbf66-a10f-11ed-a8fc-0242ac120001'],
+            "can_vinculate": True,
             "area": '1',
             "system": 'GAIA',
             "street": '1',
@@ -422,9 +375,10 @@ class Test_CreateFormController:
                 "email": repo_profile.profiles[0].email,
                 "cognito:groups": "GAIA, JUNDIAI,FORMULARIOS"
             },
-            "extern_form_id": 'd61dbf66-a10f-11ed-a8fc-0242ac120020',
+            "form_title": "FORM TITLE",
+            "form_id": 'd61dbf66-a10f-11ed-a8fc-0242ac120020',
             "user_id": 'd61dbf66-a10f-11ed-a8fc-0242ac120001',
-            "coordinators_id": ['d61dbf66-a10f-11ed-a8fc-0242ac120001'],
+            "can_vinculate": True,
             "template": 'TEMPLATE',
             "system": 'GAIA',
             "street": '1',
@@ -485,9 +439,10 @@ class Test_CreateFormController:
                 "email": repo_profile.profiles[0].email,
                 "cognito:groups": "GAIA, JUNDIAI,FORMULARIOS"
             },
-            "extern_form_id": 'd61dbf66-a10f-11ed-a8fc-0242ac120020',
+            "form_title": "FORM TITLE",
+            "form_id": 'd61dbf66-a10f-11ed-a8fc-0242ac120020',
             "user_id": 'd61dbf66-a10f-11ed-a8fc-0242ac120001',
-            "coordinators_id": ['d61dbf66-a10f-11ed-a8fc-0242ac120001'],
+            "can_vinculate": True,
             "template": 'TEMPLATE',
             "area": '1',
             "street": '1',
@@ -548,9 +503,10 @@ class Test_CreateFormController:
                 "email": repo_profile.profiles[0].email,
                 "cognito:groups": "GAIA, JUNDIAI,FORMULARIOS"
             },
-            "extern_form_id": 'd61dbf66-a10f-11ed-a8fc-0242ac120020',
+            "form_title": "FORM TITLE",
+            "form_id": 'd61dbf66-a10f-11ed-a8fc-0242ac120020',
             "user_id": 'd61dbf66-a10f-11ed-a8fc-0242ac120001',
-            "coordinators_id": ['d61dbf66-a10f-11ed-a8fc-0242ac120001'],
+            "can_vinculate": True,
             "template": 'TEMPLATE',
             "area": '1',
             "system": 'GAIA',
@@ -611,9 +567,10 @@ class Test_CreateFormController:
                 "email": repo_profile.profiles[0].email,
                 "cognito:groups": "GAIA, JUNDIAI,FORMULARIOS"
             },
-            "extern_form_id": 'd61dbf66-a10f-11ed-a8fc-0242ac120020',
+            "form_title": "FORM TITLE",
+            "form_id": 'd61dbf66-a10f-11ed-a8fc-0242ac120020',
             "user_id": 'd61dbf66-a10f-11ed-a8fc-0242ac120001',
-            "coordinators_id": ['d61dbf66-a10f-11ed-a8fc-0242ac120001'],
+            "can_vinculate": True,
             "template": 'TEMPLATE',
             "area": '1',
             "system": 'GAIA',
@@ -674,9 +631,10 @@ class Test_CreateFormController:
                 "email": repo_profile.profiles[0].email,
                 "cognito:groups": "GAIA, JUNDIAI,FORMULARIOS"
             },
-            "extern_form_id": 'd61dbf66-a10f-11ed-a8fc-0242ac120020',
+            "form_title": "FORM TITLE",
+            "form_id": 'd61dbf66-a10f-11ed-a8fc-0242ac120020',
             "user_id": 'd61dbf66-a10f-11ed-a8fc-0242ac120001',
-            "coordinators_id": ['d61dbf66-a10f-11ed-a8fc-0242ac120001'],
+            "can_vinculate": True,
             "template": 'TEMPLATE',
             "area": '1',
             "system": 'GAIA',
@@ -737,9 +695,10 @@ class Test_CreateFormController:
                 "email": repo_profile.profiles[0].email,
                 "cognito:groups": "GAIA, JUNDIAI,FORMULARIOS"
             },
-            "extern_form_id": 'd61dbf66-a10f-11ed-a8fc-0242ac120020',
+            "form_title": "FORM TITLE",
+            "form_id": 'd61dbf66-a10f-11ed-a8fc-0242ac120020',
             "user_id": 'd61dbf66-a10f-11ed-a8fc-0242ac120001',
-            "coordinators_id": ['d61dbf66-a10f-11ed-a8fc-0242ac120001'],
+            "can_vinculate": True,
             "template": 'TEMPLATE',
             "area": '1',
             "system": 'GAIA',
@@ -800,9 +759,10 @@ class Test_CreateFormController:
                 "email": repo_profile.profiles[0].email,
                 "cognito:groups": "GAIA, JUNDIAI,FORMULARIOS"
             },
-            "extern_form_id": 'd61dbf66-a10f-11ed-a8fc-0242ac120020',
+            "form_title": "FORM TITLE",
+            "form_id": 'd61dbf66-a10f-11ed-a8fc-0242ac120020',
             "user_id": 'd61dbf66-a10f-11ed-a8fc-0242ac120001',
-            "coordinators_id": ['d61dbf66-a10f-11ed-a8fc-0242ac120001'],
+            "can_vinculate": True,
             "template": 'TEMPLATE',
             "area": '1',
             "system": 'GAIA',
@@ -863,9 +823,10 @@ class Test_CreateFormController:
                 "email": repo_profile.profiles[0].email,
                 "cognito:groups": "GAIA, JUNDIAI,FORMULARIOS"
             },
-            "extern_form_id": 'd61dbf66-a10f-11ed-a8fc-0242ac120020',
+            "form_title": "FORM TITLE",
+            "form_id": 'd61dbf66-a10f-11ed-a8fc-0242ac120020',
             "user_id": 'd61dbf66-a10f-11ed-a8fc-0242ac120001',
-            "coordinators_id": ['d61dbf66-a10f-11ed-a8fc-0242ac120001'],
+            "can_vinculate": True,
             "template": 'TEMPLATE',
             "area": '1',
             "system": 'GAIA',
@@ -926,9 +887,10 @@ class Test_CreateFormController:
                 "email": repo_profile.profiles[0].email,
                 "cognito:groups": "GAIA, JUNDIAI,FORMULARIOS"
             },
-            "extern_form_id": 'd61dbf66-a10f-11ed-a8fc-0242ac120020',
+            "form_title": "FORM TITLE",
+            "form_id": 'd61dbf66-a10f-11ed-a8fc-0242ac120020',
             "user_id": 'd61dbf66-a10f-11ed-a8fc-0242ac120001',
-            "coordinators_id": ['d61dbf66-a10f-11ed-a8fc-0242ac120001'],
+            "can_vinculate": True,
             "template": 'TEMPLATE',
             "area": '1',
             "system": 'GAIA',
@@ -989,9 +951,10 @@ class Test_CreateFormController:
                 "email": repo_profile.profiles[0].email,
                 "cognito:groups": "GAIA, JUNDIAI,FORMULARIOS"
             },
-            "extern_form_id": 'd61dbf66-a10f-11ed-a8fc-0242ac120020',
+            "form_title": "FORM TITLE",
+            "form_id": 'd61dbf66-a10f-11ed-a8fc-0242ac120020',
             "user_id": 'd61dbf66-a10f-11ed-a8fc-0242ac120001',
-            "coordinators_id": ['d61dbf66-a10f-11ed-a8fc-0242ac120001'],
+            "can_vinculate": True,
             "template": 'TEMPLATE',
             "area": '1',
             "system": 'GAIA',
@@ -1054,9 +1017,10 @@ class Test_CreateFormController:
                 "email": repo_profile.profiles[0].email,
                 "cognito:groups": "GAIA, JUNDIAI,FORMULARIOS"
             },
-            "extern_form_id": 'd61dbf66-a10f-11ed-a8fc-0242ac120020',
+            "form_title": "FORM TITLE",
+            "form_id": 'd61dbf66-a10f-11ed-a8fc-0242ac120020',
             "user_id": 'd61dbf66-a10f-11ed-a8fc-0242ac120001',
-            "coordinators_id": ['d61dbf66-a10f-11ed-a8fc-0242ac120001'],
+            "can_vinculate": True,
             "template": 'TEMPLATE',
             "area": '1',
             "system": 'GAIA',
@@ -1118,9 +1082,10 @@ class Test_CreateFormController:
                 "email": repo_profile.profiles[0].email,
                 "cognito:groups": "GAIA, JUNDIAI,FORMULARIOS"
             },
-            "extern_form_id": 'd61dbf66-a10f-11ed-a8fc-0242ac120020',
+            "form_title": "FORM TITLE",
+            "form_id": 'd61dbf66-a10f-11ed-a8fc-0242ac120020',
             "user_id": 'd61dbf66-a10f-11ed-a8fc-0242ac120001',
-            "coordinators_id": ['d61dbf66-a10f-11ed-a8fc-0242ac120001'],
+            "can_vinculate": True,
             "template": 'TEMPLATE',
             "area": '1',
             "system": 'GAIA',
@@ -1132,6 +1097,18 @@ class Test_CreateFormController:
             "region": 'REGION',
             "priority": 'EMERGENCY',
             "expiration_date": 946407600000,
+            "justificative": {
+                "options": [
+                    {
+                        "option": 'option',
+                        "requiredImage": True,
+                        "requiredText": True
+                    }
+                ],
+                "selectedOption": 'selectedOption',
+                "text": 'text',
+                "image": 'image'
+            },
             "comments": '123',
             "information_fields": [
                 {

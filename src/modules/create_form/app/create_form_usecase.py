@@ -1,8 +1,8 @@
 from datetime import datetime
 from typing import List, Optional
-import uuid
 from src.shared.domain.entities.form import Form
 from src.shared.domain.entities.information_field import InformationField
+from src.shared.domain.entities.justificative import Justificative
 from src.shared.domain.entities.section import Section
 from src.shared.domain.enums.form_status_enum import FORM_STATUS
 from src.shared.domain.enums.priority_enum import PRIORITY
@@ -18,11 +18,12 @@ class CreateFormUsecase:
         self.profile_repo = profile_repo
 
     def __call__(self,
-                    extern_form_id: str,
+                    form_title: str,
+                    form_id: str,
                     creator_user_id: str,
                     user_id: str,
-                    coordinators_id: List[str],
                     vinculation_form_id: Optional[str],
+                    can_vinculate: bool,
                     template: str,
                     area: str,
                     system: str,
@@ -35,6 +36,7 @@ class CreateFormUsecase:
                     description: Optional[str],
                     priority: PRIORITY,
                     expiration_date: int,
+                    justificative: Justificative,
                     comments: Optional[str],
                     sections: List[Section],
                     information_fields: Optional[List[InformationField]]
@@ -52,12 +54,12 @@ class CreateFormUsecase:
             raise ForbiddenAction("Usuário não tem permissão para criar formulário para esse sistema")
 
         form = Form(
-            extern_form_id=extern_form_id,
-            internal_form_id=str(uuid.uuid4()),
+            form_title=form_title,
+            form_id=form_id,
             creator_user_id=creator_user_id,
             user_id=user_id,
-            coordinators_id=coordinators_id,
             vinculation_form_id=vinculation_form_id,
+            can_vinculate=can_vinculate,
             template=template,
             area=area,
             system=system,
@@ -74,7 +76,7 @@ class CreateFormUsecase:
             creation_date=int(datetime.now().timestamp() * 1000),
             start_date=None,
             conclusion_date=None,
-            justificative=None,
+            justificative=justificative,
             comments=comments,
             sections=sections,
             information_fields=information_fields

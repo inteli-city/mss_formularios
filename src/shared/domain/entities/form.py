@@ -2,6 +2,7 @@ import abc
 from typing import List, Optional
 
 from src.shared.domain.entities.information_field import InformationField
+from src.shared.domain.entities.justificative import Justificative
 from src.shared.domain.entities.section import Section
 from src.shared.domain.enums.form_status_enum import FORM_STATUS
 from src.shared.domain.enums.priority_enum import PRIORITY
@@ -9,12 +10,12 @@ from src.shared.helpers.errors.domain_errors import EntityError
 
 
 class Form(abc.ABC):
-    extern_form_id: str
-    internal_form_id: str
+    form_title: str
+    form_id: str
     creator_user_id: str
     user_id: str
-    coordinators_id: List[str]
     vinculation_form_id: Optional[str]
+    can_vinculate: bool
     template: str
     area: str
     system: str
@@ -31,22 +32,22 @@ class Form(abc.ABC):
     creation_date: int
     start_date: Optional[int]
     conclusion_date: Optional[int]
-    justificative: Optional[str]
+    justificative: Justificative
     comments: Optional[str]
     sections: List[Section]
     information_fields: Optional[List[InformationField]]
 
     ID_LENGTH = 36
 
-    def __init__(self, extern_form_id: str, internal_form_id: str, creator_user_id: str, user_id: str, coordinators_id: List[str], vinculation_form_id: Optional[str], template: str, area: str, system: str, street: str, city: str, number: int, latitude: float, longitude: float, region: str, description: Optional[str], priority: PRIORITY, status: FORM_STATUS, expiration_date: int, creation_date: int, start_date: Optional[int], conclusion_date: Optional[int], justificative: Optional[str], comments: Optional[str], sections: List[Section], information_fields: Optional[List[InformationField]]):
+    def __init__(self, form_title: str, form_id: str, creator_user_id: str, user_id: str, vinculation_form_id: Optional[str], can_vinculate: bool, template: str, area: str, system: str, street: str, city: str, number: int, latitude: float, longitude: float, region: str, description: Optional[str], priority: PRIORITY, status: FORM_STATUS, expiration_date: int, creation_date: int, start_date: Optional[int], conclusion_date: Optional[int], justificative: Justificative, comments: Optional[str], sections: List[Section], information_fields: Optional[List[InformationField]]):
+        
+        if type(form_title) is not str:
+            raise EntityError('form_title')
+        self.form_title = form_title
 
-        if not Form.validate_id(extern_form_id):
-            raise EntityError('extern_form_id')
-        self.extern_form_id = extern_form_id
-
-        if not Form.validate_id(internal_form_id):
-            raise EntityError('internal_form_id')
-        self.internal_form_id = internal_form_id
+        if not Form.validate_id(form_id):
+            raise EntityError('form_id')
+        self.form_id = form_id
 
         if not Form.validate_id(creator_user_id):
             raise EntityError('creator_user_id')
@@ -56,17 +57,13 @@ class Form(abc.ABC):
             raise EntityError('user_id')
         self.user_id = user_id
 
-        if not isinstance(coordinators_id, list):
-            raise EntityError('coordinators_id')
-        if not coordinators_id:
-            raise EntityError('coordinators_id')
-        if not all(Form.validate_id(coordinator_id) for coordinator_id in coordinators_id):
-            raise EntityError('coordinators_id')
-        self.coordinators_id = coordinators_id
-
         if vinculation_form_id is not None and not Form.validate_id(vinculation_form_id):
             raise EntityError('vinculation_form_id')
         self.vinculation_form_id = vinculation_form_id
+
+        if type(can_vinculate) is not bool:
+            raise EntityError('can_vinculate')
+        self.can_vinculate = can_vinculate
 
         if type(template) is not str:
             raise EntityError('template')
@@ -136,7 +133,7 @@ class Form(abc.ABC):
             raise EntityError('conclusion_date')
         self.conclusion_date = conclusion_date
 
-        if justificative is not None and type(justificative) is not str:
+        if not isinstance(justificative, Justificative):
             raise EntityError('justificative')
         self.justificative = justificative
 

@@ -8,6 +8,7 @@ from src.shared.helpers.errors.usecase_errors import DuplicatedItem, ForbiddenAc
 from src.shared.helpers.external_interfaces.external_interface import IRequest, IResponse
 from src.shared.helpers.external_interfaces.http_codes import BadRequest, Conflict, Created, Forbidden, InternalServerError, NotFound
 from src.shared.infra.dtos.information_field_dto import InformationFieldDTO
+from src.shared.infra.dtos.justificative_dto import JustificativeDTO
 from src.shared.infra.dtos.section_dto import SectionDTO
 from src.shared.infra.dtos.user_formularios_api_gateway_dto import UserFormulariosApiGatewayDTO
 
@@ -23,14 +24,17 @@ class CreateFormController:
             
             requester_user = UserFormulariosApiGatewayDTO.from_api_gateway(request.data.get('requester_user'))
 
-            if request.data.get('extern_form_id') is None:
-                raise MissingParameters('extern_form_id')
+            if request.data.get('form_title') is None:
+                raise MissingParameters('form_title')
+
+            if request.data.get('form_id') is None:
+                raise MissingParameters('form_id')
             
             if request.data.get('user_id') is None:
                 raise MissingParameters('user_id')
             
-            if request.data.get('coordinators_id') is None:
-                raise MissingParameters('coordinators_id')
+            if request.data.get('can_vinculate') is None:
+                raise MissingParameters('can_vinculate')
             
             if request.data.get('template') is None:
                 raise MissingParameters('template')
@@ -68,15 +72,19 @@ class CreateFormController:
             if request.data.get('expiration_date') is None:
                 raise MissingParameters('expiration_date')
             
+            if request.data.get('justificative') is None:
+                raise MissingParameters('justificative')
+            
             if request.data.get('sections') is None:
                 raise MissingParameters('sections')
             
             form = self.CreateFormUsecase(
-                extern_form_id=request.data.get('extern_form_id'),
+                form_title=request.data.get('form_title'),
+                form_id=request.data.get('form_id'),
                 creator_user_id=requester_user.user_id,
                 user_id=request.data.get('user_id'),
-                coordinators_id=request.data.get('coordinators_id'),
                 vinculation_form_id=request.data.get('vinculation_form_id'),
+                can_vinculate=request.data.get('can_vinculate'),
                 template=request.data.get('template'),
                 area=request.data.get('area'),
                 system=request.data.get('system'),
@@ -89,6 +97,7 @@ class CreateFormController:
                 description=request.data.get('description'),
                 priority=PRIORITY[request.data.get('priority')],
                 expiration_date=request.data.get('expiration_date'),
+                justificative=JustificativeDTO.from_request(request.data.get('justificative')).to_entity(),
                 comments=request.data.get('comments'),
                 sections=[
                     SectionDTO.from_request(section).to_entity()

@@ -1,12 +1,25 @@
-from src.modules.create_form.app.create_form_viewmodel import CreateFormViewmodel, FieldViewmodel, FormViewmodel, InformationFieldViewmodel, SectionViewmodel
+from src.modules.create_form.app.create_form_viewmodel import CreateFormViewmodel, FieldViewmodel, FormViewmodel, InformationFieldViewmodel, JustificativeOptionViewmodel, JustificativeViewmodel, SectionViewmodel
 from src.shared.domain.entities.field import FileField, TextField
 from src.shared.domain.entities.form import Form
 from src.shared.domain.entities.information_field import ImageInformationField, MapInformationField, TextInformationField
+from src.shared.domain.entities.justificative import Justificative, JustificativeOption
 from src.shared.domain.entities.section import Section
 from src.shared.domain.enums.file_type_enum import FILE_TYPE
 from src.shared.domain.enums.form_status_enum import FORM_STATUS
 from src.shared.domain.enums.priority_enum import PRIORITY
 
+justificative_option = JustificativeOption(
+    option='option',
+    requiredImage=True,
+    requiredText=True
+)
+
+justificative = Justificative(
+    options=[justificative_option],
+    selectedOption='selectedOption',
+    text='text',
+    image='image'
+)
 
 class Test_CreateFormViewmodel:
 
@@ -109,6 +122,39 @@ class Test_CreateFormViewmodel:
 
         assert response == excepted
     
+    def test_jusificative_option_viewmodel(self):
+        viewmodel = JustificativeOptionViewmodel(justificative_option)
+
+        response = viewmodel.to_dict()
+
+        excepted = {
+            'option': 'option',
+            'requiredImage': True,
+            'requiredText': True
+        }
+
+        assert response == excepted
+    
+    def test_justificative_viewmodel(self):
+        viewmodel = JustificativeViewmodel(
+            justificative=justificative
+        )
+
+        response = viewmodel.to_dict()
+
+        excepted = {
+            'options': [{
+                'option': 'option',
+                'requiredImage': True,
+                'requiredText': True
+            }],
+            'selectedOption': 'selectedOption',
+            'text': 'text',
+            'image': 'image'
+        }
+
+        assert response == excepted
+    
     def test_form_viewmodel(self):
         field = FileField(placeholder='placeholder', required=True, key='key', regex='regex', formatting='formatting', file_type=FILE_TYPE.IMAGE, min_quantity=1, max_quantity=10, value=['value'])
 
@@ -119,12 +165,12 @@ class Test_CreateFormViewmodel:
         
         viewmodel = FormViewmodel(
             form=Form(
-                extern_form_id='d61dbf66-a10f-11ed-a8fc-0242ac120001',
-                internal_form_id='d61dbf66-a10f-11ed-a8fc-0242ac120001',
+                form_title='FORM_TITLE',
+                form_id='d61dbf66-a10f-11ed-a8fc-0242ac120001',
                 creator_user_id='d61dbf66-a10f-11ed-a8fc-0242ac120001',
                 user_id='d61dbf66-a10f-11ed-a8fc-0242ac120001',
-                coordinators_id=['d61dbf66-a10f-11ed-a8fc-0242ac120001'],
                 vinculation_form_id='d61dbf66-a10f-11ed-a8fc-0242ac120001',
+                can_vinculate=True,
                 template='template',
                 area='area',
                 system='system',
@@ -141,7 +187,7 @@ class Test_CreateFormViewmodel:
                 creation_date=1,
                 start_date=1,
                 conclusion_date=1,
-                justificative='justificative',
+                justificative=justificative,
                 comments='comments',
                 sections=[section],
                 information_fields=[
@@ -155,12 +201,12 @@ class Test_CreateFormViewmodel:
         response = viewmodel.to_dict()
 
         excepted = {
-            'extern_form_id': 'd61dbf66-a10f-11ed-a8fc-0242ac120001',
-            'internal_form_id': 'd61dbf66-a10f-11ed-a8fc-0242ac120001',
+            'form_title': 'FORM_TITLE',
+            'form_id': 'd61dbf66-a10f-11ed-a8fc-0242ac120001',
             'creator_user_id': 'd61dbf66-a10f-11ed-a8fc-0242ac120001',
             'user_id': 'd61dbf66-a10f-11ed-a8fc-0242ac120001',
-            'coordinators_id': ['d61dbf66-a10f-11ed-a8fc-0242ac120001'],
             'vinculation_form_id': 'd61dbf66-a10f-11ed-a8fc-0242ac120001',
+            'can_vinculate': True,
             'template': 'template',
             'area': 'area',
             'system': 'system',
@@ -177,7 +223,17 @@ class Test_CreateFormViewmodel:
             'creation_date': 1,
             'start_date': 1,
             'conclusion_date': 1,
-            'justificative': 'justificative',
+            'justificative': {
+                'options': [{
+                    'option': 'option',
+                    'requiredImage': True,
+                    'requiredText': True
+                }],
+                'selectedOption': 'selectedOption',
+                'text': 'text',
+                'image': 'image'
+            
+            },
             'comments': 'comments',
             'sections': [{
                 'section_id': 'section_id',
@@ -222,12 +278,12 @@ class Test_CreateFormViewmodel:
             )
         
         form = Form(
-                extern_form_id='d61dbf66-a10f-11ed-a8fc-0242ac120001',
-                internal_form_id='d61dbf66-a10f-11ed-a8fc-0242ac120001',
+                form_title='FORM TITLE',
+                form_id='d61dbf66-a10f-11ed-a8fc-0242ac120001',
                 creator_user_id='d61dbf66-a10f-11ed-a8fc-0242ac120001',
                 user_id='d61dbf66-a10f-11ed-a8fc-0242ac120001',
-                coordinators_id=['d61dbf66-a10f-11ed-a8fc-0242ac120001'],
                 vinculation_form_id='d61dbf66-a10f-11ed-a8fc-0242ac120001',
+                can_vinculate=True,
                 template='template',
                 area='area',
                 system='system',
@@ -244,7 +300,7 @@ class Test_CreateFormViewmodel:
                 creation_date=1,
                 start_date=1,
                 conclusion_date=1,
-                justificative='justificative',
+                justificative=justificative,
                 comments='comments',
                 sections=[section],
                 information_fields=[
@@ -262,12 +318,12 @@ class Test_CreateFormViewmodel:
 
         excepted = {
             'form': {
-                    'extern_form_id': 'd61dbf66-a10f-11ed-a8fc-0242ac120001',
-                    'internal_form_id': 'd61dbf66-a10f-11ed-a8fc-0242ac120001',
+                    'form_title': 'FORM TITLE',
+                    'form_id': 'd61dbf66-a10f-11ed-a8fc-0242ac120001',
                     'creator_user_id': 'd61dbf66-a10f-11ed-a8fc-0242ac120001',
                     'user_id': 'd61dbf66-a10f-11ed-a8fc-0242ac120001',
-                    'coordinators_id': ['d61dbf66-a10f-11ed-a8fc-0242ac120001'],
                     'vinculation_form_id': 'd61dbf66-a10f-11ed-a8fc-0242ac120001',
+                    'can_vinculate': True,
                     'template': 'template',
                     'area': 'area',
                     'system': 'system',
@@ -284,7 +340,16 @@ class Test_CreateFormViewmodel:
                     'creation_date': 1,
                     'start_date': 1,
                     'conclusion_date': 1,
-                    'justificative': 'justificative',
+                    'justificative': {
+                        'options': [{
+                            'option': 'option',
+                            'requiredImage': True,
+                            'requiredText': True
+                        }],
+                        'selectedOption': 'selectedOption',
+                        'text': 'text',
+                        'image': 'image'
+                    },
                     'comments': 'comments',
                     'sections': [
                         {
