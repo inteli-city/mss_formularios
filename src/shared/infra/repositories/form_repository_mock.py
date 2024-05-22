@@ -1,5 +1,5 @@
 from datetime import datetime, timedelta
-from typing import List
+from typing import List, Optional
 from src.shared.domain.entities.field import TextField
 from src.shared.domain.entities.form import Form
 from src.shared.domain.entities.information_field import TextInformationField
@@ -131,5 +131,22 @@ class FormRepositoryMock(IFormRepository):
         for form in self.forms:
             if form.form_id == form_id:
                 form.status = status
+                return form
+        return None
+    
+    def cancel_form(self, form_id: str, justificative: Justificative) -> Form:
+        for form in self.forms:
+            if form.form_id == form_id:
+                form.status = FORM_STATUS.CANCELED
+                form.justificative = justificative
+                return form
+        return None
+
+    def complete_form(self, form_id: str, sections: List[Section], vinculation_form_id: Optional[str] = None) -> Form:
+        for form in self.forms:
+            if form.form_id == form_id:
+                form.status = FORM_STATUS.CONCLUDED
+                form.sections = sections
+                form.vinculation_form_id = vinculation_form_id
                 return form
         return None

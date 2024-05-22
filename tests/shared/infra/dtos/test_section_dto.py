@@ -37,7 +37,7 @@ class Test_SectionDTO:
         assert section.fields[0].regex == 'regex'
         assert section.fields[0].formatting == 'formatting'
         assert section.fields[0].max_length == 10
-        assert section.fields[0].value == None
+        assert section.fields[0].value == 'value'
     
     def test_section_dto_from_request_number(self):
         section_dict = {
@@ -184,7 +184,7 @@ class Test_SectionDTO:
         assert section.fields[0].formatting == 'formatting'
         assert section.fields[0].min_date == 10
         assert section.fields[0].max_date == 10
-        assert section.fields[0].value == None
+        assert section.fields[0].value == 10
 
     def test_section_dto_from_request_checkbox(self):
         section_dict = {
@@ -212,7 +212,7 @@ class Test_SectionDTO:
         assert section.fields[0].key == 'key'
         assert section.fields[0].regex == 'regex'
         assert section.fields[0].formatting == 'formatting'
-        assert section.fields[0].value == None
+        assert section.fields[0].value == True
 
     def test_section_dto_from_request_check_box_group(self):
         section_dict = {
@@ -270,7 +270,7 @@ class Test_SectionDTO:
         assert section.fields[0].key == 'key'
         assert section.fields[0].regex == 'regex'
         assert section.fields[0].formatting == 'formatting'
-        assert section.fields[0].value == None
+        assert section.fields[0].value == True
 
     def test_section_dto_from_request_file(self):
         section_dict = {

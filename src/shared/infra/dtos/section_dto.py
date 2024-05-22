@@ -48,7 +48,6 @@ class SectionDTO:
             field_type = FIELD_TYPE[field_data.get('field_type')]
 
             field_data.pop('field_type')
-            field_data.pop('value', None)
 
             if field_type == FIELD_TYPE.TEXT_FIELD:
                 field = TextField(**field_data)
