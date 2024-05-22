@@ -30,13 +30,13 @@ class FormRepositoryMock(IFormRepository):
         )
         justificative_option = JustificativeOption(
             option='option',
-            requiredImage=True,
-            requiredText=True
+            required_image=True,
+            required_text=True
         )
 
         justificative = Justificative(
             options=[justificative_option],
-            selectedOption='selectedOption',
+            selected_option='selected_option',
             text='text',
             image='image'
         )
@@ -105,6 +105,12 @@ class FormRepositoryMock(IFormRepository):
                 ]
             ),
         ]
+    
+    def get_form_by_id(self, form_id: str) -> Form:
+        for form in self.forms:
+            if form.form_id == form_id:
+                return form
+        return None
     
     def get_form_by_user_id(self, user_id: str) -> List[Form]:
         filtered_forms = []

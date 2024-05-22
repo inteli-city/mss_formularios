@@ -6,6 +6,10 @@ from src.shared.domain.enums.form_status_enum import FORM_STATUS
 
 
 class IFormRepository(ABC):
+
+    @abstractmethod
+    def get_form_by_id(self, form_id: str) -> Form:
+        pass
     
     @abstractmethod
     def get_form_by_user_id(self, user_id: str) -> List[Form]:

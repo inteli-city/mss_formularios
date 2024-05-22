@@ -11,18 +11,30 @@ from src.shared.infra.repositories.form_repository_mock import FormRepositoryMoc
 
 justificative_option = JustificativeOption(
     option='option',
-    requiredImage=True,
-    requiredText=True
+    required_image=True,
+    required_text=True
 )
 
 justificative = Justificative(
     options=[justificative_option],
-    selectedOption='selectedOption',
+    selected_option='selected_option',
     text='text',
     image='image'
 )
 
 class Test_FormRepositoryMock:
+
+    def test_form_repository_mock_get_form_by_id(self):
+        repo = FormRepositoryMock()
+        form = repo.get_form_by_id(repo.forms[0].form_id)
+
+        assert form.form_id == repo.forms[0].form_id
+    
+    def test_form_repository_mock_get_form_by_id_not_found(self):
+        repo = FormRepositoryMock()
+        form = repo.get_form_by_id('d61dbf66-a10f-11ed-a8fc-0242ac120099')
+
+        assert form is None
 
     def test_form_repository_mock_get_form_by_user_id(self):
         repo = FormRepositoryMock()

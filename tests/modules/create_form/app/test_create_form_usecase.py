@@ -13,13 +13,13 @@ from src.shared.infra.repositories.profile_repository_mock import ProfileReposit
 
 justificative_option = JustificativeOption(
     option='option',
-    requiredImage=True,
-    requiredText=True
+    required_image=True,
+    required_text=True
 )
 
 justificative = Justificative(
     options=[justificative_option],
-    selectedOption='selectedOption',
+    selected_option='selected_option',
     text='text',
     image='image'
 )

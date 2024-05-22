@@ -1,4 +1,4 @@
-from src.modules.create_form.app.create_form_viewmodel import CreateFormViewmodel, FieldViewmodel, FormViewmodel, InformationFieldViewmodel, JustificativeOptionViewmodel, JustificativeViewmodel, SectionViewmodel
+from src.modules.update_form_status.app.update_form_status_viewmodel import FieldViewmodel, FormViewmodel, InformationFieldViewmodel, JustificativeOptionViewmodel, JustificativeViewmodel, SectionViewmodel, UpdateFormStatusViewmodel
 from src.shared.domain.entities.field import FileField, TextField
 from src.shared.domain.entities.form import Form
 from src.shared.domain.entities.information_field import ImageInformationField, MapInformationField, TextInformationField
@@ -21,7 +21,7 @@ justificative = Justificative(
     image='image'
 )
 
-class Test_CreateFormViewmodel:
+class Test_UpdateFormStatusViewmodel:
 
     def test_field_viewmodel(self):
         viewmodel = FieldViewmodel(field=TextField(placeholder='placeholder', required=True, key='key', regex='regex', formatting='formatting', max_length=10, value='value'))
@@ -269,7 +269,7 @@ class Test_CreateFormViewmodel:
 
         assert response == excepted
     
-    def test_create_form_viewmodel(self):
+    def test_update_form_status_viewmodel(self):
         field = FileField(placeholder='placeholder', required=True, key='key', regex='regex', formatting='formatting', file_type=FILE_TYPE.IMAGE, min_quantity=1, max_quantity=10, value=['value'])
 
         section = Section(
@@ -310,7 +310,7 @@ class Test_CreateFormViewmodel:
                 ]
             )
 
-        viewmodel = CreateFormViewmodel(
+        viewmodel = UpdateFormStatusViewmodel(
             form=form
         )
 
@@ -386,7 +386,7 @@ class Test_CreateFormViewmodel:
                         }
                     ]
                 },
-            'message': 'Formulário criado com sucesso!'
+            'message': 'Status do formulário atualizado com sucesso!'
         }
 
         assert response == excepted

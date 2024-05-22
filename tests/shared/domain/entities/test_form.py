@@ -14,13 +14,13 @@ section = Section(section_id='d61dbf66-a10f-11ed-a8fc-0242ac120001', fields=[tex
 information_field = TextInformationField(value='value')
 justificative_option = JustificativeOption(
     option='option',
-    requiredImage=True,
-    requiredText=True
+    required_image=True,
+    required_text=True
 )
 
 justificative = Justificative(
     options=[justificative_option],
-    selectedOption='selectedOption',
+    selected_option='selected_option',
     text='text',
     image='image'
 )

@@ -38,11 +38,11 @@ class Test_CreateFormController:
                 "options": [
                     {
                         "option": 'option',
-                        "requiredImage": True,
-                        "requiredText": True
+                        "required_image": True,
+                        "required_text": True
                     }
                 ],
-                "selectedOption": 'selectedOption',
+                "selected_option": 'selected_option',
                 "text": 'text',
                 "image": 'image'
             },
@@ -1101,11 +1101,11 @@ class Test_CreateFormController:
                 "options": [
                     {
                         "option": 'option',
-                        "requiredImage": True,
-                        "requiredText": True
+                        "required_image": True,
+                        "required_text": True
                     }
                 ],
-                "selectedOption": 'selectedOption',
+                "selected_option": 'selected_option',
                 "text": 'text',
                 "image": 'image'
             },

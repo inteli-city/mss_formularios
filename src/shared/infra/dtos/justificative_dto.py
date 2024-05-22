@@ -19,20 +19,20 @@ class JustificativeDTO:
             if option_data.get('option') is None:
                 raise EntityError('option')
 
-            if option_data.get('requiredImage') is None:
-                raise EntityError('requiredImage')
+            if option_data.get('required_image') is None:
+                raise EntityError('required_image')
 
-            if option_data.get('requiredText') is None:
-                raise EntityError('requiredText')
+            if option_data.get('required_text') is None:
+                raise EntityError('required_text')
 
             option = JustificativeOption(**option_data)
             options.append(option)
 
-        selectedOption = justificative_dict.get('selectedOption')
+        selected_option = justificative_dict.get('selected_option')
         text = justificative_dict.get('text')
         image = justificative_dict.get('image')
 
-        return JustificativeDTO(Justificative(options=options, selectedOption=selectedOption, text=text, image=image))
+        return JustificativeDTO(Justificative(options=options, selected_option=selected_option, text=text, image=image))
 
     def to_entity(self) -> Justificative:
         return self.justificative

@@ -166,7 +166,7 @@ class FormViewmodel:
             'information_fields': [InformationFieldViewmodel(information_field).to_dict() for information_field in self.information_fields] if self.information_fields is not None else None
         }
     
-class CreateFormViewmodel:
+class UpdateFormStatusViewmodel:
     form: Form
 
     def __init__(self, form: Form):
@@ -175,5 +175,5 @@ class CreateFormViewmodel:
     def to_dict(self):
         return {
             'form': FormViewmodel(self.form).to_dict(),
-            'message': 'Formulário criado com sucesso!'
+            'message': 'Status do formulário atualizado com sucesso!'
         }

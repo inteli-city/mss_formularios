@@ -11,7 +11,7 @@ class ProfileRepositoryMock(IProfileRepository):
         self.profiles = [
             Profile(profile_id='d61dbf66-a10f-11ed-a8fc-0242ac120001', name='Gabriel Godoy', email="gabriel@hotmail.com", role=ROLE.COORDINATOR, systems=['GAIA', 'JUNDIAI'], enabled=True),
             Profile(profile_id='d61dbf66-a10f-11ed-a8fc-0242ac120002', name='Gabriel Godoy', email="gabriel@gmail.com", role=ROLE.FILLER, systems=['GAIA', 'JUNDIAI'], enabled=True),
-            Profile(profile_id='d61dbf66-a10f-11ed-a8fc-0242ac120003', name='Gabriel Godoy', email="gabriel@outlook.com", role=ROLE.COORDINATOR, systems=['GAIA', 'JUNDIAI'], enabled=False),
+            Profile(profile_id='d61dbf66-a10f-11ed-a8fc-0242ac120003', name='Gabriel Godoy', email="gabriel@outlook.com", role=ROLE.COORDINATOR, systems=['JUNDIAI', ], enabled=False),
         ]
     
     def get_profile_by_id(self, profile_id: str) -> Optional[Profile]:

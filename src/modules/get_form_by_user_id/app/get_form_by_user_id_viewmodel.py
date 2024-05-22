@@ -45,37 +45,37 @@ class SectionViewmodel:
  
 class JustificativeOptionViewmodel:
     option: str
-    requiredImage: bool
-    requiredText: bool
+    required_image: bool
+    required_text: bool
 
     def __init__(self, justificative_option: JustificativeOption):
         self.option = justificative_option.option
-        self.requiredImage = justificative_option.requiredImage
-        self.requiredText = justificative_option.requiredText
+        self.required_image = justificative_option.required_image
+        self.required_text = justificative_option.required_text
 
     def to_dict(self):
         return {
             'option': self.option,
-            'requiredImage': self.requiredImage,
-            'requiredText': self.requiredText
+            'required_image': self.required_image,
+            'required_text': self.required_text
         }
 
 class JustificativeViewmodel:
     options: List[JustificativeOptionViewmodel]
-    selectedOption: Optional[str]
+    selected_option: Optional[str]
     text: Optional[str]
     image: Optional[str]
 
     def __init__(self, justificative: Justificative):
         self.options = [JustificativeOptionViewmodel(option).to_dict() for option in justificative.options]
-        self.selectedOption = justificative.selectedOption
+        self.selected_option = justificative.selected_option
         self.text = justificative.text
         self.image = justificative.image
 
     def to_dict(self):
         return {
             'options': self.options,
-            'selectedOption': self.selectedOption,
+            'selected_option': self.selected_option,
             'text': self.text,
             'image': self.image
         }

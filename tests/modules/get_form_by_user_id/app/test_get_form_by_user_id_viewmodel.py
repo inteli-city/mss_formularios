@@ -11,13 +11,13 @@ from src.shared.domain.enums.priority_enum import PRIORITY
 
 justificative_option = JustificativeOption(
     option='option',
-    requiredImage=True,
-    requiredText=True
+    required_image=True,
+    required_text=True
 )
 
 justificative = Justificative(
     options=[justificative_option],
-    selectedOption='selectedOption',
+    selected_option='selected_option',
     text='text',
     image='image'
 )
@@ -130,8 +130,8 @@ class Test_GetFormByUserIdViewmodel:
 
         excepted = {
             'option': 'option',
-            'requiredImage': True,
-            'requiredText': True
+            'required_image': True,
+            'required_text': True
         }
 
         assert response == excepted
@@ -144,10 +144,10 @@ class Test_GetFormByUserIdViewmodel:
         excepted = {
             'options': [{
                 'option': 'option',
-                'requiredImage': True,
-                'requiredText': True
+                'required_image': True,
+                'required_text': True
             }],
-            'selectedOption': 'selectedOption',
+            'selected_option': 'selected_option',
             'text': 'text',
             'image': 'image'
         }
@@ -155,7 +155,7 @@ class Test_GetFormByUserIdViewmodel:
         assert response == excepted
     
     def test_justificative_viewmodel_with_none(self):
-        justificative = Justificative(options=[justificative_option], selectedOption=None, text=None, image=None)
+        justificative = Justificative(options=[justificative_option], selected_option=None, text=None, image=None)
 
         viewmodel = JustificativeViewmodel(justificative)
 
@@ -164,10 +164,10 @@ class Test_GetFormByUserIdViewmodel:
         excepted = {
             'options': [{
                 'option': 'option',
-                'requiredImage': True,
-                'requiredText': True
+                'required_image': True,
+                'required_text': True
             }],
-            'selectedOption': None,
+            'selected_option': None,
             'text': None,
             'image': None
         }
@@ -245,10 +245,10 @@ class Test_GetFormByUserIdViewmodel:
             'justificative': {
                 'options': [{
                     'option': 'option',
-                    'requiredImage': True,
-                    'requiredText': True
+                    'required_image': True,
+                    'required_text': True
                 }],
-                'selectedOption': 'selectedOption',
+                'selected_option': 'selected_option',
                 'text': 'text',
                 'image': 'image'
             },
@@ -363,11 +363,11 @@ class Test_GetFormByUserIdViewmodel:
                         'options': [
                             {
                                 'option': 'option',
-                                'requiredImage': True,
-                                'requiredText': True
+                                'required_image': True,
+                                'required_text': True
                             }
                         ],
-                        'selectedOption': 'selectedOption',
+                        'selected_option': 'selected_option',
                         'text': 'text',
                         'image': 'image'
                     },
