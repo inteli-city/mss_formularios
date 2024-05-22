@@ -37,7 +37,6 @@ class Test_CreateFormUsecase:
 
         form = usecase(
             form_title='FORM TITLE',
-            form_id='d61dbf66-a10f-11ed-a8fc-0242ac120020',
             creator_user_id='d61dbf66-a10f-11ed-a8fc-0242ac120001',
             user_id='d61dbf66-a10f-11ed-a8fc-0242ac120001',
             vinculation_form_id='d61dbf66-a10f-11ed-a8fc-0242ac120010',
@@ -62,7 +61,7 @@ class Test_CreateFormUsecase:
             information_fields=repo.forms[0].information_fields
         )
 
-        assert form.form_id == 'd61dbf66-a10f-11ed-a8fc-0242ac120020'
+        assert len(form.form_id) == 36
         assert form.creator_user_id == 'd61dbf66-a10f-11ed-a8fc-0242ac120001'
         assert form.user_id == 'd61dbf66-a10f-11ed-a8fc-0242ac120001'
         assert form.vinculation_form_id == 'd61dbf66-a10f-11ed-a8fc-0242ac120010'
@@ -79,7 +78,7 @@ class Test_CreateFormUsecase:
         assert form.priority == PRIORITY.EMERGENCY
         assert form.status == FORM_STATUS.NOT_STARTED
         assert form.expiration_date == 946407600000
-        assert form.creation_date == int(datetime.now().timestamp() * 1000)
+        assert form.creation_date == int(datetime.now().timestamp())
         assert form.start_date == None
         assert form.conclusion_date == None
         assert form.justificative == justificative
@@ -99,7 +98,6 @@ class Test_CreateFormUsecase:
         with pytest.raises(ForbiddenAction):
             usecase(
                 form_title='FORM TITLE',
-                form_id='d61dbf66-a10f-11ed-a8fc-0242ac120020',
                 creator_user_id='d61dbf66-a10f-11ed-a8fc-0242ac120010',
                 user_id='d61dbf66-a10f-11ed-a8fc-0242ac120001',
                 vinculation_form_id='d61dbf66-a10f-11ed-a8fc-0242ac120010',
@@ -136,7 +134,6 @@ class Test_CreateFormUsecase:
         with pytest.raises(ForbiddenAction):
             usecase(
                 form_title='FORM TITLE',
-                form_id='d61dbf66-a10f-11ed-a8fc-0242ac120020',
                 creator_user_id='d61dbf66-a10f-11ed-a8fc-0242ac120003',
                 user_id='d61dbf66-a10f-11ed-a8fc-0242ac120001',
                 vinculation_form_id='d61dbf66-a10f-11ed-a8fc-0242ac120010',
@@ -173,7 +170,6 @@ class Test_CreateFormUsecase:
         with pytest.raises(ForbiddenAction):
             usecase(
                 form_title='FORM TITLE',
-                form_id='d61dbf66-a10f-11ed-a8fc-0242ac120020',
                 creator_user_id='d61dbf66-a10f-11ed-a8fc-0242ac120001',
                 user_id='d61dbf66-a10f-11ed-a8fc-0242ac120001',
                 vinculation_form_id='d61dbf66-a10f-11ed-a8fc-0242ac120010',

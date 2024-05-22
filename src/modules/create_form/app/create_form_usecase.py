@@ -1,5 +1,6 @@
 from datetime import datetime
 from typing import List, Optional
+import uuid
 from src.shared.domain.entities.form import Form
 from src.shared.domain.entities.information_field import InformationField
 from src.shared.domain.entities.justificative import Justificative
@@ -19,7 +20,6 @@ class CreateFormUsecase:
 
     def __call__(self,
                     form_title: str,
-                    form_id: str,
                     creator_user_id: str,
                     user_id: str,
                     vinculation_form_id: Optional[str],
@@ -55,7 +55,7 @@ class CreateFormUsecase:
 
         form = Form(
             form_title=form_title,
-            form_id=form_id,
+            form_id=str(uuid.uuid4()),
             creator_user_id=creator_user_id,
             user_id=user_id,
             vinculation_form_id=vinculation_form_id,
@@ -73,7 +73,7 @@ class CreateFormUsecase:
             priority=priority,
             status=FORM_STATUS.NOT_STARTED,
             expiration_date=expiration_date,
-            creation_date=int(datetime.now().timestamp() * 1000),
+            creation_date=int(datetime.now().timestamp()),
             start_date=None,
             conclusion_date=None,
             justificative=justificative,
