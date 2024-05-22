@@ -26,7 +26,7 @@ class UpdateFormStatusController:
             if request.data.get('status') is None:
                 raise MissingParameters('status')
             
-            if request.data.get('status') not in [enum.value for enum in FORM_STATUS]:
+            if request.data.get('status') not in ['NOT_STARTED', 'IN_PROGRESS']:
                 raise EntityError('status')
             
             form = self.UpdateFormStatusUsecase(
