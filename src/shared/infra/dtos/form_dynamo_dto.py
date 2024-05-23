@@ -6,6 +6,7 @@ from src.shared.domain.entities.justification import Justification
 from src.shared.domain.entities.section import Section
 from src.shared.domain.enums.form_status_enum import FORM_STATUS
 from src.shared.domain.enums.priority_enum import PRIORITY
+from src.shared.infra.dtos.section_dto import SectionDTO
 
 
 class FormDynamoDTO:
@@ -123,22 +124,7 @@ class FormDynamoDTO:
             'justification': self.justification.to_dynamo(),
             'comments': self.comments,
             'sections': [
-                {
-                    'section_id': section.section_id,
-                    'fields': [field.to_dynamo() for field in section.fields]
-                } for section in self.sections
-            ],
-            'information_fields': [information_field.to_dynamo() for information_field in self.information_fields] if self.information_fields else None
-        }
-    
-    def fields_to_dynamo(self) -> dict:
-        return {
-            'form_id': self.form_id,
-            'sections': [
-                {
-                    'section_id': section.section_id,
-                    'fields': [field.to_dynamo() for field in section.fields]
-                } for section in self.sections
+                SectionDTO
             ],
             'information_fields': [information_field.to_dynamo() for information_field in self.information_fields] if self.information_fields else None
         }

@@ -29,7 +29,7 @@ class SectionDTO:
             fields=fields
         )
 
-    def to_dynamo(self) -> Dict[str, Any]:
+    def to_dynamo(self) -> dict:
         dynamo_dict = {
             "section_id": self.section.section_id,
             "fields": [FieldDTO(field).to_dynamo() for field in self.section.fields]
