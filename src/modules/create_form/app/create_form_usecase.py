@@ -3,7 +3,7 @@ from typing import List, Optional
 import uuid
 from src.shared.domain.entities.form import Form
 from src.shared.domain.entities.information_field import InformationField
-from src.shared.domain.entities.justificative import Justificative
+from src.shared.domain.entities.justification import Justification
 from src.shared.domain.entities.section import Section
 from src.shared.domain.enums.form_status_enum import FORM_STATUS
 from src.shared.domain.enums.priority_enum import PRIORITY
@@ -36,7 +36,7 @@ class CreateFormUsecase:
                     description: Optional[str],
                     priority: PRIORITY,
                     expiration_date: int,
-                    justificative: Justificative,
+                    justification: Justification,
                     comments: Optional[str],
                     sections: List[Section],
                     information_fields: Optional[List[InformationField]]
@@ -76,7 +76,7 @@ class CreateFormUsecase:
             creation_date=int(datetime.now().timestamp()),
             start_date=None,
             conclusion_date=None,
-            justificative=justificative,
+            justification=justification,
             comments=comments,
             sections=sections,
             information_fields=information_fields

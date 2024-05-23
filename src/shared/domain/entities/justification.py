@@ -4,7 +4,7 @@ from typing import List, Optional
 from src.shared.helpers.errors.domain_errors import EntityError
 
 
-class JustificativeOption(abc.ABC):
+class JustificationOption(abc.ABC):
     option: str
     required_image: bool
     required_text: bool
@@ -22,17 +22,17 @@ class JustificativeOption(abc.ABC):
             raise EntityError('required_text')
         self.required_text = required_text
 
-class Justificative(abc.ABC):
-    options: List[JustificativeOption]
+class Justification(abc.ABC):
+    options: List[JustificationOption]
     selected_option: Optional[str]
-    text: Optional[str]
-    image: Optional[str]
+    justification_text: Optional[str]
+    justification_image: Optional[str]
 
-    def __init__(self, options: List[JustificativeOption], selected_option: Optional[str], text: Optional[str], image: Optional[str]):
+    def __init__(self, options: List[JustificationOption], selected_option: Optional[str], justification_text: Optional[str], justification_image: Optional[str]):
         if type(options) is not list:
             raise EntityError('options')
         for option in options:
-            if type(option) is not JustificativeOption:
+            if type(option) is not JustificationOption:
                 raise EntityError('options')
         self.options = options
 
@@ -40,10 +40,10 @@ class Justificative(abc.ABC):
             raise EntityError('selected_option')
         self.selected_option = selected_option
 
-        if text is not None and type(text) is not str:
-            raise EntityError('text')
-        self.text = text
+        if justification_text is not None and type(justification_text) is not str:
+            raise EntityError('justification_text')
+        self.justification_text = justification_text
 
-        if image is not None and type(image) is not str:
-            raise EntityError('image')
-        self.image = image
+        if justification_image is not None and type(justification_image) is not str:
+            raise EntityError('justification_image')
+        self.justification_image = justification_image

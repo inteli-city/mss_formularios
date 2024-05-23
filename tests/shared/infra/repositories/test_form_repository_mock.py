@@ -2,24 +2,24 @@ import pytest
 from src.shared.domain.entities.field import TextField
 from src.shared.domain.entities.form import Form
 from src.shared.domain.entities.information_field import TextInformationField
-from src.shared.domain.entities.justificative import Justificative, JustificativeOption
+from src.shared.domain.entities.justification import Justification, JustificationOption
 from src.shared.domain.entities.section import Section
 from src.shared.domain.enums.form_status_enum import FORM_STATUS
 from src.shared.domain.enums.priority_enum import PRIORITY
 from src.shared.helpers.errors.usecase_errors import DuplicatedItem
 from src.shared.infra.repositories.form_repository_mock import FormRepositoryMock
 
-justificative_option = JustificativeOption(
+justification_option = JustificationOption(
     option='option',
     required_image=True,
     required_text=True
 )
 
-justificative = Justificative(
-    options=[justificative_option],
+justification = Justification(
+    options=[justification_option],
     selected_option='option',
-    text='text',
-    image='image'
+    justification_text='text',
+    justification_image='image'
 )
 
 class Test_FormRepositoryMock:
@@ -72,7 +72,7 @@ class Test_FormRepositoryMock:
                 creation_date=946407600000,
                 start_date=946407600000,
                 conclusion_date=946407600000,
-                justificative=justificative,
+                justification=justification,
                 comments=None,
                 sections=[section],
                 information_fields=[
@@ -100,10 +100,12 @@ class Test_FormRepositoryMock:
     
     def test_form_repository_mock_cancel_form(self):
         repo = FormRepositoryMock()
-        form = repo.cancel_form(repo.forms[0].form_id, justificative)
+        form = repo.cancel_form(form_id=repo.forms[0].form_id, selected_option='option', justification_text='text', justification_image='image')
 
         assert form.status == FORM_STATUS.CANCELED
-        assert form.justificative == justificative
+        assert form.justification.selected_option == 'option'
+        assert form.justification.justification_text == 'text'
+        assert form.justification.justification_image == 'image'
     
     def test_form_repository_mock_complete_form(self):
         repo = FormRepositoryMock()

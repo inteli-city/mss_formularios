@@ -51,12 +51,12 @@ class Test_GetFormByUserIdController:
                     'region': 'REGION',
                     'description': None,
                     'priority': 'EMERGENCY',
-                    'status': 'CONCLUDED',
+                    'status': 'IN_PROGRESS',
                     'expiration_date': 946407600000,
                     'creation_date': 946407600000,
                     'start_date': 946407600000,
                     'conclusion_date': timestamp_yesterday(),
-                    'justificative': {
+                    'justification': {
                         'options': [
                             {
                                 'option': 'option',
@@ -65,8 +65,8 @@ class Test_GetFormByUserIdController:
                             }
                         ],
                         'selected_option': 'selected_option',
-                        'text': 'text',
-                        'image': 'image'
+                        'justification_text': 'text',
+                        'justification_image': 'image'
                     },
                     'comments': None,
                     'sections': [

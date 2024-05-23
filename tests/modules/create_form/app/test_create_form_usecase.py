@@ -3,7 +3,7 @@ from datetime import datetime
 import pytest
 from src.modules.create_form.app.create_form_usecase import CreateFormUsecase
 from src.shared.domain.entities.field import TextField
-from src.shared.domain.entities.justificative import Justificative, JustificativeOption
+from src.shared.domain.entities.justification import Justification, JustificationOption
 from src.shared.domain.entities.section import Section
 from src.shared.domain.enums.form_status_enum import FORM_STATUS
 from src.shared.domain.enums.priority_enum import PRIORITY
@@ -11,17 +11,17 @@ from src.shared.helpers.errors.usecase_errors import ForbiddenAction
 from src.shared.infra.repositories.form_repository_mock import FormRepositoryMock
 from src.shared.infra.repositories.profile_repository_mock import ProfileRepositoryMock
 
-justificative_option = JustificativeOption(
+justification_option = JustificationOption(
     option='option',
     required_image=True,
     required_text=True
 )
 
-justificative = Justificative(
-    options=[justificative_option],
+justification = Justification(
+    options=[justification_option],
     selected_option='selected_option',
-    text='text',
-    image='image'
+    justification_text='text',
+    justification_image='image'
 )
 
 class Test_CreateFormUsecase:
@@ -53,7 +53,7 @@ class Test_CreateFormUsecase:
             description='123',
             priority=PRIORITY.EMERGENCY,
             expiration_date=946407600000,
-            justificative=justificative,
+            justification=justification,
             comments='123',
             sections=[
                 section
@@ -81,7 +81,7 @@ class Test_CreateFormUsecase:
         assert form.creation_date == int(datetime.now().timestamp())
         assert form.start_date == None
         assert form.conclusion_date == None
-        assert form.justificative == justificative
+        assert form.justification == justification
         assert form.comments == '123'
         assert len(form.sections) == 1
         assert len(form.information_fields) == 2
@@ -114,7 +114,7 @@ class Test_CreateFormUsecase:
                 description='123',
                 priority=PRIORITY.EMERGENCY,
                 expiration_date=946407600000,
-                justificative=justificative,
+                justification=justification,
                 comments='123',
                 sections=[
                     section
@@ -150,7 +150,7 @@ class Test_CreateFormUsecase:
                 description='123',
                 priority=PRIORITY.EMERGENCY,
                 expiration_date=946407600000,
-                justificative=justificative,
+                justification=justification,
                 comments='123',
                 sections=[
                     section
@@ -186,7 +186,7 @@ class Test_CreateFormUsecase:
                 description='123',
                 priority=PRIORITY.EMERGENCY,
                 expiration_date=946407600000,
-                justificative=justificative,
+                justification=justification,
                 comments='123',
                 sections=[
                     section

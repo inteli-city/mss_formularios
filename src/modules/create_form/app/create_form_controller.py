@@ -8,7 +8,7 @@ from src.shared.helpers.errors.usecase_errors import DuplicatedItem, ForbiddenAc
 from src.shared.helpers.external_interfaces.external_interface import IRequest, IResponse
 from src.shared.helpers.external_interfaces.http_codes import BadRequest, Conflict, Created, Forbidden, InternalServerError, NotFound
 from src.shared.infra.dtos.information_field_dto import InformationFieldDTO
-from src.shared.infra.dtos.justificative_dto import JustificativeDTO
+from src.shared.infra.dtos.justification_dto import JustificationDTO
 from src.shared.infra.dtos.section_dto import SectionDTO
 from src.shared.infra.dtos.user_formularios_api_gateway_dto import UserFormulariosApiGatewayDTO
 
@@ -69,8 +69,8 @@ class CreateFormController:
             if request.data.get('expiration_date') is None:
                 raise MissingParameters('expiration_date')
             
-            if request.data.get('justificative') is None:
-                raise MissingParameters('justificative')
+            if request.data.get('justification') is None:
+                raise MissingParameters('justification')
             
             if request.data.get('sections') is None:
                 raise MissingParameters('sections')
@@ -93,7 +93,7 @@ class CreateFormController:
                 description=request.data.get('description'),
                 priority=PRIORITY[request.data.get('priority')],
                 expiration_date=request.data.get('expiration_date'),
-                justificative=JustificativeDTO.from_request(request.data.get('justificative')).to_entity(),
+                justification=JustificationDTO.from_request(request.data.get('justification')).to_entity(),
                 comments=request.data.get('comments'),
                 sections=[
                     SectionDTO.from_request(section).to_entity()

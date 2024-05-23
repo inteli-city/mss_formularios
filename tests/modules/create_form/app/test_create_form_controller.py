@@ -34,7 +34,7 @@ class Test_CreateFormController:
             "region": 'REGION',
             "priority": 'EMERGENCY',
             "expiration_date": 946407600000,
-            "justificative": {
+            "justification": {
                 "options": [
                     {
                         "option": 'option',
@@ -1018,7 +1018,7 @@ class Test_CreateFormController:
             "region": 'REGION',
             "priority": 'EMERGENCY',
             "expiration_date": 946407600000,
-            "justificative": {
+            "justification": {
                 "options": [
                     {
                         "option": 'option',

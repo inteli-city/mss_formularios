@@ -2,7 +2,7 @@ import abc
 from typing import List, Optional
 
 from src.shared.domain.entities.information_field import InformationField
-from src.shared.domain.entities.justificative import Justificative
+from src.shared.domain.entities.justification import Justification
 from src.shared.domain.entities.section import Section
 from src.shared.domain.enums.form_status_enum import FORM_STATUS
 from src.shared.domain.enums.priority_enum import PRIORITY
@@ -32,14 +32,14 @@ class Form(abc.ABC):
     creation_date: int
     start_date: Optional[int]
     conclusion_date: Optional[int]
-    justificative: Justificative
+    justification: Justification
     comments: Optional[str]
     sections: List[Section]
     information_fields: Optional[List[InformationField]]
 
     ID_LENGTH = 36
 
-    def __init__(self, form_title: str, form_id: str, creator_user_id: str, user_id: str, vinculation_form_id: Optional[str], can_vinculate: bool, template: str, area: str, system: str, street: str, city: str, number: int, latitude: float, longitude: float, region: str, description: Optional[str], priority: PRIORITY, status: FORM_STATUS, expiration_date: int, creation_date: int, start_date: Optional[int], conclusion_date: Optional[int], justificative: Justificative, comments: Optional[str], sections: List[Section], information_fields: Optional[List[InformationField]]):
+    def __init__(self, form_title: str, form_id: str, creator_user_id: str, user_id: str, vinculation_form_id: Optional[str], can_vinculate: bool, template: str, area: str, system: str, street: str, city: str, number: int, latitude: float, longitude: float, region: str, description: Optional[str], priority: PRIORITY, status: FORM_STATUS, expiration_date: int, creation_date: int, start_date: Optional[int], conclusion_date: Optional[int], justification: Justification, comments: Optional[str], sections: List[Section], information_fields: Optional[List[InformationField]]):
         
         if type(form_title) is not str:
             raise EntityError('form_title')
@@ -133,9 +133,9 @@ class Form(abc.ABC):
             raise EntityError('conclusion_date')
         self.conclusion_date = conclusion_date
 
-        if not isinstance(justificative, Justificative):
-            raise EntityError('justificative')
-        self.justificative = justificative
+        if not isinstance(justification, Justification):
+            raise EntityError('justification')
+        self.justification = justification
 
         if comments is not None and type(comments) is not str:
             raise EntityError('comments')

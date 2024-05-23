@@ -1,24 +1,24 @@
-from src.modules.update_form_status.app.update_form_status_viewmodel import FieldViewmodel, FormViewmodel, InformationFieldViewmodel, JustificativeOptionViewmodel, JustificativeViewmodel, SectionViewmodel, UpdateFormStatusViewmodel
+from src.modules.update_form_status.app.update_form_status_viewmodel import FieldViewmodel, FormViewmodel, InformationFieldViewmodel, JustificationOptionViewmodel, JustificationViewmodel, SectionViewmodel, UpdateFormStatusViewmodel
 from src.shared.domain.entities.field import FileField, TextField
 from src.shared.domain.entities.form import Form
 from src.shared.domain.entities.information_field import ImageInformationField, MapInformationField, TextInformationField
-from src.shared.domain.entities.justificative import Justificative, JustificativeOption
+from src.shared.domain.entities.justification import Justification, JustificationOption
 from src.shared.domain.entities.section import Section
 from src.shared.domain.enums.file_type_enum import FILE_TYPE
 from src.shared.domain.enums.form_status_enum import FORM_STATUS
 from src.shared.domain.enums.priority_enum import PRIORITY
 
-justificative_option = JustificativeOption(
+justification_option = JustificationOption(
     option='option',
     required_image=True,
     required_text=True
 )
 
-justificative = Justificative(
-    options=[justificative_option],
+justification = Justification(
+    options=[justification_option],
     selected_option='selected_option',
-    text='text',
-    image='image'
+    justification_text='text',
+    justification_image='image'
 )
 
 class Test_UpdateFormStatusViewmodel:
@@ -123,7 +123,7 @@ class Test_UpdateFormStatusViewmodel:
         assert response == excepted
     
     def test_jusificative_option_viewmodel(self):
-        viewmodel = JustificativeOptionViewmodel(justificative_option)
+        viewmodel = JustificationOptionViewmodel(justification_option)
 
         response = viewmodel.to_dict()
 
@@ -135,9 +135,9 @@ class Test_UpdateFormStatusViewmodel:
 
         assert response == excepted
     
-    def test_justificative_viewmodel(self):
-        viewmodel = JustificativeViewmodel(
-            justificative=justificative
+    def test_justification_viewmodel(self):
+        viewmodel = JustificationViewmodel(
+            justification=justification
         )
 
         response = viewmodel.to_dict()
@@ -149,8 +149,8 @@ class Test_UpdateFormStatusViewmodel:
                 'required_text': True
             }],
             'selected_option': 'selected_option',
-            'text': 'text',
-            'image': 'image'
+            'justification_text': 'text',
+            'justification_image': 'image'
         }
 
         assert response == excepted
@@ -187,7 +187,7 @@ class Test_UpdateFormStatusViewmodel:
                 creation_date=1,
                 start_date=1,
                 conclusion_date=1,
-                justificative=justificative,
+                justification=justification,
                 comments='comments',
                 sections=[section],
                 information_fields=[
@@ -223,15 +223,15 @@ class Test_UpdateFormStatusViewmodel:
             'creation_date': 1,
             'start_date': 1,
             'conclusion_date': 1,
-            'justificative': {
+            'justification': {
                 'options': [{
                     'option': 'option',
                     'required_image': True,
                     'required_text': True
                 }],
                 'selected_option': 'selected_option',
-                'text': 'text',
-                'image': 'image'
+                'justification_text': 'text',
+                'justification_image': 'image'
             
             },
             'comments': 'comments',
@@ -300,7 +300,7 @@ class Test_UpdateFormStatusViewmodel:
                 creation_date=1,
                 start_date=1,
                 conclusion_date=1,
-                justificative=justificative,
+                justification=justification,
                 comments='comments',
                 sections=[section],
                 information_fields=[
@@ -340,15 +340,15 @@ class Test_UpdateFormStatusViewmodel:
                     'creation_date': 1,
                     'start_date': 1,
                     'conclusion_date': 1,
-                    'justificative': {
+                    'justification': {
                         'options': [{
                             'option': 'option',
                             'required_image': True,
                             'required_text': True
                         }],
                         'selected_option': 'selected_option',
-                        'text': 'text',
-                        'image': 'image'
+                        'justification_text': 'text',
+                        'justification_image': 'image'
                     },
                     'comments': 'comments',
                     'sections': [

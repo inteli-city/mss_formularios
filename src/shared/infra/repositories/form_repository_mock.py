@@ -3,7 +3,7 @@ from typing import List, Optional
 from src.shared.domain.entities.field import TextField
 from src.shared.domain.entities.form import Form
 from src.shared.domain.entities.information_field import TextInformationField
-from src.shared.domain.entities.justificative import Justificative, JustificativeOption
+from src.shared.domain.entities.justification import Justification, JustificationOption
 from src.shared.domain.entities.section import Section
 from src.shared.domain.enums.form_status_enum import FORM_STATUS
 from src.shared.domain.enums.priority_enum import PRIORITY
@@ -28,17 +28,17 @@ class FormRepositoryMock(IFormRepository):
         information_field = TextInformationField(
             value='value'
         )
-        justificative_option = JustificativeOption(
+        justification_option = JustificationOption(
             option='option',
             required_image=True,
             required_text=True
         )
 
-        justificative = Justificative(
-            options=[justificative_option],
+        justification = Justification(
+            options=[justification_option],
             selected_option='selected_option',
-            text='text',
-            image='image'
+            justification_text='text',
+            justification_image='image'
         )
 
         self.forms = [
@@ -60,12 +60,12 @@ class FormRepositoryMock(IFormRepository):
                 region='REGION',
                 description=None,
                 priority=PRIORITY.EMERGENCY,
-                status=FORM_STATUS.CONCLUDED,
+                status=FORM_STATUS.IN_PROGRESS,
                 expiration_date=946407600000,
                 creation_date=946407600000,
                 start_date=946407600000,
                 conclusion_date=timestamp_yesterday(),
-                justificative=justificative,
+                justification=justification,
                 comments=None,
                 sections=[section, section],
                 information_fields=[
@@ -96,7 +96,7 @@ class FormRepositoryMock(IFormRepository):
                 creation_date=946407600000,
                 start_date=946407600000,
                 conclusion_date=946407600000,
-                justificative=justificative,
+                justification=justification,
                 comments=None,
                 sections=[section],
                 information_fields=[
@@ -134,11 +134,13 @@ class FormRepositoryMock(IFormRepository):
                 return form
         return None
     
-    def cancel_form(self, form_id: str, justificative: Justificative) -> Form:
+    def cancel_form(self, form_id: str, selected_option: str, justification_text: Optional[str] = None, justification_image: Optional[str] = None) -> Form:
         for form in self.forms:
             if form.form_id == form_id:
                 form.status = FORM_STATUS.CANCELED
-                form.justificative = justificative
+                form.justification.selected_option = selected_option
+                form.justification.justification_text = justification_text
+                form.justification.justification_image = justification_image
                 return form
         return None
 
