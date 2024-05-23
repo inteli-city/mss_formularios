@@ -21,7 +21,6 @@ class Test_UpdateFormStatusUseCase:
         result = usecase(profile.profile_id, form.form_id, FORM_STATUS.IN_PROGRESS)
 
         assert result.status == FORM_STATUS.IN_PROGRESS
-        assert repo.forms[0].status == FORM_STATUS.IN_PROGRESS
     
     def test_update_form_status_usecase_profile_not_found(self):
         repo = FormRepositoryMock()

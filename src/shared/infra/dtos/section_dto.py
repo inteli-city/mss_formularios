@@ -15,6 +15,7 @@ class SectionDTO:
         self.section_id = section_id
         self.fields = fields
     
+    @staticmethod
     def from_request(section_dict: dict) -> "SectionDTO":
         if section_dict.get('section_id') is None:
                 raise MissingParameters('section_id')
