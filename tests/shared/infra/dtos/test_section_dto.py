@@ -336,7 +336,7 @@ class Test_SectionDTO:
             'fields': []
         }
 
-        with pytest.raises(EntityError):
+        with pytest.raises(MissingParameters):
             SectionDTO.from_request(section_dict)
     
     def test_section_dto_from_request_missing_field_type(self):
