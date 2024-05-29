@@ -40,9 +40,24 @@ class LambdaStack(Construct):
                                                  code=lambda_.Code.from_asset("./lambda_layer_out_temp"),
                                                  compatible_runtimes=[lambda_.Runtime.PYTHON_3_9]
                                                  )
-        
-        self.login_profile = self.create_lambda_api_gateway_integration(
-            module_name="login_profile",
+        self.cancel_form = self.create_lambda_api_gateway_integration(
+            module_name="cancel_form",
+            method="POST",
+            api_resource=api_gateway_resource,
+            environment_variables=environment_variables,
+            authorizer=authorizer
+        )
+
+        self.complete_form = self.create_lambda_api_gateway_integration(
+            module_name="complete_form",
+            method="POST",
+            api_resource=api_gateway_resource,
+            environment_variables=environment_variables,
+            authorizer=authorizer
+        )
+
+        self.create_form = self.create_lambda_api_gateway_integration(
+            module_name="create_form",
             method="POST",
             api_resource=api_gateway_resource,
             environment_variables=environment_variables,
@@ -57,15 +72,39 @@ class LambdaStack(Construct):
             authorizer=authorizer
         )
 
+        self.login_profile = self.create_lambda_api_gateway_integration(
+            module_name="login_profile",
+            method="POST",
+            api_resource=api_gateway_resource,
+            environment_variables=environment_variables,
+            authorizer=authorizer
+        )
+
+        self.update_form_status = self.create_lambda_api_gateway_integration(
+            module_name="update_form_status",
+            method="POST",
+            api_resource=api_gateway_resource,
+            environment_variables=environment_variables,
+            authorizer=authorizer
+        )
+
         self.functions_that_need_dynamo_profile_permissions = [
-            self.login_profile
+            self.login_profile,
         ]
 
         self.functions_that_need_dynamo_forms_permissions = [
-            self.get_form_by_user_id
+            self.get_form_by_user_id,
+            self.create_form,
+            self.cancel_form,
+            self.complete_form,
+            self.update_form_status
         ]
 
         self.functions_that_need_cognito_permissions = [
             self.login_profile,
-            self.get_form_by_user_id
+            self.get_form_by_user_id,
+            self.create_form,
+            self.cancel_form,
+            self.complete_form,
+            self.update_form_status
         ]
