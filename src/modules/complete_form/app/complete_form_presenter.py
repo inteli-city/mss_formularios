@@ -1,5 +1,5 @@
-from src.modules.complete_form.app.complete_form_controller import CompleteFormController
-from src.modules.complete_form.app.complete_form_usecase import CompleteFormUsecase
+from .complete_form_controller import CompleteFormController
+from .complete_form_usecase import CompleteFormUsecase
 from src.shared.environments import Environments
 from src.shared.helpers.external_interfaces.http_lambda_requests import LambdaHttpRequest, LambdaHttpResponse
 

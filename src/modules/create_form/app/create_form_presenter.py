@@ -1,13 +1,13 @@
-from .update_form_status_controller import UpdateFormStatusController
-from .update_form_status_usecase import UpdateFormStatusUsecase
+from .create_form_controller import CreateFormController
+from .create_form_usecase import CreateFormUsecase
 from src.shared.environments import Environments
 from src.shared.helpers.external_interfaces.http_lambda_requests import LambdaHttpRequest, LambdaHttpResponse
 
 
 repo = Environments.get_form_repo()()
 repo_profile = Environments.get_profile_repo()()
-usecase = UpdateFormStatusUsecase(repo, repo_profile)
-controller = UpdateFormStatusController(usecase)
+usecase = CreateFormUsecase(repo, repo_profile)
+controller = CreateFormController(usecase)
 
 def lambda_handler(event, context):
     

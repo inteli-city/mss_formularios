@@ -1,5 +1,5 @@
-from src.modules.cancel_form.app.cancel_form_controller import CancelFormController
-from src.modules.cancel_form.app.cancel_form_usecase import CancelFormUsecase
+from .cancel_form_controller import CancelFormController
+from .cancel_form_usecase import CancelFormUsecase
 from src.shared.environments import Environments
 from src.shared.helpers.external_interfaces.http_lambda_requests import LambdaHttpRequest, LambdaHttpResponse
 
