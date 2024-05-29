@@ -1,5 +1,5 @@
-from src.modules.complete_form.app.complete_form_usecase import CompleteFormUsecase
-from src.modules.complete_form.app.complete_form_viewmodel import CompleteFormViewmodel
+from .complete_form_usecase import CompleteFormUsecase
+from .complete_form_viewmodel import CompleteFormViewmodel
 from src.shared.helpers.errors.controller_errors import MissingParameters, WrongTypeParameter
 from src.shared.helpers.errors.domain_errors import EntityError
 from src.shared.helpers.errors.usecase_errors import ForbiddenAction, NoItemsFound

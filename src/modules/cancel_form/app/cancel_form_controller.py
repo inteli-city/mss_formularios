@@ -1,5 +1,5 @@
-from src.modules.cancel_form.app.cancel_form_usecase import CancelFormUsecase
-from src.modules.cancel_form.app.cancel_form_viewmodel import CancelFormViewmodel
+from .cancel_form_usecase import CancelFormUsecase
+from .cancel_form_viewmodel import CancelFormViewmodel
 from src.shared.helpers.errors.controller_errors import MissingParameters, WrongTypeParameter
 from src.shared.helpers.errors.domain_errors import EntityError
 from src.shared.helpers.errors.usecase_errors import DuplicatedItem, ForbiddenAction, NoItemsFound

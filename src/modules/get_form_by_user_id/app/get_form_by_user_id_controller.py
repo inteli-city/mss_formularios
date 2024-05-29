@@ -1,5 +1,5 @@
-from src.modules.get_form_by_user_id.app.get_form_by_user_id_usecase import GetFormByUserIdUsecase
-from src.modules.get_form_by_user_id.app.get_form_by_user_id_viewmodel import GetFormByUserIdViewmodel
+from .get_form_by_user_id_usecase import GetFormByUserIdUsecase
+from .get_form_by_user_id_viewmodel import GetFormByUserIdViewmodel
 from src.shared.helpers.errors.controller_errors import MissingParameters
 from src.shared.helpers.errors.domain_errors import EntityError
 from src.shared.helpers.errors.usecase_errors import ForbiddenAction, NoItemsFound

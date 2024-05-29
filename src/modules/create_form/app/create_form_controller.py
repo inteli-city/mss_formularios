@@ -1,5 +1,5 @@
-from src.modules.create_form.app.create_form_usecase import CreateFormUsecase
-from src.modules.create_form.app.create_form_viewmodel import CreateFormViewmodel
+from .create_form_usecase import CreateFormUsecase
+from .create_form_viewmodel import CreateFormViewmodel
 from src.shared.domain.entities.information_field import TextInformationField
 from src.shared.domain.enums.priority_enum import PRIORITY
 from src.shared.helpers.errors.controller_errors import MissingParameters
