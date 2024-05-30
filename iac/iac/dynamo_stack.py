@@ -35,6 +35,10 @@ class DynamoStack(Construct):
                     name="PK",
                     type=aws_dynamodb.AttributeType.STRING
                 ),
+                sort_key=aws_dynamodb.Attribute(
+                    name="SK",
+                    type=aws_dynamodb.AttributeType.STRING
+                ),
                 point_in_time_recovery=True,
                 billing_mode=aws_dynamodb.BillingMode.PAY_PER_REQUEST,
                 removal_policy=REMOVAL_POLICY,

@@ -38,8 +38,8 @@ class Test_FieldDTO:
             "formatting": "formatting",
             "max_value": 10,
             "min_value": 1,
-            "decimal": False,
-            "value": 1
+            "decimal": True,
+            "value": 1.0
         }
 
         field_dto = FieldDTO.from_dynamo(field_dict)
@@ -52,8 +52,8 @@ class Test_FieldDTO:
         assert field_dto.field.formatting == "formatting"
         assert field_dto.field.max_value == 10
         assert field_dto.field.min_value == 1
-        assert field_dto.field.decimal == False
-        assert field_dto.field.value == 1
+        assert field_dto.field.decimal == True
+        assert field_dto.field.value == 1.0
     
     def test_field_dto_from_dynamo_dropdown_field(self):
         field_dict = {
@@ -265,7 +265,7 @@ class Test_FieldDTO:
         }
     
     def test_field_dto_to_dynamo_number_field(self):
-        field = NumberField(placeholder='placeholder', required=True, key='key', max_value=10, min_value=1, decimal=False, regex='regex', formatting='formatting', value=1)
+        field = NumberField(placeholder='placeholder', required=True, key='key', max_value=10, min_value=1, decimal=False, regex='regex', formatting='formatting', value=1.0)
 
         field_dto = FieldDTO(field)
 
@@ -281,7 +281,7 @@ class Test_FieldDTO:
             "max_value": 10,
             "min_value": 1,
             "decimal": False,
-            "value": 1
+            "value": 1.0
         }
     
     def test_field_dto_to_dynamo_dropdown_field(self):

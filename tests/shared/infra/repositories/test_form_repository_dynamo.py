@@ -20,7 +20,7 @@ class Test_FormRepositoryDynamo:
             form_title='form_title',
             form_id='d61dbf66-a10f-11ed-a8fc-0242ac120010',
             creator_user_id='d61dbf66-a10f-11ed-a8fc-0242ac120010',
-            user_id='d61dbf66-a10f-11ed-a8fc-0242ac120010',
+            user_id='125fb34e-aacf-4a47-9914-82ea64ff9f32',
             vinculation_form_id='d61dbf66-a10f-11ed-a8fc-0242ac120010',
             can_vinculate=True,
             template='template',
@@ -71,4 +71,13 @@ class Test_FormRepositoryDynamo:
 
         assert form is not None
 
+    @pytest.mark.skip("Can't run test in github actions")
+    def test_form_repository_dynamo_get_form_by_user_id(self):
+        repo = FormRepositoryDynamo()
+
+        forms = repo.get_form_by_user_id(user_id='125fb34e-aacf-4a47-9914-82ea64ff9f32')
+
+        assert len(forms) == 1
+        assert isinstance(forms[0], Form)
+        assert forms[0].form_id == 'd61dbf66-a10f-11ed-a8fc-0242ac120010'
 

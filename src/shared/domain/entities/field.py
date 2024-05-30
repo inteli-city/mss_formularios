@@ -76,7 +76,7 @@ class NumberField(Field):
             raise EntityError('decimal')
         self.decimal = decimal
 
-        if value is not None and (type(value) is not float if decimal else type(value) is not int):
+        if value is not None and type(value) is not float:
             raise EntityError('value')
         self.value = value
 

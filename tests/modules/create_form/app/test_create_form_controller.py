@@ -14,74 +14,148 @@ class Test_CreateFormController:
         controller = CreateFormController(usecase)
 
         data = HttpRequest(body={"requester_user": {
-                "sub": 'd61dbf66-a10f-11ed-a8fc-0242ac120001',
-                "name": 'Gabriel Godoy',
-                "email": 'gabriel@gmail.com',
+                "sub": "d61dbf66-a10f-11ed-a8fc-0242ac120001",
+                "name": "Gabriel Godoy",
+                "email": "gabriel@gmail.com",
                 "cognito:groups": "GAIA, JUNDIAI,FORMULARIOS"
             },
             "form_title": "FORM TITLE",
-            "form_id": 'd61dbf66-a10f-11ed-a8fc-0242ac120020',
-            "user_id": 'd61dbf66-a10f-11ed-a8fc-0242ac120001',
+            "form_id": "d61dbf66-a10f-11ed-a8fc-0242ac120020",
+            "user_id": "d61dbf66-a10f-11ed-a8fc-0242ac120001",
             "can_vinculate": True,
-            "template": 'TEMPLATE',
-            "area": '1',
-            "system": 'GAIA',
-            "street": '1',
-            "city": '1',
+            "template": "TEMPLATE",
+            "area": "1",
+            "system": "GAIA",
+            "street": "1",
+            "city": "1",
             "number": 1,
             "latitude": 1.0,
             "longitude": 1.0,
-            "region": 'REGION',
-            "priority": 'EMERGENCY',
+            "region": "REGION",
+            "priority": "EMERGENCY",
             "expiration_date": 946407600000,
             "justification": {
                 "options": [
                     {
-                        "option": 'option',
+                        "option": "option",
                         "required_image": True,
                         "required_text": True
                     }
                 ],
-                "selected_option": 'selected_option',
-                "text": 'text',
-                "image": 'image'
+                "selected_option": "selected_option",
+                "text": "text",
+                "image": "image"
             },
-            "comments": '123',
+            "comments": "123",
             "sections": [
                     {
-                        'section_id': '99999',
-                        'fields': [
+                        "section_id": "99999",
+                        "fields": [
                             {
-                                'field_type': 'TEXT_FIELD',
-                                'placeholder': 'placeholder',
-                                'required': True,
-                                'key': 'key',
-                                'regex': 'regex',
-                                'formatting': 'formatting',
-                                'max_length': 10,
-                                'value': 'value'
+                                "field_type": "TEXT_FIELD",
+                                "placeholder": "placeholder",
+                                "required": True,
+                                "key": "key",
+                                "regex": "regex",
+                                "formatting": "formatting",
+                                "max_length": 10,
                             },
                             {
-                                'field_type': 'TEXT_FIELD',
-                                'placeholder': 'placeholder',
-                                'required': True,
-                                'key': 'key',
-                                'regex': 'regex',
-                                'formatting': 'formatting',
-                                'max_length': 10,
-                                'value': 'value'
+                                "field_type": "NUMBER_FIELD",
+                                "placeholder": "placeholder",
+                                "required": True,
+                                "key": "key",
+                                "regex": "regex",
+                                "formatting": "formatting",
+                                "decimal": True,
+                                "max_value": 10,
+                                "min_value": 1,
+                            },
+                            {
+                                "field_type": "DROPDOWN_FIELD",
+                                "placeholder": "placeholder",
+                                "required": True,
+                                "key": "key",
+                                "options": ["option1", "option2"]
+                            },
+                            {
+                                "field_type": "TYPEAHEAD_FIELD",
+                                "placeholder": "placeholder",
+                                "required": True,
+                                "key": "key",
+                                "regex": "regex",
+                                "formatting": "formatting",
+                                "options": ["option1", "option2"],
+                                "max_length": 10,
+                            },
+                            {
+                                "field_type": "RADIO_GROUP_FIELD",
+                                "placeholder": "placeholder",
+                                "required": True,
+                                "key": "key",
+                                "options": ["option1", "option2"]
+                            },
+                            {
+                                "field_type": "DATE_FIELD",
+                                "placeholder": "placeholder",
+                                "required": True,
+                                "key": "key",
+                                "regex": "regex",
+                                "formatting": "formatting",
+                                "min_date": 946407600000,
+                                "max_date": 946407600000
+                            },
+                            {
+                                "field_type": "CHECKBOX_FIELD",
+                                "placeholder": "placeholder",
+                                "required": True,
+                                "key": "key",
+                                "regex": "regex",
+                                "formatting": "formatting",                            
+                            },
+                            {
+                                "field_type": "CHECKBOX_GROUP_FIELD",
+                                "placeholder": "placeholder",
+                                "required": True,
+                                "key": "key",
+                                "options": ["option1", "option2"],
+                                "check_limit": 1
+                            },
+                            {
+                                "field_type": "SWITCH_BUTTON_FIELD",
+                                "placeholder": "placeholder",
+                                "required": True,
+                                "key": "key",
+                                "regex": "regex",
+                                "formatting": "formatting",
+                            },
+                            {
+                                "field_type": "FILE_FIELD",
+                                "placeholder": "placeholder",
+                                "required": True,
+                                "key": "key",
+                                "regex": "regex",
+                                "formatting": "formatting",
+                                "file_type": "IMAGE",
+                                "min_quantity": 1,
+                                "max_quantity": 1
                             }
                         ]
                     },
             ],
             "information_fields": [
                 {
-                    "information_field_type": 'TEXT_INFORMATION_FIELD',
-                    "value": 'value'
+                    "information_field_type": "TEXT_INFORMATION_FIELD",
+                    "value": "value"
                 },
                 {
-                    "information_field_type": 'TEXT_INFORMATION_FIELD',
-                    "value": 'value'
+                    "information_field_type": "MAP_INFORMATION_FIELD",
+                    "latitude": 1.0,
+                    "longitude": 1.0
+                },
+                {
+                    "information_field_type": "IMAGE_INFORMATION_FIELD",
+                    "file_path": "file_path"
                 }
             ]
         })
@@ -89,7 +163,7 @@ class Test_CreateFormController:
         response = controller(data)
 
         assert response.status_code == 201
-        assert response.body['message'] == 'Formulário criado com sucesso!'
+        assert response.body["message"] == "Formulário criado com sucesso!"
     
     def test_create_form_controller_missing_request_user(self):
         repo = FormRepositoryMock()
@@ -99,67 +173,67 @@ class Test_CreateFormController:
         controller = CreateFormController(usecase)
 
         data = HttpRequest(body={
-            "user_id": 'd61dbf66-a10f-11ed-a8fc-0242ac120001',
+            "user_id": "d61dbf66-a10f-11ed-a8fc-0242ac120001",
             "can_vinculate": True,
-            "template": 'TEMPLATE',
-            "area": '1',
-            "system": 'GAIA',
-            "street": '1',
-            "city": '1',
+            "template": "TEMPLATE",
+            "area": "1",
+            "system": "GAIA",
+            "street": "1",
+            "city": "1",
             "number": 1,
             "latitude": 1.0,
             "longitude": 1.0,
-            "region": 'REGION',
-            "priority": 'EMERGENCY',
+            "region": "REGION",
+            "priority": "EMERGENCY",
             "expiration_date": 946407600000,
-            "comments": '123',
+            "comments": "123",
             "sections": [
                     {
-                        'section_id': '99999',
-                        'fields': [
+                        "section_id": "99999",
+                        "fields": [
                             {
-                                'field_type': 'TEXT_FIELD',
-                                'placeholder': 'placeholder',
-                                'required': True,
-                                'key': 'key',
-                                'regex': 'regex',
-                                'formatting': 'formatting',
-                                'max_length': 10,
-                                'value': 'value'
+                                "field_type": "TEXT_FIELD",
+                                "placeholder": "placeholder",
+                                "required": True,
+                                "key": "key",
+                                "regex": "regex",
+                                "formatting": "formatting",
+                                "max_length": 10,
+                                "value": "value"
                             },
                             {
-                                'field_type': 'TEXT_FIELD',
-                                'placeholder': 'placeholder',
-                                'required': True,
-                                'key': 'key',
-                                'regex': 'regex',
-                                'formatting': 'formatting',
-                                'max_length': 10,
-                                'value': 'value'
+                                "field_type": "TEXT_FIELD",
+                                "placeholder": "placeholder",
+                                "required": True,
+                                "key": "key",
+                                "regex": "regex",
+                                "formatting": "formatting",
+                                "max_length": 10,
+                                "value": "value"
                             }
                         ]
                     },
             ],
             "information_fields": [
                 {
-                    "field_type": 'TEXT_FIELD',
-                    "placeholder": 'placeholder',
+                    "field_type": "TEXT_FIELD",
+                    "placeholder": "placeholder",
                     "required": True,
-                    "key": 'key',
-                    "regex": 'regex',
-                    "formatting": 'formatting',
+                    "key": "key",
+                    "regex": "regex",
+                    "formatting": "formatting",
                     "max_length": 10,
-                    "value": 'value'
+                    "value": "value"
                 },
                 {
-                    "field_type": 'TEXT_FIELD',
-                    "placeholder": 'placeholder',
+                    "field_type": "TEXT_FIELD",
+                    "placeholder": "placeholder",
                     "required": True,
-                    "key": 'key',
-                    "regex": 'regex',
-                    "formatting": 'formatting',
+                    "key": "key",
+                    "regex": "regex",
+                    "formatting": "formatting",
                     "max_length": 10,
-                    "value": 'value'
+                    "value": "value"
                 }
             ]
         })
@@ -167,7 +241,7 @@ class Test_CreateFormController:
         response = controller(data)
 
         assert response.status_code == 400
-        assert response.body['message'] == 'Parâmetro ausente: requester_user'
+        assert response.body["message"] == "Parâmetro ausente: requester_user"
     
     def test_create_form_controller_missing_user_id(self):
         repo = FormRepositoryMock()
@@ -177,52 +251,52 @@ class Test_CreateFormController:
         controller = CreateFormController(usecase)
 
         data = HttpRequest(body={"requester_user": {
-                "sub": 'd61dbf66-a10f-11ed-a8fc-0242ac120001',
-                "name": 'Gabriel Godoy',
+                "sub": "d61dbf66-a10f-11ed-a8fc-0242ac120001",
+                "name": "Gabriel Godoy",
                 "email": repo_profile.profiles[0].email,
                 "cognito:groups": "GAIA, JUNDIAI,FORMULARIOS"
             },
             "form_title": "FORM TITLE",
             "can_vinculate": True,
-            "template": 'TEMPLATE',
-            "area": '1',
-            "system": 'GAIA',
-            "street": '1',
-            "city": '1',
+            "template": "TEMPLATE",
+            "area": "1",
+            "system": "GAIA",
+            "street": "1",
+            "city": "1",
             "number": 1,
             "latitude": 1.0,
             "longitude": 1.0,
-            "region": 'REGION',
-            "priority": 'EMERGENCY',
+            "region": "REGION",
+            "priority": "EMERGENCY",
             "expiration_date": 946407600000,
-            "comments": '123',
+            "comments": "123",
             "sections": [
                     {
-                        'section_id': '99999',
-                        'fields': [
+                        "section_id": "99999",
+                        "fields": [
                             {
-                                'field_type': 'TEXT_FIELD',
-                                'placeholder': 'placeholder',
-                                'required': True,
-                                'key': 'key',
-                                'regex': 'regex',
-                                'formatting': 'formatting',
-                                'max_length': 10,
-                                'value': 'value'
+                                "field_type": "TEXT_FIELD",
+                                "placeholder": "placeholder",
+                                "required": True,
+                                "key": "key",
+                                "regex": "regex",
+                                "formatting": "formatting",
+                                "max_length": 10,
+                                "value": "value"
                             }
                         ]
                     },
             ],
             "information_fields": [
                 {
-                    "field_type": 'TEXT_FIELD',
-                    "placeholder": 'placeholder',
+                    "field_type": "TEXT_FIELD",
+                    "placeholder": "placeholder",
                     "required": True,
-                    "key": 'key',
-                    "regex": 'regex',
-                    "formatting": 'formatting',
+                    "key": "key",
+                    "regex": "regex",
+                    "formatting": "formatting",
                     "max_length": 10,
-                    "value": 'value'
+                    "value": "value"
                 }
             ]
         })
@@ -230,7 +304,7 @@ class Test_CreateFormController:
         response = controller(data)
 
         assert response.status_code == 400
-        assert response.body['message'] == 'Parâmetro ausente: user_id'
+        assert response.body["message"] == "Parâmetro ausente: user_id"
     
     def test_create_form_controller_missing_template(self):
         repo = FormRepositoryMock()
@@ -240,52 +314,52 @@ class Test_CreateFormController:
         controller = CreateFormController(usecase)
 
         data = HttpRequest(body={"requester_user": {
-                "sub": 'd61dbf66-a10f-11ed-a8fc-0242ac120001',
-                "name": 'Gabriel Godoy',
+                "sub": "d61dbf66-a10f-11ed-a8fc-0242ac120001",
+                "name": "Gabriel Godoy",
                 "email": repo_profile.profiles[0].email,
                 "cognito:groups": "GAIA, JUNDIAI,FORMULARIOS"
             },
             "form_title": "FORM TITLE",
-            "user_id": 'd61dbf66-a10f-11ed-a8fc-0242ac120001',
+            "user_id": "d61dbf66-a10f-11ed-a8fc-0242ac120001",
             "can_vinculate": True,
-            "area": '1',
-            "system": 'GAIA',
-            "street": '1',
-            "city": '1',
+            "area": "1",
+            "system": "GAIA",
+            "street": "1",
+            "city": "1",
             "number": 1,
             "latitude": 1.0,
             "longitude": 1.0,
-            "region": 'REGION',
-            "priority": 'EMERGENCY',
+            "region": "REGION",
+            "priority": "EMERGENCY",
             "expiration_date": 946407600000,
-            "comments": '123',
+            "comments": "123",
             "sections": [
                     {
-                        'section_id': '99999',
-                        'fields': [
+                        "section_id": "99999",
+                        "fields": [
                             {
-                                'field_type': 'TEXT_FIELD',
-                                'placeholder': 'placeholder',
-                                'required': True,
-                                'key': 'key',
-                                'regex': 'regex',
-                                'formatting': 'formatting',
-                                'max_length': 10,
-                                'value': 'value'
+                                "field_type": "TEXT_FIELD",
+                                "placeholder": "placeholder",
+                                "required": True,
+                                "key": "key",
+                                "regex": "regex",
+                                "formatting": "formatting",
+                                "max_length": 10,
+                                "value": "value"
                             }
                         ]
                     },
             ],
             "information_fields": [
                 {
-                    "field_type": 'TEXT_FIELD',
-                    "placeholder": 'placeholder',
+                    "field_type": "TEXT_FIELD",
+                    "placeholder": "placeholder",
                     "required": True,
-                    "key": 'key',
-                    "regex": 'regex',
-                    "formatting": 'formatting',
+                    "key": "key",
+                    "regex": "regex",
+                    "formatting": "formatting",
                     "max_length": 10,
-                    "value": 'value'
+                    "value": "value"
                 }
             ]
         })
@@ -293,7 +367,7 @@ class Test_CreateFormController:
         response = controller(data)
 
         assert response.status_code == 400
-        assert response.body['message'] == 'Parâmetro ausente: template'
+        assert response.body["message"] == "Parâmetro ausente: template"
     
     def test_create_form_controller_missing_area(self):
         repo = FormRepositoryMock()
@@ -303,52 +377,52 @@ class Test_CreateFormController:
         controller = CreateFormController(usecase)
 
         data = HttpRequest(body={"requester_user": {
-                "sub": 'd61dbf66-a10f-11ed-a8fc-0242ac120001',
-                "name": 'Gabriel Godoy',
+                "sub": "d61dbf66-a10f-11ed-a8fc-0242ac120001",
+                "name": "Gabriel Godoy",
                 "email": repo_profile.profiles[0].email,
                 "cognito:groups": "GAIA, JUNDIAI,FORMULARIOS"
             },
             "form_title": "FORM TITLE",
-            "user_id": 'd61dbf66-a10f-11ed-a8fc-0242ac120001',
+            "user_id": "d61dbf66-a10f-11ed-a8fc-0242ac120001",
             "can_vinculate": True,
-            "template": 'TEMPLATE',
-            "system": 'GAIA',
-            "street": '1',
-            "city": '1',
+            "template": "TEMPLATE",
+            "system": "GAIA",
+            "street": "1",
+            "city": "1",
             "number": 1,
             "latitude": 1.0,
             "longitude": 1.0,
-            "region": 'REGION',
-            "priority": 'EMERGENCY',
+            "region": "REGION",
+            "priority": "EMERGENCY",
             "expiration_date": 946407600000,
-            "comments": '123',
+            "comments": "123",
             "sections": [
                     {
-                        'section_id': '99999',
-                        'fields': [
+                        "section_id": "99999",
+                        "fields": [
                             {
-                                'field_type': 'TEXT_FIELD',
-                                'placeholder': 'placeholder',
-                                'required': True,
-                                'key': 'key',
-                                'regex': 'regex',
-                                'formatting': 'formatting',
-                                'max_length': 10,
-                                'value': 'value'
+                                "field_type": "TEXT_FIELD",
+                                "placeholder": "placeholder",
+                                "required": True,
+                                "key": "key",
+                                "regex": "regex",
+                                "formatting": "formatting",
+                                "max_length": 10,
+                                "value": "value"
                             }
                         ]
                     },
             ],
             "information_fields": [
                 {
-                    "field_type": 'TEXT_FIELD',
-                    "placeholder": 'placeholder',
+                    "field_type": "TEXT_FIELD",
+                    "placeholder": "placeholder",
                     "required": True,
-                    "key": 'key',
-                    "regex": 'regex',
-                    "formatting": 'formatting',
+                    "key": "key",
+                    "regex": "regex",
+                    "formatting": "formatting",
                     "max_length": 10,
-                    "value": 'value'
+                    "value": "value"
                 }
             ]
         })
@@ -356,7 +430,7 @@ class Test_CreateFormController:
         response = controller(data)
 
         assert response.status_code == 400
-        assert response.body['message'] == 'Parâmetro ausente: area'
+        assert response.body["message"] == "Parâmetro ausente: area"
     
     def test_create_form_controller_missing_system(self):
         repo = FormRepositoryMock()
@@ -366,52 +440,52 @@ class Test_CreateFormController:
         controller = CreateFormController(usecase)
 
         data = HttpRequest(body={"requester_user": {
-                "sub": 'd61dbf66-a10f-11ed-a8fc-0242ac120001',
-                "name": 'Gabriel Godoy',
+                "sub": "d61dbf66-a10f-11ed-a8fc-0242ac120001",
+                "name": "Gabriel Godoy",
                 "email": repo_profile.profiles[0].email,
                 "cognito:groups": "GAIA, JUNDIAI,FORMULARIOS"
             },
             "form_title": "FORM TITLE",
-            "user_id": 'd61dbf66-a10f-11ed-a8fc-0242ac120001',
+            "user_id": "d61dbf66-a10f-11ed-a8fc-0242ac120001",
             "can_vinculate": True,
-            "template": 'TEMPLATE',
-            "area": '1',
-            "street": '1',
-            "city": '1',
+            "template": "TEMPLATE",
+            "area": "1",
+            "street": "1",
+            "city": "1",
             "number": 1,
             "latitude": 1.0,
             "longitude": 1.0,
-            "region": 'REGION',
-            "priority": 'EMERGENCY',
+            "region": "REGION",
+            "priority": "EMERGENCY",
             "expiration_date": 946407600000,
-            "comments": '123',
+            "comments": "123",
             "sections": [
                     {
-                        'section_id': '99999',
-                        'fields': [
+                        "section_id": "99999",
+                        "fields": [
                             {
-                                'field_type': 'TEXT_FIELD',
-                                'placeholder': 'placeholder',
-                                'required': True,
-                                'key': 'key',
-                                'regex': 'regex',
-                                'formatting': 'formatting',
-                                'max_length': 10,
-                                'value': 'value'
+                                "field_type": "TEXT_FIELD",
+                                "placeholder": "placeholder",
+                                "required": True,
+                                "key": "key",
+                                "regex": "regex",
+                                "formatting": "formatting",
+                                "max_length": 10,
+                                "value": "value"
                             }
                         ]
                     },
             ],
             "information_fields": [
                 {
-                    "field_type": 'TEXT_FIELD',
-                    "placeholder": 'placeholder',
+                    "field_type": "TEXT_FIELD",
+                    "placeholder": "placeholder",
                     "required": True,
-                    "key": 'key',
-                    "regex": 'regex',
-                    "formatting": 'formatting',
+                    "key": "key",
+                    "regex": "regex",
+                    "formatting": "formatting",
                     "max_length": 10,
-                    "value": 'value'
+                    "value": "value"
                 }
             ]
         })
@@ -419,7 +493,7 @@ class Test_CreateFormController:
         response = controller(data)
 
         assert response.status_code == 400
-        assert response.body['message'] == 'Parâmetro ausente: system'
+        assert response.body["message"] == "Parâmetro ausente: system"
     
     def test_create_form_controller_missing_street(self):
         repo = FormRepositoryMock()
@@ -429,52 +503,52 @@ class Test_CreateFormController:
         controller = CreateFormController(usecase)
 
         data = HttpRequest(body={"requester_user": {
-                "sub": 'd61dbf66-a10f-11ed-a8fc-0242ac120001',
-                "name": 'Gabriel Godoy',
+                "sub": "d61dbf66-a10f-11ed-a8fc-0242ac120001",
+                "name": "Gabriel Godoy",
                 "email": repo_profile.profiles[0].email,
                 "cognito:groups": "GAIA, JUNDIAI,FORMULARIOS"
             },
             "form_title": "FORM TITLE",
-            "user_id": 'd61dbf66-a10f-11ed-a8fc-0242ac120001',
+            "user_id": "d61dbf66-a10f-11ed-a8fc-0242ac120001",
             "can_vinculate": True,
-            "template": 'TEMPLATE',
-            "area": '1',
-            "system": 'GAIA',
-            "city": '1',
+            "template": "TEMPLATE",
+            "area": "1",
+            "system": "GAIA",
+            "city": "1",
             "number": 1,
             "latitude": 1.0,
             "longitude": 1.0,
-            "region": 'REGION',
-            "priority": 'EMERGENCY',
+            "region": "REGION",
+            "priority": "EMERGENCY",
             "expiration_date": 946407600000,
-            "comments": '123',
+            "comments": "123",
             "sections": [
                     {
-                        'section_id': '99999',
-                        'fields': [
+                        "section_id": "99999",
+                        "fields": [
                             {
-                                'field_type': 'TEXT_FIELD',
-                                'placeholder': 'placeholder',
-                                'required': True,
-                                'key': 'key',
-                                'regex': 'regex',
-                                'formatting': 'formatting',
-                                'max_length': 10,
-                                'value': 'value'
+                                "field_type": "TEXT_FIELD",
+                                "placeholder": "placeholder",
+                                "required": True,
+                                "key": "key",
+                                "regex": "regex",
+                                "formatting": "formatting",
+                                "max_length": 10,
+                                "value": "value"
                             }
                         ]
                     },
             ],
             "information_fields": [
                 {
-                    "field_type": 'TEXT_FIELD',
-                    "placeholder": 'placeholder',
+                    "field_type": "TEXT_FIELD",
+                    "placeholder": "placeholder",
                     "required": True,
-                    "key": 'key',
-                    "regex": 'regex',
-                    "formatting": 'formatting',
+                    "key": "key",
+                    "regex": "regex",
+                    "formatting": "formatting",
                     "max_length": 10,
-                    "value": 'value'
+                    "value": "value"
                 }
             ]
         })
@@ -482,7 +556,7 @@ class Test_CreateFormController:
         response = controller(data)
 
         assert response.status_code == 400
-        assert response.body['message'] == 'Parâmetro ausente: street'
+        assert response.body["message"] == "Parâmetro ausente: street"
     
     def test_create_form_controller_missing_city(self):
         repo = FormRepositoryMock()
@@ -492,52 +566,52 @@ class Test_CreateFormController:
         controller = CreateFormController(usecase)
 
         data = HttpRequest(body={"requester_user": {
-                "sub": 'd61dbf66-a10f-11ed-a8fc-0242ac120001',
-                "name": 'Gabriel Godoy',
+                "sub": "d61dbf66-a10f-11ed-a8fc-0242ac120001",
+                "name": "Gabriel Godoy",
                 "email": repo_profile.profiles[0].email,
                 "cognito:groups": "GAIA, JUNDIAI,FORMULARIOS"
             },
             "form_title": "FORM TITLE",
-            "user_id": 'd61dbf66-a10f-11ed-a8fc-0242ac120001',
+            "user_id": "d61dbf66-a10f-11ed-a8fc-0242ac120001",
             "can_vinculate": True,
-            "template": 'TEMPLATE',
-            "area": '1',
-            "system": 'GAIA',
-            "street": '1',
+            "template": "TEMPLATE",
+            "area": "1",
+            "system": "GAIA",
+            "street": "1",
             "number": 1,
             "latitude": 1.0,
             "longitude": 1.0,
-            "region": 'REGION',
-            "priority": 'EMERGENCY',
+            "region": "REGION",
+            "priority": "EMERGENCY",
             "expiration_date": 946407600000,
-            "comments": '123',
+            "comments": "123",
             "sections": [
                     {
-                        'section_id': '99999',
-                        'fields': [
+                        "section_id": "99999",
+                        "fields": [
                             {
-                                'field_type': 'TEXT_FIELD',
-                                'placeholder': 'placeholder',
-                                'required': True,
-                                'key': 'key',
-                                'regex': 'regex',
-                                'formatting': 'formatting',
-                                'max_length': 10,
-                                'value': 'value'
+                                "field_type": "TEXT_FIELD",
+                                "placeholder": "placeholder",
+                                "required": True,
+                                "key": "key",
+                                "regex": "regex",
+                                "formatting": "formatting",
+                                "max_length": 10,
+                                "value": "value"
                             }
                         ]
                     },
             ],
             "information_fields": [
                 {
-                    "field_type": 'TEXT_FIELD',
-                    "placeholder": 'placeholder',
+                    "field_type": "TEXT_FIELD",
+                    "placeholder": "placeholder",
                     "required": True,
-                    "key": 'key',
-                    "regex": 'regex',
-                    "formatting": 'formatting',
+                    "key": "key",
+                    "regex": "regex",
+                    "formatting": "formatting",
                     "max_length": 10,
-                    "value": 'value'
+                    "value": "value"
                 }
             ]
         })
@@ -545,7 +619,7 @@ class Test_CreateFormController:
         response = controller(data)
 
         assert response.status_code == 400
-        assert response.body['message'] == 'Parâmetro ausente: city'
+        assert response.body["message"] == "Parâmetro ausente: city"
     
     def test_create_form_controller_missing_number(self):
         repo = FormRepositoryMock()
@@ -555,52 +629,52 @@ class Test_CreateFormController:
         controller = CreateFormController(usecase)
 
         data = HttpRequest(body={"requester_user": {
-                "sub": 'd61dbf66-a10f-11ed-a8fc-0242ac120001',
-                "name": 'Gabriel Godoy',
+                "sub": "d61dbf66-a10f-11ed-a8fc-0242ac120001",
+                "name": "Gabriel Godoy",
                 "email": repo_profile.profiles[0].email,
                 "cognito:groups": "GAIA, JUNDIAI,FORMULARIOS"
             },
             "form_title": "FORM TITLE",
-            "user_id": 'd61dbf66-a10f-11ed-a8fc-0242ac120001',
+            "user_id": "d61dbf66-a10f-11ed-a8fc-0242ac120001",
             "can_vinculate": True,
-            "template": 'TEMPLATE',
-            "area": '1',
-            "system": 'GAIA',
-            "street": '1',
-            "city": '1',
+            "template": "TEMPLATE",
+            "area": "1",
+            "system": "GAIA",
+            "street": "1",
+            "city": "1",
             "latitude": 1.0,
             "longitude": 1.0,
-            "region": 'REGION',
-            "priority": 'EMERGENCY',
+            "region": "REGION",
+            "priority": "EMERGENCY",
             "expiration_date": 946407600000,
-            "comments": '123',
+            "comments": "123",
             "sections": [
                     {
-                        'section_id': '99999',
-                        'fields': [
+                        "section_id": "99999",
+                        "fields": [
                             {
-                                'field_type': 'TEXT_FIELD',
-                                'placeholder': 'placeholder',
-                                'required': True,
-                                'key': 'key',
-                                'regex': 'regex',
-                                'formatting': 'formatting',
-                                'max_length': 10,
-                                'value': 'value'
+                                "field_type": "TEXT_FIELD",
+                                "placeholder": "placeholder",
+                                "required": True,
+                                "key": "key",
+                                "regex": "regex",
+                                "formatting": "formatting",
+                                "max_length": 10,
+                                "value": "value"
                             }
                         ]
                     },
             ],
             "information_fields": [
                 {
-                    "field_type": 'TEXT_FIELD',
-                    "placeholder": 'placeholder',
+                    "field_type": "TEXT_FIELD",
+                    "placeholder": "placeholder",
                     "required": True,
-                    "key": 'key',
-                    "regex": 'regex',
-                    "formatting": 'formatting',
+                    "key": "key",
+                    "regex": "regex",
+                    "formatting": "formatting",
                     "max_length": 10,
-                    "value": 'value'
+                    "value": "value"
                 }
             ]
         })
@@ -608,7 +682,7 @@ class Test_CreateFormController:
         response = controller(data)
 
         assert response.status_code == 400
-        assert response.body['message'] == 'Parâmetro ausente: number'
+        assert response.body["message"] == "Parâmetro ausente: number"
     
     def test_create_form_controller_missing_latitude(self):
         repo = FormRepositoryMock()
@@ -618,52 +692,52 @@ class Test_CreateFormController:
         controller = CreateFormController(usecase)
 
         data = HttpRequest(body={"requester_user": {
-                "sub": 'd61dbf66-a10f-11ed-a8fc-0242ac120001',
-                "name": 'Gabriel Godoy',
+                "sub": "d61dbf66-a10f-11ed-a8fc-0242ac120001",
+                "name": "Gabriel Godoy",
                 "email": repo_profile.profiles[0].email,
                 "cognito:groups": "GAIA, JUNDIAI,FORMULARIOS"
             },
             "form_title": "FORM TITLE",
-            "user_id": 'd61dbf66-a10f-11ed-a8fc-0242ac120001',
+            "user_id": "d61dbf66-a10f-11ed-a8fc-0242ac120001",
             "can_vinculate": True,
-            "template": 'TEMPLATE',
-            "area": '1',
-            "system": 'GAIA',
-            "street": '1',
-            "city": '1',
+            "template": "TEMPLATE",
+            "area": "1",
+            "system": "GAIA",
+            "street": "1",
+            "city": "1",
             "number": 1,
             "longitude": 1.0,
-            "region": 'REGION',
-            "priority": 'EMERGENCY',
+            "region": "REGION",
+            "priority": "EMERGENCY",
             "expiration_date": 946407600000,
-            "comments": '123',
+            "comments": "123",
             "sections": [
                     {
-                        'section_id': '99999',
-                        'fields': [
+                        "section_id": "99999",
+                        "fields": [
                             {
-                                'field_type': 'TEXT_FIELD',
-                                'placeholder': 'placeholder',
-                                'required': True,
-                                'key': 'key',
-                                'regex': 'regex',
-                                'formatting': 'formatting',
-                                'max_length': 10,
-                                'value': 'value'
+                                "field_type": "TEXT_FIELD",
+                                "placeholder": "placeholder",
+                                "required": True,
+                                "key": "key",
+                                "regex": "regex",
+                                "formatting": "formatting",
+                                "max_length": 10,
+                                "value": "value"
                             }
                         ]
                     },
             ],
             "information_fields": [
                 {
-                    "field_type": 'TEXT_FIELD',
-                    "placeholder": 'placeholder',
+                    "field_type": "TEXT_FIELD",
+                    "placeholder": "placeholder",
                     "required": True,
-                    "key": 'key',
-                    "regex": 'regex',
-                    "formatting": 'formatting',
+                    "key": "key",
+                    "regex": "regex",
+                    "formatting": "formatting",
                     "max_length": 10,
-                    "value": 'value'
+                    "value": "value"
                 }
             ]
         })
@@ -671,7 +745,7 @@ class Test_CreateFormController:
         response = controller(data)
 
         assert response.status_code == 400
-        assert response.body['message'] == 'Parâmetro ausente: latitude'
+        assert response.body["message"] == "Parâmetro ausente: latitude"
     
     def test_create_form_controller_missing_longitude(self):
         repo = FormRepositoryMock()
@@ -681,52 +755,52 @@ class Test_CreateFormController:
         controller = CreateFormController(usecase)
 
         data = HttpRequest(body={"requester_user": {
-                "sub": 'd61dbf66-a10f-11ed-a8fc-0242ac120001',
-                "name": 'Gabriel Godoy',
+                "sub": "d61dbf66-a10f-11ed-a8fc-0242ac120001",
+                "name": "Gabriel Godoy",
                 "email": repo_profile.profiles[0].email,
                 "cognito:groups": "GAIA, JUNDIAI,FORMULARIOS"
             },
             "form_title": "FORM TITLE",
-            "user_id": 'd61dbf66-a10f-11ed-a8fc-0242ac120001',
+            "user_id": "d61dbf66-a10f-11ed-a8fc-0242ac120001",
             "can_vinculate": True,
-            "template": 'TEMPLATE',
-            "area": '1',
-            "system": 'GAIA',
-            "street": '1',
-            "city": '1',
+            "template": "TEMPLATE",
+            "area": "1",
+            "system": "GAIA",
+            "street": "1",
+            "city": "1",
             "number": 1,
             "latitude": 1.0,
-            "region": 'REGION',
-            "priority": 'EMERGENCY',
+            "region": "REGION",
+            "priority": "EMERGENCY",
             "expiration_date": 946407600000,
-            "comments": '123',
+            "comments": "123",
             "sections": [
                     {
-                        'section_id': '99999',
-                        'fields': [
+                        "section_id": "99999",
+                        "fields": [
                             {
-                                'field_type': 'TEXT_FIELD',
-                                'placeholder': 'placeholder',
-                                'required': True,
-                                'key': 'key',
-                                'regex': 'regex',
-                                'formatting': 'formatting',
-                                'max_length': 10,
-                                'value': 'value'
+                                "field_type": "TEXT_FIELD",
+                                "placeholder": "placeholder",
+                                "required": True,
+                                "key": "key",
+                                "regex": "regex",
+                                "formatting": "formatting",
+                                "max_length": 10,
+                                "value": "value"
                             }
                         ]
                     },
             ],
             "information_fields": [
                 {
-                    "field_type": 'TEXT_FIELD',
-                    "placeholder": 'placeholder',
+                    "field_type": "TEXT_FIELD",
+                    "placeholder": "placeholder",
                     "required": True,
-                    "key": 'key',
-                    "regex": 'regex',
-                    "formatting": 'formatting',
+                    "key": "key",
+                    "regex": "regex",
+                    "formatting": "formatting",
                     "max_length": 10,
-                    "value": 'value'
+                    "value": "value"
                 }
             ]
         })
@@ -734,7 +808,7 @@ class Test_CreateFormController:
         response = controller(data)
 
         assert response.status_code == 400
-        assert response.body['message'] == 'Parâmetro ausente: longitude'
+        assert response.body["message"] == "Parâmetro ausente: longitude"
     
     def test_create_form_controller_missing_region(self):
         repo = FormRepositoryMock()
@@ -744,52 +818,52 @@ class Test_CreateFormController:
         controller = CreateFormController(usecase)
 
         data = HttpRequest(body={"requester_user": {
-                "sub": 'd61dbf66-a10f-11ed-a8fc-0242ac120001',
-                "name": 'Gabriel Godoy',
+                "sub": "d61dbf66-a10f-11ed-a8fc-0242ac120001",
+                "name": "Gabriel Godoy",
                 "email": repo_profile.profiles[0].email,
                 "cognito:groups": "GAIA, JUNDIAI,FORMULARIOS"
             },
             "form_title": "FORM TITLE",
-            "user_id": 'd61dbf66-a10f-11ed-a8fc-0242ac120001',
+            "user_id": "d61dbf66-a10f-11ed-a8fc-0242ac120001",
             "can_vinculate": True,
-            "template": 'TEMPLATE',
-            "area": '1',
-            "system": 'GAIA',
-            "street": '1',
-            "city": '1',
+            "template": "TEMPLATE",
+            "area": "1",
+            "system": "GAIA",
+            "street": "1",
+            "city": "1",
             "number": 1,
             "latitude": 1.0,
             "longitude": 1.0,
-            "priority": 'EMERGENCY',
+            "priority": "EMERGENCY",
             "expiration_date": 946407600000,
-            "comments": '123',
+            "comments": "123",
             "sections": [
                     {
-                        'section_id': '99999',
-                        'fields': [
+                        "section_id": "99999",
+                        "fields": [
                             {
-                                'field_type': 'TEXT_FIELD',
-                                'placeholder': 'placeholder',
-                                'required': True,
-                                'key': 'key',
-                                'regex': 'regex',
-                                'formatting': 'formatting',
-                                'max_length': 10,
-                                'value': 'value'
+                                "field_type": "TEXT_FIELD",
+                                "placeholder": "placeholder",
+                                "required": True,
+                                "key": "key",
+                                "regex": "regex",
+                                "formatting": "formatting",
+                                "max_length": 10,
+                                "value": "value"
                             }
                         ]
                     },
             ],
             "information_fields": [
                 {
-                    "field_type": 'TEXT_FIELD',
-                    "placeholder": 'placeholder',
+                    "field_type": "TEXT_FIELD",
+                    "placeholder": "placeholder",
                     "required": True,
-                    "key": 'key',
-                    "regex": 'regex',
-                    "formatting": 'formatting',
+                    "key": "key",
+                    "regex": "regex",
+                    "formatting": "formatting",
                     "max_length": 10,
-                    "value": 'value'
+                    "value": "value"
                 }
             ]
         })
@@ -797,7 +871,7 @@ class Test_CreateFormController:
         response = controller(data)
 
         assert response.status_code == 400
-        assert response.body['message'] == 'Parâmetro ausente: region'
+        assert response.body["message"] == "Parâmetro ausente: region"
     
     def test_create_form_controller_missing_priority(self):
         repo = FormRepositoryMock()
@@ -807,52 +881,52 @@ class Test_CreateFormController:
         controller = CreateFormController(usecase)
 
         data = HttpRequest(body={"requester_user": {
-                "sub": 'd61dbf66-a10f-11ed-a8fc-0242ac120001',
-                "name": 'Gabriel Godoy',
+                "sub": "d61dbf66-a10f-11ed-a8fc-0242ac120001",
+                "name": "Gabriel Godoy",
                 "email": repo_profile.profiles[0].email,
                 "cognito:groups": "GAIA, JUNDIAI,FORMULARIOS"
             },
             "form_title": "FORM TITLE",
-            "user_id": 'd61dbf66-a10f-11ed-a8fc-0242ac120001',
+            "user_id": "d61dbf66-a10f-11ed-a8fc-0242ac120001",
             "can_vinculate": True,
-            "template": 'TEMPLATE',
-            "area": '1',
-            "system": 'GAIA',
-            "street": '1',
-            "city": '1',
+            "template": "TEMPLATE",
+            "area": "1",
+            "system": "GAIA",
+            "street": "1",
+            "city": "1",
             "number": 1,
             "latitude": 1.0,
             "longitude": 1.0,
-            "region": 'REGION',
+            "region": "REGION",
             "expiration_date": 946407600000,
-            "comments": '123',
+            "comments": "123",
             "sections": [
                     {
-                        'section_id': '99999',
-                        'fields': [
+                        "section_id": "99999",
+                        "fields": [
                             {
-                                'field_type': 'TEXT_FIELD',
-                                'placeholder': 'placeholder',
-                                'required': True,
-                                'key': 'key',
-                                'regex': 'regex',
-                                'formatting': 'formatting',
-                                'max_length': 10,
-                                'value': 'value'
+                                "field_type": "TEXT_FIELD",
+                                "placeholder": "placeholder",
+                                "required": True,
+                                "key": "key",
+                                "regex": "regex",
+                                "formatting": "formatting",
+                                "max_length": 10,
+                                "value": "value"
                             }
                         ]
                     },
             ],
             "information_fields": [
                 {
-                    "field_type": 'TEXT_FIELD',
-                    "placeholder": 'placeholder',
+                    "field_type": "TEXT_FIELD",
+                    "placeholder": "placeholder",
                     "required": True,
-                    "key": 'key',
-                    "regex": 'regex',
-                    "formatting": 'formatting',
+                    "key": "key",
+                    "regex": "regex",
+                    "formatting": "formatting",
                     "max_length": 10,
-                    "value": 'value'
+                    "value": "value"
                 }
             ]
         })
@@ -860,7 +934,7 @@ class Test_CreateFormController:
         response = controller(data)
 
         assert response.status_code == 400
-        assert response.body['message'] == 'Parâmetro ausente: priority'
+        assert response.body["message"] == "Parâmetro ausente: priority"
     
     def test_create_form_controller_priority_not_in_enum(self):
         repo = FormRepositoryMock()
@@ -870,53 +944,53 @@ class Test_CreateFormController:
         controller = CreateFormController(usecase)
 
         data = HttpRequest(body={"requester_user": {
-                "sub": 'd61dbf66-a10f-11ed-a8fc-0242ac120001',
-                "name": 'Gabriel Godoy',
+                "sub": "d61dbf66-a10f-11ed-a8fc-0242ac120001",
+                "name": "Gabriel Godoy",
                 "email": repo_profile.profiles[0].email,
                 "cognito:groups": "GAIA, JUNDIAI,FORMULARIOS"
             },
             "form_title": "FORM TITLE",
-            "user_id": 'd61dbf66-a10f-11ed-a8fc-0242ac120001',
+            "user_id": "d61dbf66-a10f-11ed-a8fc-0242ac120001",
             "can_vinculate": True,
-            "template": 'TEMPLATE',
-            "area": '1',
-            "system": 'GAIA',
-            "street": '1',
-            "city": '1',
+            "template": "TEMPLATE",
+            "area": "1",
+            "system": "GAIA",
+            "street": "1",
+            "city": "1",
             "number": 1,
             "latitude": 1.0,
             "longitude": 1.0,
-            "region": 'REGION',
-            "priority": 'EMERGENCIA',
+            "region": "REGION",
+            "priority": "EMERGENCIA",
             "expiration_date": 946407600000,
-            "comments": '123',
+            "comments": "123",
             "sections": [
                     {
-                        'section_id': '99999',
-                        'fields': [
+                        "section_id": "99999",
+                        "fields": [
                             {
-                                'field_type': 'TEXT_FIELD',
-                                'placeholder': 'placeholder',
-                                'required': True,
-                                'key': 'key',
-                                'regex': 'regex',
-                                'formatting': 'formatting',
-                                'max_length': 10,
-                                'value': 'value'
+                                "field_type": "TEXT_FIELD",
+                                "placeholder": "placeholder",
+                                "required": True,
+                                "key": "key",
+                                "regex": "regex",
+                                "formatting": "formatting",
+                                "max_length": 10,
+                                "value": "value"
                             }
                         ]
                     },
             ],
             "information_fields": [
                 {
-                    "field_type": 'TEXT_FIELD',
-                    "placeholder": 'placeholder',
+                    "field_type": "TEXT_FIELD",
+                    "placeholder": "placeholder",
                     "required": True,
-                    "key": 'key',
-                    "regex": 'regex',
-                    "formatting": 'formatting',
+                    "key": "key",
+                    "regex": "regex",
+                    "formatting": "formatting",
                     "max_length": 10,
-                    "value": 'value'
+                    "value": "value"
                 }
             ]
         })
@@ -924,7 +998,7 @@ class Test_CreateFormController:
         response = controller(data)
 
         assert response.status_code == 400
-        assert response.body['message'] == 'Parâmetro inválido: priority'
+        assert response.body["message"] == "Parâmetro inválido: priority"
     
     def test_create_form_controller_missing_expiration_date(self):
         repo = FormRepositoryMock()
@@ -935,52 +1009,52 @@ class Test_CreateFormController:
 
         data = HttpRequest(body={
             "requester_user": {
-                "sub": 'd61dbf66-a10f-11ed-a8fc-0242ac120001',
-                "name": 'Gabriel Godoy',
+                "sub": "d61dbf66-a10f-11ed-a8fc-0242ac120001",
+                "name": "Gabriel Godoy",
                 "email": repo_profile.profiles[0].email,
                 "cognito:groups": "GAIA, JUNDIAI,FORMULARIOS"
             },
             "form_title": "FORM TITLE",
-            "user_id": 'd61dbf66-a10f-11ed-a8fc-0242ac120001',
+            "user_id": "d61dbf66-a10f-11ed-a8fc-0242ac120001",
             "can_vinculate": True,
-            "template": 'TEMPLATE',
-            "area": '1',
-            "system": 'GAIA',
-            "street": '1',
-            "city": '1',
+            "template": "TEMPLATE",
+            "area": "1",
+            "system": "GAIA",
+            "street": "1",
+            "city": "1",
             "number": 1,
             "latitude": 1.0,
             "longitude": 1.0,
-            "region": 'REGION',
-            "priority": 'EMERGENCY',
-            "comments": '123',
+            "region": "REGION",
+            "priority": "EMERGENCY",
+            "comments": "123",
             "sections": [
                 {
-                    'section_id': '99999',
-                    'fields': [
+                    "section_id": "99999",
+                    "fields": [
                         {
-                            'field_type': 'TEXT_FIELD',
-                            'placeholder': 'placeholder',
-                            'required': True,
-                            'key': 'key',
-                            'regex': 'regex',
-                            'formatting': 'formatting',
-                            'max_length': 10,
-                            'value': 'value'
+                            "field_type": "TEXT_FIELD",
+                            "placeholder": "placeholder",
+                            "required": True,
+                            "key": "key",
+                            "regex": "regex",
+                            "formatting": "formatting",
+                            "max_length": 10,
+                            "value": "value"
                         }
                     ]
                 },
             ],
             "information_fields": [
                 {
-                    "field_type": 'TEXT_FIELD',
-                    "placeholder": 'placeholder',
+                    "field_type": "TEXT_FIELD",
+                    "placeholder": "placeholder",
                     "required": True,
-                    "key": 'key',
-                    "regex": 'regex',
-                    "formatting": 'formatting',
+                    "key": "key",
+                    "regex": "regex",
+                    "formatting": "formatting",
                     "max_length": 10,
-                    "value": 'value'
+                    "value": "value"
                 }
             ]
         })
@@ -988,7 +1062,7 @@ class Test_CreateFormController:
         response = controller(data)
 
         assert response.status_code == 400
-        assert response.body['message'] == 'Parâmetro ausente: expiration_date'
+        assert response.body["message"] == "Parâmetro ausente: expiration_date"
     
     def test_create_form_controller_missing_sections(self):
         repo = FormRepositoryMock()
@@ -999,48 +1073,48 @@ class Test_CreateFormController:
 
         data = HttpRequest(body={
             "requester_user": {
-                "sub": 'd61dbf66-a10f-11ed-a8fc-0242ac120001',
-                "name": 'Gabriel Godoy',
+                "sub": "d61dbf66-a10f-11ed-a8fc-0242ac120001",
+                "name": "Gabriel Godoy",
                 "email": repo_profile.profiles[0].email,
                 "cognito:groups": "GAIA, JUNDIAI,FORMULARIOS"
             },
             "form_title": "FORM TITLE",
-            "user_id": 'd61dbf66-a10f-11ed-a8fc-0242ac120001',
+            "user_id": "d61dbf66-a10f-11ed-a8fc-0242ac120001",
             "can_vinculate": True,
-            "template": 'TEMPLATE',
-            "area": '1',
-            "system": 'GAIA',
-            "street": '1',
-            "city": '1',
+            "template": "TEMPLATE",
+            "area": "1",
+            "system": "GAIA",
+            "street": "1",
+            "city": "1",
             "number": 1,
             "latitude": 1.0,
             "longitude": 1.0,
-            "region": 'REGION',
-            "priority": 'EMERGENCY',
+            "region": "REGION",
+            "priority": "EMERGENCY",
             "expiration_date": 946407600000,
             "justification": {
                 "options": [
                     {
-                        "option": 'option',
+                        "option": "option",
                         "required_image": True,
                         "required_text": True
                     }
                 ],
-                "selected_option": 'selected_option',
-                "text": 'text',
-                "image": 'image'
+                "selected_option": "selected_option",
+                "text": "text",
+                "image": "image"
             },
-            "comments": '123',
+            "comments": "123",
             "information_fields": [
                 {
-                    "field_type": 'TEXT_FIELD',
-                    "placeholder": 'placeholder',
+                    "field_type": "TEXT_FIELD",
+                    "placeholder": "placeholder",
                     "required": True,
-                    "key": 'key',
-                    "regex": 'regex',
-                    "formatting": 'formatting',
+                    "key": "key",
+                    "regex": "regex",
+                    "formatting": "formatting",
                     "max_length": 10,
-                    "value": 'value'
+                    "value": "value"
                 }
             ]
         })
@@ -1048,5 +1122,5 @@ class Test_CreateFormController:
         response = controller(data)
 
         assert response.status_code == 400
-        assert response.body['message'] == 'Parâmetro ausente: sections'
+        assert response.body["message"] == "Parâmetro ausente: sections"
     

@@ -39,10 +39,10 @@ class FormRepositoryDynamo(IFormRepository):
     def get_form_by_user_id(self, user_id: str) -> dict:
         query_string = Key(self.dynamo.partition_key).eq(self.form_partition_key_format(user_id))
         resp = self.dynamo.query(key_condition_expression=query_string, Select='ALL_ATTRIBUTES')
-
+        print(resp)
         forms = []
 
-        for item in resp:
+        for item in resp['Items']:
             forms.append(FormDynamoDTO.from_dynamo(item).to_entity())
         
         return forms

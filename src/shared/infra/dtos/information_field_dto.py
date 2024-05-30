@@ -1,3 +1,4 @@
+from decimal import Decimal
 from src.shared.domain.entities.information_field import ImageInformationField, InformationField, MapInformationField, TextInformationField
 from src.shared.domain.enums.information_field_type_enum import INFORMATION_FIELD_TYPE
 from src.shared.helpers.errors.controller_errors import MissingParameters
@@ -50,8 +51,8 @@ class InformationFieldDTO():
         if isinstance(self.information_field, MapInformationField):
             return {
                 "information_field_type": self.information_field.information_field_type.value,
-                "latitude": self.information_field.latitude,
-                "longitude": self.information_field.longitude
+                "latitude": Decimal(str(self.information_field.latitude)),
+                "longitude": Decimal(str(self.information_field.longitude))
             }
         if isinstance(self.information_field, ImageInformationField):
             return {
@@ -76,7 +77,10 @@ class InformationFieldDTO():
             return InformationFieldDTO(TextInformationField(**information_field_dict))
         
         elif information_field_type == INFORMATION_FIELD_TYPE.MAP_INFORMATION_FIELD:
-            return InformationFieldDTO(MapInformationField(**information_field_dict))
+            return InformationFieldDTO(MapInformationField(
+                latitude=float(information_field_dict.get('latitude')),
+                longitude=float(information_field_dict.get('longitude'))
+            ))
         
         elif information_field_type == INFORMATION_FIELD_TYPE.IMAGE_INFORMATION_FIELD:
             return InformationFieldDTO(ImageInformationField(**information_field_dict))
