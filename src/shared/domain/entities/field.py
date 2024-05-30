@@ -62,7 +62,7 @@ class NumberField(Field):
     decimal: bool
     value: Optional[float]
 
-    def __init__(self, placeholder: str, required: bool, key: str, max_value: int, min_value: int, decimal: bool, regex: Optional[str] = None, formatting: Optional[str] = None, value: Optional[float] = None):
+    def __init__(self, placeholder: str, required: bool, key: str, decimal: bool, max_value: int = None, min_value: int = None, regex: Optional[str] = None, formatting: Optional[str] = None, value: Optional[float] = None):
         super().__init__(FIELD_TYPE.NUMBER_FIELD, placeholder, required, key, regex, formatting)
         if max_value is not None and type(max_value) is not int:
             raise EntityError('max_value')

@@ -156,10 +156,10 @@ class FieldDTO:
             })
         elif isinstance(self.field, NumberField):
             dynamo_dict.update({
-                "max_value": self.field.max_value,
-                "min_value": self.field.min_value,
+                "max_value": Decimal(str(self.field.max_value)) if self.field.max_value is not None else None,
+                "min_value": Decimal(str(self.field.min_value)) if self.field.min_value is not None else None,
                 "decimal": self.field.decimal,
-                "value": Decimal(str(self.field.value))
+                "value": Decimal(str(self.field.value)) if self.field.value is not None else None
             })
         elif isinstance(self.field, DropDownField):
             dynamo_dict.update({
@@ -169,7 +169,7 @@ class FieldDTO:
         elif isinstance(self.field, TypeAheadField):
             dynamo_dict.update({
                 "options": self.field.options,
-                "max_length": self.field.max_length,
+                "max_length": Decimal(str(self.field.max_length)) if self.field.max_length is not None else None,
                 "value": self.field.value
             })
         elif isinstance(self.field, RadioGroupField):
@@ -179,8 +179,8 @@ class FieldDTO:
             })
         elif isinstance(self.field, DateField):
             dynamo_dict.update({
-                "min_date": self.field.min_date,
-                "max_date": self.field.max_date,
+                "min_date": Decimal(str(self.field.min_date)) if self.field.min_date is not None else None,
+                "max_date": Decimal(str(self.field.max_date)) if self.field.max_date is not None else None,
                 "value": self.field.value
             })
         elif isinstance(self.field, CheckboxField):
@@ -190,7 +190,7 @@ class FieldDTO:
         elif isinstance(self.field, CheckBoxGroupField):
             dynamo_dict.update({
                 "options": self.field.options,
-                "check_limit": self.field.check_limit,
+                "check_limit": Decimal(str(self.field.check_limit)) if self.field.check_limit is not None else None,
                 "value": self.field.value
             })
         elif isinstance(self.field, SwitchButtonField):
@@ -200,8 +200,8 @@ class FieldDTO:
         elif isinstance(self.field, FileField):
             dynamo_dict.update({
                 "file_type": self.field.file_type.name,
-                "min_quantity": self.field.min_quantity,
-                "max_quantity": self.field.max_quantity,
+                "min_quantity": Decimal(str(self.field.min_quantity)),
+                "max_quantity": Decimal(str(self.field.max_quantity)),
                 "value": self.field.value
             })
 
