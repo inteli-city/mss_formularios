@@ -90,6 +90,11 @@ class LambdaStack(Construct):
 
         self.functions_that_need_dynamo_profile_permissions = [
             self.login_profile,
+            self.get_form_by_user_id,
+            self.create_form,
+            self.cancel_form,
+            self.complete_form,
+            self.update_form_status
         ]
 
         self.functions_that_need_dynamo_forms_permissions = [
@@ -102,9 +107,4 @@ class LambdaStack(Construct):
 
         self.functions_that_need_cognito_permissions = [
             self.login_profile,
-            self.get_form_by_user_id,
-            self.create_form,
-            self.cancel_form,
-            self.complete_form,
-            self.update_form_status
         ]
