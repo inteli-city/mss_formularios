@@ -47,8 +47,10 @@ class IacStack(Stack):
             "USER_POOL_ID": self.user_pool_id,
             "USER_POOL_ARN": self.user_pool_arn,
             "APP_CLIENT_ID": self.app_client_id,
+            "DYNAMO_TABLE_NAME": self.dynamo_stack.dynamo_table_forms.table_name,
             "DYNAMO_TABLE_NAME_PROFILE": self.dynamo_stack.dynamo_table_profile.table_name,
             "DYNAMO_PARTITION_KEY": "PK",
+            "DYNAMO_SORT_KEY": "SK",
             "REGION": self.region,
         }
 

@@ -18,7 +18,7 @@ class ProfileRepositoryDynamo(IProfileRepository):
             dynamo_table_name=Environments.get_envs().dynamo_table_name_profile,
             region=Environments.get_envs().region,
             partition_key=Environments.get_envs().dynamo_partition_key,
-            # sort_key=Environments.get_envs().dynamo_sort_key,
+            sort_key=Environments.get_envs().dynamo_sort_key,
         )
 
     def create_profile(self, profile: Profile) -> Profile:
