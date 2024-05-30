@@ -21,7 +21,7 @@ class CancelFormUsecase:
         if not profile.enabled:
             raise ForbiddenAction("Usuário desabilitado")
         
-        form = self.form_repo.get_form_by_id(form_id)
+        form = self.form_repo.get_form_by_id(user_id=requester_id, form_id=form_id)
 
         if form is None:
             raise NoItemsFound("Formulário não encontrado")
@@ -32,4 +32,4 @@ class CancelFormUsecase:
         if form.status == FORM_STATUS.CANCELED or form.status == FORM_STATUS.CONCLUDED:
             raise ForbiddenAction("Formulário já finalizado")
         
-        return self.form_repo.cancel_form(form_id=form_id, selected_option=selected_option, justification_text=justification_text, justification_image=justification_image)
+        return self.form_repo.cancel_form(user_id=requester_id, form_id=form_id, selected_option=selected_option, justification_text=justification_text, justification_image=justification_image)

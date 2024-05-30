@@ -23,7 +23,7 @@ class CompleteFormUsecase:
         if not profile.enabled:
             raise ForbiddenAction("Usuário desabilitado")
         
-        form = self.form_repo.get_form_by_id(form_id)
+        form = self.form_repo.get_form_by_id(user_id=requester_id, form_id=form_id)
 
         if form is None:
             raise NoItemsFound("Formulário não encontrado")
@@ -40,8 +40,8 @@ class CompleteFormUsecase:
                     raise ForbiddenAction("Campo obrigatório não preenchido")
                 
         if vinculation_form_id is not None:
-            vinculation_form = self.form_repo.get_form_by_id(vinculation_form_id)
+            vinculation_form = self.form_repo.get_form_by_id(user_id=requester_id, form_id=vinculation_form_id)
             if vinculation_form is None:
                 raise NoItemsFound("Formulário de vinculação não encontrado")
         
-        return self.form_repo.complete_form(form_id=form_id, sections=sections, vinculation_form_id=vinculation_form_id)
+        return self.form_repo.complete_form(user_id=requester_id, form_id=form_id, sections=sections, vinculation_form_id=vinculation_form_id)

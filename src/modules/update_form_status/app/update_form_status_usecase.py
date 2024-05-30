@@ -18,7 +18,7 @@ class UpdateFormStatusUsecase:
         if not profile.enabled:
             raise ForbiddenAction("Usuário desabilitado")
         
-        form = self.form_repository.get_form_by_id(form_id)
+        form = self.form_repository.get_form_by_id(user_id=requester_id, form_id=form_id)
 
         if form is None:
             raise NoItemsFound("Formulário não encontrado")
@@ -29,5 +29,5 @@ class UpdateFormStatusUsecase:
         if profile.profile_id != form.user_id:
             raise ForbiddenAction("Usuário não pode alterar o status de um formulário não direcionado a ele")
         
-        return self.form_repository.update_form_status(form_id, status)
+        return self.form_repository.update_form_status(user_id=requester_id, form_id=form_id, status=status)
         

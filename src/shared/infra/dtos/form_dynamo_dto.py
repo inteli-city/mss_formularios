@@ -128,3 +128,64 @@ class FormDynamoDTO:
             ],
             'information_fields': [information_field.to_dynamo() for information_field in self.information_fields] if self.information_fields else None
         }
+    
+    @staticmethod
+    def from_dynamo(data: dict) -> "FormDynamoDTO":
+        return FormDynamoDTO(
+            form_title=data['form_title'],
+            form_id=data['form_id'],
+            creator_user_id=data['creator_user_id'],
+            user_id=data['user_id'],
+            vinculation_form_id=data['vinculation_form_id'],
+            can_vinculate=data['can_vinculate'],
+            template=data['template'],
+            area=data['area'],
+            system=data['system'],
+            street=data['street'],
+            city=data['city'],
+            number=data['number'],
+            latitude=data['latitude'],
+            longitude=data['longitude'],
+            region=data['region'],
+            description=data['description'],
+            priority=PRIORITY(data['priority']),
+            status=FORM_STATUS(data['status']),
+            expiration_date=data['expiration_date'],
+            creation_date=data['creation_date'],
+            start_date=data['start_date'],
+            conclusion_date=data['conclusion_date'],
+            justification=Justification.from_dynamo(data['justification']),
+            comments=data['comments'],
+            sections=[SectionDTO.from_dynamo(section) for section in data['sections']],
+            information_fields=[InformationField.from_dynamo(information_field) for information_field in data['information_fields']] if data['information_fields'] else None
+        )
+    
+    def to_entity(self) -> Form:
+        return Form(
+            form_title=self.form_title,
+            form_id=self.form_id,
+            creator_user_id=self.creator_user_id,
+            user_id=self.user_id,
+            vinculation_form_id=self.vinculation_form_id,
+            can_vinculate=self.can_vinculate,
+            template=self.template,
+            area=self.area,
+            system=self.system,
+            street=self.street,
+            city=self.city,
+            number=self.number,
+            latitude=self.latitude,
+            longitude=self.longitude,
+            region=self.region,
+            description=self.description,
+            priority=self.priority,
+            status=self.status,
+            expiration_date=self.expiration_date,
+            creation_date=self.creation_date,
+            start_date=self.start_date,
+            conclusion_date=self.conclusion_date,
+            justification=self.justification,
+            comments=self.comments,
+            sections=self.sections,
+            information_fields=self.information_fields
+        )

@@ -10,7 +10,7 @@ from src.shared.domain.enums.form_status_enum import FORM_STATUS
 class IFormRepository(ABC):
 
     @abstractmethod
-    def get_form_by_id(self, form_id: str) -> Form:
+    def get_form_by_id(self, user_id:str, form_id: str) -> Form:
         pass
     
     @abstractmethod
@@ -22,13 +22,13 @@ class IFormRepository(ABC):
         pass
 
     @abstractmethod
-    def update_form_status(self, form_id: str, status: FORM_STATUS) -> Form:
+    def update_form_status(self, user_id: str, form_id: str, status: FORM_STATUS) -> Form:
         pass
 
     @abstractmethod
-    def cancel_form(self, form_id: str, selected_option: str, justification_text: Optional[str] = None, justification_image: Optional[str] = None) -> Form:
+    def cancel_form(self, user_id: str, form_id: str, selected_option: str, justification_text: Optional[str] = None, justification_image: Optional[str] = None) -> Form:
         pass
 
     @abstractmethod
-    def complete_form(self, form_id: str, sections: List[Section], vinculation_form_id: Optional[str] = None) -> Form:
+    def complete_form(self, user_id: str, form_id: str, sections: List[Section], vinculation_form_id: Optional[str] = None) -> Form:
         pass

@@ -26,13 +26,13 @@ class Test_FormRepositoryMock:
 
     def test_form_repository_mock_get_form_by_id(self):
         repo = FormRepositoryMock()
-        form = repo.get_form_by_id(repo.forms[0].form_id)
+        form = repo.get_form_by_id(user_id='d61dbf66-a10f-11ed-a8fc-0242ac120001', form_id=repo.forms[0].form_id)
 
         assert form.form_id == repo.forms[0].form_id
     
     def test_form_repository_mock_get_form_by_id_not_found(self):
         repo = FormRepositoryMock()
-        form = repo.get_form_by_id('d61dbf66-a10f-11ed-a8fc-0242ac120099')
+        form = repo.get_form_by_id(user_id='d61dbf66-a10f-11ed-a8fc-0242ac120001', form_id='d61dbf66-a10f-11ed-a8fc-0242ac120099')
 
         assert form is None
 
@@ -94,13 +94,13 @@ class Test_FormRepositoryMock:
     
     def test_form_repository_mock_update_form_status(self):
         repo = FormRepositoryMock()
-        form = repo.update_form_status(repo.forms[0].form_id, FORM_STATUS.IN_PROGRESS)
+        form = repo.update_form_status(user_id='d61dbf66-a10f-11ed-a8fc-0242ac120001', form_id=repo.forms[0].form_id, status=FORM_STATUS.IN_PROGRESS)
 
         assert form.status == FORM_STATUS.IN_PROGRESS
     
     def test_form_repository_mock_cancel_form(self):
         repo = FormRepositoryMock()
-        form = repo.cancel_form(form_id=repo.forms[0].form_id, selected_option='option', justification_text='text', justification_image='image')
+        form = repo.cancel_form(user_id='d61dbf66-a10f-11ed-a8fc-0242ac120001', form_id=repo.forms[0].form_id, selected_option='option', justification_text='text', justification_image='image')
 
         assert form.status == FORM_STATUS.CANCELED
         assert form.justification.selected_option == 'option'
@@ -111,7 +111,7 @@ class Test_FormRepositoryMock:
         repo = FormRepositoryMock()
         text_field = TextField(placeholder='placeholder', required=True, key='key', regex='regex', formatting='formatting', max_length=10, value='value')
         section = Section(section_id='99999', fields=[text_field, text_field])
-        form = repo.complete_form(repo.forms[0].form_id, [section], 'd61dbf66-a10f-11ed-a8fc-0242ac120012')
+        form = repo.complete_form('d61dbf66-a10f-11ed-a8fc-0242ac120001',repo.forms[0].form_id, [section], 'd61dbf66-a10f-11ed-a8fc-0242ac120012')
 
         assert form.status == FORM_STATUS.CONCLUDED
         assert form.vinculation_form_id == 'd61dbf66-a10f-11ed-a8fc-0242ac120012'

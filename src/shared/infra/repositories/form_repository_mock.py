@@ -106,7 +106,7 @@ class FormRepositoryMock(IFormRepository):
             ),
         ]
     
-    def get_form_by_id(self, form_id: str) -> Form:
+    def get_form_by_id(self, user_id: str, form_id: str) -> Form:
         for form in self.forms:
             if form.form_id == form_id:
                 return form
@@ -127,14 +127,14 @@ class FormRepositoryMock(IFormRepository):
         self.forms.append(form)
         return form
     
-    def update_form_status(self, form_id: str, status: FORM_STATUS) -> Form:
+    def update_form_status(self, user_id: str, form_id: str, status: FORM_STATUS) -> Form:
         for form in self.forms:
             if form.form_id == form_id:
                 form.status = status
                 return form
         return None
     
-    def cancel_form(self, form_id: str, selected_option: str, justification_text: Optional[str] = None, justification_image: Optional[str] = None) -> Form:
+    def cancel_form(self, user_id: str, form_id: str, selected_option: str, justification_text: Optional[str] = None, justification_image: Optional[str] = None) -> Form:
         for form in self.forms:
             if form.form_id == form_id:
                 form.status = FORM_STATUS.CANCELED
@@ -144,7 +144,7 @@ class FormRepositoryMock(IFormRepository):
                 return form
         return None
 
-    def complete_form(self, form_id: str, sections: List[Section], vinculation_form_id: Optional[str] = None) -> Form:
+    def complete_form(self, user_id: str, form_id: str, sections: List[Section], vinculation_form_id: Optional[str] = None) -> Form:
         for form in self.forms:
             if form.form_id == form_id:
                 form.status = FORM_STATUS.CONCLUDED
