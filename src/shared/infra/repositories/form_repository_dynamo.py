@@ -48,7 +48,7 @@ class FormRepositoryDynamo(IFormRepository):
 
     def create_form(self, form: Form) -> Form:
         item = FormDynamoDTO.from_entity(form).to_dynamo()
-        self.dynamo.put_item(item=item, partition_key=self.action_partition_key_format(form.user_id), sort_key=self.action_sort_key_format(form.form_id), is_decimal=True)
+        self.dynamo.put_item(item=item, partition_key=self.form_partition_key_format(form.user_id), sort_key=self.form_sort_key_format(form.form_id), is_decimal=True)
         
         return form
     
@@ -57,7 +57,7 @@ class FormRepositoryDynamo(IFormRepository):
             "status": status.value
         }
 
-        resp = self.dynamo.update_item(partition_key=self.project_partition_key_format(user_id), sort_key=self.project_sort_key_format(form_id), update_dict=update_dict)
+        resp = self.dynamo.update_item(partition_key=self.form_partition_key_format(user_id), sort_key=self.form_sort_key_format(form_id), update_dict=update_dict)
         
         if "Attributes" not in resp:
             return None
@@ -74,7 +74,7 @@ class FormRepositoryDynamo(IFormRepository):
             }
         }
 
-        resp = self.dynamo.update_item(partition_key=self.project_partition_key_format(user_id), sort_key=self.project_sort_key_format(form_id), update_dict=update_dict)
+        resp = self.dynamo.update_item(partition_key=self.form_partition_key_format(user_id), sort_key=self.form_sort_key_format(form_id), update_dict=update_dict)
         
         if "Attributes" not in resp:
             return None
@@ -90,7 +90,7 @@ class FormRepositoryDynamo(IFormRepository):
             "vinculation_form_id": vinculation_form_id
         }
 
-        resp = self.dynamo.update_item(partition_key=self.project_partition_key_format(user_id), sort_key=self.project_sort_key_format(form_id), update_dict=update_dict)
+        resp = self.dynamo.update_item(partition_key=self.form_partition_key_format(user_id), sort_key=self.form_sort_key_format(form_id), update_dict=update_dict)
         
         if "Attributes" not in resp:
             return None
