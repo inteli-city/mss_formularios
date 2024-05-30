@@ -6,6 +6,8 @@ from src.shared.domain.entities.justification import Justification
 from src.shared.domain.entities.section import Section
 from src.shared.domain.enums.form_status_enum import FORM_STATUS
 from src.shared.domain.enums.priority_enum import PRIORITY
+from src.shared.infra.dtos.information_field_dto import InformationFieldDTO
+from src.shared.infra.dtos.justification_dto import JustificationDTO
 from src.shared.infra.dtos.section_dto import SectionDTO
 
 
@@ -121,12 +123,12 @@ class FormDynamoDTO:
             'creation_date': self.creation_date,
             'start_date': self.start_date,
             'conclusion_date': self.conclusion_date,
-            'justification': self.justification.to_dynamo(),
+            'justification': JustificationDTO.from_entity(self.justification).to_dynamo(),
             'comments': self.comments,
             'sections': [
-                SectionDTO
+                SectionDTO.from_entity(section).to_dynamo() for section in self.sections
             ],
-            'information_fields': [information_field.to_dynamo() for information_field in self.information_fields] if self.information_fields else None
+            'information_fields': [InformationFieldDTO.from_entity(information_field).to_dynamo() for information_field in self.information_fields] if self.information_fields else None
         }
     
     @staticmethod
@@ -154,10 +156,10 @@ class FormDynamoDTO:
             creation_date=data['creation_date'],
             start_date=data['start_date'],
             conclusion_date=data['conclusion_date'],
-            justification=Justification.from_dynamo(data['justification']),
+            justification=JustificationDTO.from_dynamo(data['justification']).to_entity(),
             comments=data['comments'],
-            sections=[SectionDTO.from_dynamo(section) for section in data['sections']],
-            information_fields=[InformationField.from_dynamo(information_field) for information_field in data['information_fields']] if data['information_fields'] else None
+            sections=[SectionDTO.from_dynamo(section).to_entity() for section in data['sections']],
+            information_fields=[InformationFieldDTO.from_dynamo(information_field).to_entity() for information_field in data['information_fields']] if data['information_fields'] else None
         )
     
     def to_entity(self) -> Form:

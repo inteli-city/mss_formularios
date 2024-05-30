@@ -22,17 +22,31 @@ class SectionDTO:
             raise MissingParameters('fields')
         fields_data = section_dict['fields']
 
-        fields = [FieldDTO.from_dict(field_dict=field_data).to_entity() for field_data in fields_data]
+        fields = [FieldDTO.from_dynamo(field_dict=field_data).to_entity() for field_data in fields_data]
 
         return SectionDTO(
             section_id=section_id,
             fields=fields
         )
+    
+    @staticmethod
+    def from_entity(section: Section) -> "SectionDTO":
+        return SectionDTO(
+            section_id=section.section_id,
+            fields=section.fields
+        )
+    
+    @staticmethod
+    def from_dynamo(section_dict: dict) -> "SectionDTO":
+        return SectionDTO(
+            section_id=section_dict['section_id'],
+            fields=[FieldDTO.from_dynamo(field_dict=field_data).to_entity() for field_data in section_dict['fields']]
+        )
 
     def to_dynamo(self) -> dict:
         dynamo_dict = {
-            "section_id": self.section.section_id,
-            "fields": [FieldDTO(field).to_dynamo() for field in self.section.fields]
+            "section_id": self.section_id,
+            "fields": [FieldDTO(field).to_dynamo() for field in self.fields]
         }
         return dynamo_dict
 

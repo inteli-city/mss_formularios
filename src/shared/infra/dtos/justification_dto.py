@@ -41,5 +41,33 @@ class JustificationDTO:
 
         return JustificationDTO(options=options, selected_option=selected_option, justification_text=justification_text, justification_image=justification_image)
 
+    @staticmethod
+    def from_entity(justification: Justification) -> "JustificationDTO":
+        return JustificationDTO(options=justification.options, selected_option=justification.selected_option, justification_text=justification.justification_text, justification_image=justification.justification_image)
+    
+    def to_dynamo(self) -> dict:
+        return {
+            "options": [{
+                "option": option.option,
+                "required_image": option.required_image,
+                "required_text": option.required_text
+            } for option in self.options],
+            "selected_option": self.selected_option,
+            "justification_text": self.justification_text,
+            "justification_image": self.justification_image
+        }
+
+    @staticmethod
+    def from_dynamo(justification_dict: dict) -> "JustificationDTO":
+        options_data = justification_dict.get('options')
+
+        options = [JustificationOption(**option_data) for option_data in options_data]
+
+        selected_option = justification_dict.get('selected_option')
+        justification_text = justification_dict.get('justification_text')
+        justification_image = justification_dict.get('justification_image')
+
+        return JustificationDTO(options=options, selected_option=selected_option, justification_text=justification_text, justification_image=justification_image)
+
     def to_entity(self) -> Justification:
         return Justification(options=self.options, selected_option=self.selected_option, justification_text=self.justification_text, justification_image=self.justification_image)

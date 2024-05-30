@@ -597,6 +597,92 @@ class Test_SectionDTO:
 
         with pytest.raises(MissingParameters):
             SectionDTO.from_request(section_dict)
+    
+    def test_section_dto_from_entity(self):
+        section = SectionDTO(
+            section_id='99999',
+            fields=[
+                TextField(
+                    placeholder='placeholder',
+                    required=True,
+                    key='key',
+                    regex='regex',
+                    formatting='formatting',
+                    max_length=10,
+                ),
+            ]
+        )
+
+        section_dto = SectionDTO.from_entity(section)
+
+        assert section_dto.section_id == '99999'
+        assert len(section_dto.fields) == 1
+        assert section_dto.fields[0].field_type == FIELD_TYPE.TEXT_FIELD
+        assert section_dto.fields[0].placeholder == 'placeholder'
+        assert section_dto.fields[0].required == True
+        assert section_dto.fields[0].key == 'key'
+        assert section_dto.fields[0].regex == 'regex'
+        assert section_dto.fields[0].formatting == 'formatting'
+        assert section_dto.fields[0].max_length == 10
+        assert section_dto.fields[0].value == None
+    
+    def test_section_from_dynamo(self):
+        section_dict = {
+            'section_id': '99999',
+            'fields': [
+                {
+                    'field_type': 'TEXT_FIELD',
+                    'placeholder': 'placeholder',
+                    'required': True,
+                    'key': 'key',
+                    'regex': 'regex',
+                    'formatting': 'formatting',
+                    'max_length': 10,
+                    'value': 'value'
+                },
+            ]
+        }
+
+        section = SectionDTO.from_dynamo(section_dict)
+
+        assert section.section_id == '99999'
+        assert len(section.fields) == 1
+        assert section.fields[0].field_type == FIELD_TYPE.TEXT_FIELD
+        assert section.fields[0].placeholder == 'placeholder'
+        assert section.fields[0].required == True
+        assert section.fields[0].key == 'key'
+        assert section.fields[0].regex == 'regex'
+        assert section.fields[0].formatting == 'formatting'
+        assert section.fields[0].max_length == 10
+        assert section.fields[0].value == 'value'
+    
+    def test_section_dto_to_dynamo(self):
+        section = SectionDTO(
+            section_id='99999',
+            fields=[
+                TextField(
+                    placeholder='placeholder',
+                    required=True,
+                    key='key',
+                    regex='regex',
+                    formatting='formatting',
+                    max_length=10,
+                ),
+            ]
+        )
+
+        section_dynamo = section.to_dynamo()
+
+        assert section_dynamo['section_id'] == '99999'
+        assert len(section_dynamo['fields']) == 1
+        assert section_dynamo['fields'][0]['field_type'] == FIELD_TYPE.TEXT_FIELD.name
+        assert section_dynamo['fields'][0]['placeholder'] == 'placeholder'
+        assert section_dynamo['fields'][0]['required'] == True
+        assert section_dynamo['fields'][0]['key'] == 'key'
+        assert section_dynamo['fields'][0]['regex'] == 'regex'
+        assert section_dynamo['fields'][0]['formatting'] == 'formatting'
+        assert section_dynamo['fields'][0]['max_length'] == 10
+        assert section_dynamo['fields'][0]['value'] == None
 
     
     def test_section_dto_to_entity(self):

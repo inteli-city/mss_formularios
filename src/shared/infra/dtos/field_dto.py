@@ -13,7 +13,7 @@ class FieldDTO:
         self.field = field
     
     @staticmethod
-    def from_dict(field_dict: dict):
+    def from_dynamo(field_dict: dict):
         if field_dict.get('field_type') is None:
             raise MissingParameters('field_type')
         
@@ -32,8 +32,6 @@ class FieldDTO:
         field_type = FIELD_TYPE[field_dict.get('field_type')]
 
         field_dict.pop('field_type')
-
-        print(field_dict)
 
         if field_type == FIELD_TYPE.TEXT_FIELD:
             field = TextField(**field_dict)
@@ -90,9 +88,10 @@ class FieldDTO:
                 placeholder=field_dict.get('placeholder'),
                 regex=field_dict.get('regex'),
                 required=field_dict.get('required'),
+                value=field_dict.get('value')
             )
         
-        return FieldDTO(field)
+        return FieldDTO(field)    
 
     def to_dynamo(self) -> dict:
         dynamo_dict = {

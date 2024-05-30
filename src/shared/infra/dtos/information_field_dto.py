@@ -37,6 +37,52 @@ class InformationFieldDTO():
         else:
             raise EntityError('information_field_type')
     
+    @staticmethod
+    def from_entity(information_field: InformationField) -> "InformationFieldDTO":
+        return InformationFieldDTO(information_field)
+
+    def to_dynamo(self) -> dict:
+        if isinstance(self.information_field, TextInformationField):
+            return {
+                "information_field_type": self.information_field.information_field_type.value,
+                "value": self.information_field.value
+            }
+        if isinstance(self.information_field, MapInformationField):
+            return {
+                "information_field_type": self.information_field.information_field_type.value,
+                "latitude": self.information_field.latitude,
+                "longitude": self.information_field.longitude
+            }
+        if isinstance(self.information_field, ImageInformationField):
+            return {
+                "information_field_type": self.information_field.information_field_type.value,
+                "file_path": self.information_field.file_path
+            }
+        else:
+            raise EntityError('information_field_type')
+    
+    @staticmethod
+    def from_dynamo(information_field_dict: dict) -> "InformationFieldDTO":
+        if information_field_dict.get('information_field_type') is None:
+            raise MissingParameters('information_field_type')
+        
+        if information_field_dict.get('information_field_type') not in [field.value for field in INFORMATION_FIELD_TYPE]:
+            raise EntityError('information_field_type')
+
+        information_field_type = INFORMATION_FIELD_TYPE[information_field_dict.get('information_field_type')]
+        information_field_dict.pop('information_field_type')
+
+        if information_field_type == INFORMATION_FIELD_TYPE.TEXT_INFORMATION_FIELD:
+            return InformationFieldDTO(TextInformationField(**information_field_dict))
+        
+        elif information_field_type == INFORMATION_FIELD_TYPE.MAP_INFORMATION_FIELD:
+            return InformationFieldDTO(MapInformationField(**information_field_dict))
+        
+        elif information_field_type == INFORMATION_FIELD_TYPE.IMAGE_INFORMATION_FIELD:
+            return InformationFieldDTO(ImageInformationField(**information_field_dict))
+        else:
+            raise EntityError('information_field_type')
+    
     def to_entity(self) -> InformationField:
         return self.information_field
     
