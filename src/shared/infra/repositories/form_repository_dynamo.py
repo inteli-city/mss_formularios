@@ -1,3 +1,4 @@
+from decimal import Decimal
 from typing import List, Optional
 from src.shared.domain.entities.form import Form
 from src.shared.domain.entities.section import Section
@@ -47,6 +48,8 @@ class FormRepositoryDynamo(IFormRepository):
         return forms
 
     def create_form(self, form: Form) -> Form:
+        form.latitude = Decimal(str(form.latitude))
+        form.longitude = Decimal(str(form.longitude))
         item = FormDynamoDTO.from_entity(form).to_dynamo()
         self.dynamo.put_item(item=item, partition_key=self.form_partition_key_format(form.user_id), sort_key=self.form_sort_key_format(form.form_id), is_decimal=True)
         
