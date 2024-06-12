@@ -72,7 +72,7 @@ class Test_CreateFormPresenter:
                             "required_text": True
                         }
                     ],
-                    "selected_option": 'selected_option',
+                    "selected_option": 'option',
                     "text": 'text',
                     "image": 'image'
                 },

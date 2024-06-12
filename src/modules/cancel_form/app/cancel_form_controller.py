@@ -41,9 +41,9 @@ class CancelFormController:
             form = self.CancelFormUsecase(
                 requester_id=requester_user.user_id,
                 form_id=request.data.get('form_id'),
-                selected_option=request.data.get('selected_option'),
-                justification_text=request.data.get('justification_text'),
-                justification_image=request.data.get('justification_image')
+                selected_option=selected_option,
+                justification_text=justification_text,
+                justification_image=justification_image
             )
 
             viewmodel = CancelFormViewmodel(form=form)

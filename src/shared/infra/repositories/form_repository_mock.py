@@ -36,7 +36,7 @@ class FormRepositoryMock(IFormRepository):
 
         justification = Justification(
             options=[justification_option],
-            selected_option='selected_option',
+            selected_option='option',
             justification_text='text',
             justification_image='image'
         )
@@ -166,13 +166,11 @@ class FormRepositoryMock(IFormRepository):
                 return form
         return None
     
-    def cancel_form(self, user_id: str, form_id: str, selected_option: str, justification_text: Optional[str] = None, justification_image: Optional[str] = None) -> Form:
+    def cancel_form(self, user_id: str, form_id: str, justification: Justification) -> Form:
         for form in self.forms:
             if form.form_id == form_id:
                 form.status = FORM_STATUS.CANCELED
-                form.justification.selected_option = selected_option
-                form.justification.justification_text = justification_text
-                form.justification.justification_image = justification_image
+                form.justification = justification
                 return form
         return None
 

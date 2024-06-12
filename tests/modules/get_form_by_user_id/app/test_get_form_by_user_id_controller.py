@@ -64,7 +64,7 @@ class Test_GetFormByUserIdController:
                                 'required_text': True
                             }
                         ],
-                        'selected_option': 'selected_option',
+                        'selected_option': 'option',
                         'justification_text': 'text',
                         'justification_image': 'image'
                     },
@@ -163,7 +163,7 @@ class Test_GetFormByUserIdController:
                                 'required_text': True
                             }
                         ],
-                        'selected_option': 'selected_option',
+                        'selected_option': 'option',
                         'justification_text': 'text',
                         'justification_image': 'image'
                     },

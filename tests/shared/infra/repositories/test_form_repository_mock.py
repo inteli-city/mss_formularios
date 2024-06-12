@@ -100,7 +100,7 @@ class Test_FormRepositoryMock:
     
     def test_form_repository_mock_cancel_form(self):
         repo = FormRepositoryMock()
-        form = repo.cancel_form(user_id='d61dbf66-a10f-11ed-a8fc-0242ac120001', form_id=repo.forms[0].form_id, selected_option='option', justification_text='text', justification_image='image')
+        form = repo.cancel_form(user_id='d61dbf66-a10f-11ed-a8fc-0242ac120001', form_id=repo.forms[0].form_id, justification=justification)
 
         assert form.status == FORM_STATUS.CANCELED
         assert form.justification.selected_option == 'option'

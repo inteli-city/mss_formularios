@@ -1,8 +1,10 @@
 from typing import Optional
 from src.shared.domain.entities.form import Form
+from src.shared.domain.entities.justification import Justification
 from src.shared.domain.enums.form_status_enum import FORM_STATUS
 from src.shared.domain.repositories.form_repository_interface import IFormRepository
 from src.shared.domain.repositories.profile_repository_interface import IProfileRepository
+from src.shared.helpers.errors.domain_errors import EntityError
 from src.shared.helpers.errors.usecase_errors import ForbiddenAction, NoItemsFound
 
 
@@ -32,4 +34,19 @@ class CancelFormUsecase:
         if form.status == FORM_STATUS.CANCELED or form.status == FORM_STATUS.CONCLUDED:
             raise ForbiddenAction("Formulário já finalizado")
         
-        return self.form_repo.cancel_form(user_id=requester_id, form_id=form_id, selected_option=selected_option, justification_text=justification_text, justification_image=justification_image)
+        for item in form.justification.options:
+            if item.option == selected_option:
+                if item.required_text and not justification_text:
+                    raise EntityError("Justificativa de texto obrigatória")
+                if item.required_image and not justification_image:
+                    raise EntityError("Justificativa de imagem obrigatória")
+            else:
+                raise EntityError("Opção de justificativa inválida")
+            
+        justification = Justification(
+            options=form.justification.options,
+            selected_option=selected_option,
+            justification_text=justification_text,
+            justification_image=justification_image
+        )
+        return self.form_repo.cancel_form(user_id=requester_id, form_id=form_id, justification=justification)

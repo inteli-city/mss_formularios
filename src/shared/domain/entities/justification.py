@@ -38,6 +38,8 @@ class Justification(abc.ABC):
 
         if selected_option is not None and type(selected_option) is not str:
             raise EntityError('selected_option')
+        if selected_option is not None and not any(option.option == selected_option for option in options):
+            raise EntityError('selected_option')
         self.selected_option = selected_option
 
         if justification_text is not None and type(justification_text) is not str:

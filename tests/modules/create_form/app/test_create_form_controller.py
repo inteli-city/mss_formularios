@@ -42,7 +42,7 @@ class Test_CreateFormController:
                         "required_text": True
                     }
                 ],
-                "selected_option": "selected_option",
+                "selected_option": "option",
                 "text": "text",
                 "image": "image"
             },

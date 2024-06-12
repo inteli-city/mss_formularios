@@ -51,7 +51,7 @@ class Test_CancelFormPresenter:
             },
             "body": {
                 "form_id": "d61dbf66-a10f-11ed-a8fc-0242ac120010",
-                "selected_option": "selected",
+                "selected_option": "option",
                 "justification_text": "justification_test",
                 "justification_image": "image_test"
             },

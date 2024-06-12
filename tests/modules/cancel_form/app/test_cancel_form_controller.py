@@ -24,7 +24,7 @@ class Test_CancelFormController:
                 "cognito:groups": "GAIA, JUNDIAI,FORMULARIOS"
             },
             "form_id": repo.forms[0].form_id,
-            "selected_option": "selected",
+            "selected_option": "option",
             "justification_text": "justification_test",
             "justification_image": "image_test"
         })
@@ -42,7 +42,7 @@ class Test_CancelFormController:
         controller = CancelFormController(usecase)
 
         data = HttpRequest(body={"form_id": repo.forms[0].form_id,
-            "selected_option": "selected",
+            "selected_option": "option",
             "justification_text": "justification_test",
             "justification_image": "image_test"
         })
@@ -65,7 +65,7 @@ class Test_CancelFormController:
                 "email": 'gabriel@gmail.com',
                 "cognito:groups": "GAIA, JUNDIAI,FORMULARIOS"
             },
-            "selected_option": "selected",
+            "selected_option": "option",
             "justification_text": "justification_test",
             "justification_image": "image_test"
         })

@@ -42,7 +42,7 @@ class Test_FormDynamoDTO:
                         required_text=True
                     )
                 ],
-                selected_option='selected_option',
+                selected_option='option',
                 justification_text='justification_text',
                 justification_image='justification_image'
             ),
@@ -89,7 +89,7 @@ class Test_FormDynamoDTO:
         assert form_dto.justification.options[0].option == 'option'
         assert form_dto.justification.options[0].required_image == True
         assert form_dto.justification.options[0].required_text == True
-        assert form_dto.justification.selected_option == 'selected_option'
+        assert form_dto.justification.selected_option == 'option'
         assert form_dto.justification.justification_text == 'justification_text'
         assert form_dto.justification.justification_image == 'justification_image'
         assert form_dto.comments == 'comments'
@@ -135,7 +135,7 @@ class Test_FormDynamoDTO:
                         required_text=True
                     )
                 ],
-                selected_option='selected_option',
+                selected_option='option',
                 justification_text='justification_text',
                 justification_image='justification_image'
             ),
@@ -182,7 +182,7 @@ class Test_FormDynamoDTO:
         assert form['justification']['options'][0]['option'] == 'option'
         assert form['justification']['options'][0]['required_image'] == True
         assert form['justification']['options'][0]['required_text'] == True
-        assert form['justification']['selected_option'] == 'selected_option'
+        assert form['justification']['selected_option'] == 'option'
         assert form['justification']['justification_text'] == 'justification_text'
         assert form['justification']['justification_image'] == 'justification_image'
         assert form['comments'] == 'comments'
@@ -228,7 +228,7 @@ class Test_FormDynamoDTO:
                         'required_text': True
                     }
                 ],
-                'selected_option': 'selected_option',
+                'selected_option': 'option',
                 'justification_text': 'justification_text',
                 'justification_image': 'justification_image'
             },
@@ -283,7 +283,7 @@ class Test_FormDynamoDTO:
         assert form.justification.options[0].option == 'option'
         assert form.justification.options[0].required_image == True
         assert form.justification.options[0].required_text == True
-        assert form.justification.selected_option == 'selected_option'
+        assert form.justification.selected_option == 'option'
         assert form.justification.justification_text == 'justification_text'
         assert form.justification.justification_image == 'justification_image'
         assert form.comments == 'comments'
@@ -329,7 +329,7 @@ class Test_FormDynamoDTO:
                         required_text=True
                     )
                 ],
-                selected_option='selected_option',
+                selected_option='option',
                 justification_text='justification_text',
                 justification_image='justification_image'
             ),
@@ -376,7 +376,7 @@ class Test_FormDynamoDTO:
         assert form.justification.options[0].option == 'option'
         assert form.justification.options[0].required_image == True
         assert form.justification.options[0].required_text == True
-        assert form.justification.selected_option == 'selected_option'
+        assert form.justification.selected_option == 'option'
         assert form.justification.justification_text == 'justification_text'
         assert form.justification.justification_image == 'justification_image'
         assert form.comments == 'comments'

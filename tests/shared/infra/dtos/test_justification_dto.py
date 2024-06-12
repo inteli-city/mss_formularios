@@ -107,12 +107,12 @@ class Test_justificationDTO:
                         required_text=True
                     ),
                     JustificationOption(
-                        option='option',
+                        option='option2',
                         required_image=True,
                         required_text=True
                     )
                 ],
-                selected_option='selected_option',
+                selected_option='option',
                 justification_text='text',
                 justification_image='image'
         )
@@ -124,7 +124,7 @@ class Test_justificationDTO:
         assert justification.options[0].required_image == True
         assert justification.options[0].required_text == True
 
-        assert justification.selected_option == 'selected_option'
+        assert justification.selected_option == 'option'
         assert justification.justification_text == 'text'
         assert justification.justification_image == 'image'
     
@@ -136,7 +136,7 @@ class Test_justificationDTO:
                     'required_text': True
                 }
             ],
-            'selected_option': 'selected_option',
+            'selected_option': 'option',
             'text': 'text',
             'image': 'image'
         }
@@ -152,7 +152,7 @@ class Test_justificationDTO:
                     'required_text': True
                 }
             ],
-            'selected_option': 'selected_option',
+            'selected_option': 'option',
             'text': 'text',
             'image': 'image'
         }
@@ -169,7 +169,7 @@ class Test_justificationDTO:
 
         justification = Justification(
             options=[justification_option],
-            selected_option='selected_option',
+            selected_option='option',
             justification_text='text',
             justification_image='image'
         )
@@ -181,7 +181,7 @@ class Test_justificationDTO:
         assert justification_dto.options[0].required_image == True
         assert justification_dto.options[0].required_text == True
 
-        assert justification_dto.selected_option == 'selected_option'
+        assert justification_dto.selected_option == 'option'
         assert justification_dto.justification_text == 'text'
         assert justification_dto.justification_image == 'image'
     
@@ -199,7 +199,7 @@ class Test_justificationDTO:
                         required_text=True
                     )
                 ],
-                selected_option='selected_option',
+                selected_option='option',
                 justification_text='text',
                 justification_image='image'
         )
@@ -211,7 +211,7 @@ class Test_justificationDTO:
         assert dynamo['options'][0]['required_image'] == True
         assert dynamo['options'][0]['required_text'] == True
 
-        assert dynamo['selected_option'] == 'selected_option'
+        assert dynamo['selected_option'] == 'option'
         assert dynamo['justification_text'] == 'text'
         assert dynamo['justification_image'] == 'image'
     
@@ -224,7 +224,7 @@ class Test_justificationDTO:
                     'required_text': True
                 }
             ],
-            'selected_option': 'selected_option',
+            'selected_option': 'option',
             'justification_text': 'text',
             'justification_image': 'image'
         }
@@ -236,7 +236,7 @@ class Test_justificationDTO:
         assert justification_dto.options[0].required_image == True
         assert justification_dto.options[0].required_text == True
 
-        assert justification_dto.selected_option == 'selected_option'
+        assert justification_dto.selected_option == 'option'
         assert justification_dto.justification_text == 'text'
         assert justification_dto.justification_image == 'image'
     
@@ -254,7 +254,7 @@ class Test_justificationDTO:
                         required_text=True
                     )
                 ],
-                selected_option='selected_option',
+                selected_option='option',
                 justification_text='text',
                 justification_image='image'
         )
@@ -266,6 +266,6 @@ class Test_justificationDTO:
         assert justification.options[0].required_image == True
         assert justification.options[0].required_text == True
 
-        assert justification.selected_option == 'selected_option'
+        assert justification.selected_option == 'option'
         assert justification.justification_text == 'text'
         assert justification.justification_image == 'image'

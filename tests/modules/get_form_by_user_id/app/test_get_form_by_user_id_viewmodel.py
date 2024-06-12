@@ -17,7 +17,7 @@ justification_option = JustificationOption(
 
 justification = Justification(
     options=[justification_option],
-    selected_option='selected_option',
+    selected_option='option',
     justification_text='text',
     justification_image='image'
 )
@@ -147,7 +147,7 @@ class Test_GetFormByUserIdViewmodel:
                 'required_image': True,
                 'required_text': True
             }],
-            'selected_option': 'selected_option',
+            'selected_option': 'option',
             'justification_text': 'text',
             'justification_image': 'image'
         }
@@ -248,7 +248,7 @@ class Test_GetFormByUserIdViewmodel:
                     'required_image': True,
                     'required_text': True
                 }],
-                'selected_option': 'selected_option',
+                'selected_option': 'option',
                 'justification_text': 'text',
                 'justification_image': 'image'
             },
@@ -367,7 +367,7 @@ class Test_GetFormByUserIdViewmodel:
                                 'required_text': True
                             }
                         ],
-                        'selected_option': 'selected_option',
+                        'selected_option': 'option',
                         'justification_text': 'text',
                         'justification_image': 'image'
                     },

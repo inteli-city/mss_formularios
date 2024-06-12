@@ -26,7 +26,7 @@ class IFormRepository(ABC):
         pass
 
     @abstractmethod
-    def cancel_form(self, user_id: str, form_id: str, selected_option: str, justification_text: Optional[str] = None, justification_image: Optional[str] = None) -> Form:
+    def cancel_form(self, user_id: str, form_id: str, justification: Justification) -> Form:
         pass
 
     @abstractmethod

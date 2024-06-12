@@ -2,11 +2,13 @@ from datetime import datetime
 from decimal import Decimal
 from typing import List, Optional
 from src.shared.domain.entities.form import Form
+from src.shared.domain.entities.justification import Justification
 from src.shared.domain.entities.section import Section
 from src.shared.domain.enums.form_status_enum import FORM_STATUS
 from src.shared.domain.repositories.form_repository_interface import IFormRepository
 from src.shared.environments import Environments
 from src.shared.infra.dtos.form_dynamo_dto import FormDynamoDTO
+from src.shared.infra.dtos.justification_dto import JustificationDTO
 from src.shared.infra.dtos.section_dto import SectionDTO
 from src.shared.infra.external.dynamo.datasources.dynamo_datasource import DynamoDatasource
 from boto3.dynamodb.conditions import Key
@@ -67,14 +69,11 @@ class FormRepositoryDynamo(IFormRepository):
         
         return FormDynamoDTO.from_dynamo(resp['Attributes']).to_entity()
     
-    def cancel_form(self, user_id: str, form_id: str, selected_option: str, justification_text: Optional[str] = None, justification_image: Optional[str] = None) -> Form:
+    def cancel_form(self, user_id: str, form_id: str, justification: Justification) -> Form:
+        
         update_dict = {
             "status": FORM_STATUS.CANCELED.value,
-            "justification": {
-                "selected_option": selected_option,
-                "justification_text": justification_text,
-                "justification_image": justification_image
-            },
+            "justification": JustificationDTO.from_entity(justification).to_dynamo(),
             "conclusion_date": Decimal(int(datetime.now().timestamp()))
         }
 

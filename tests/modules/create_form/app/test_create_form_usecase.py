@@ -19,7 +19,7 @@ justification_option = JustificationOption(
 
 justification = Justification(
     options=[justification_option],
-    selected_option='selected_option',
+    selected_option='option',
     justification_text='text',
     justification_image='image'
 )
