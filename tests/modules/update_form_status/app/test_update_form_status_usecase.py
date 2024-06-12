@@ -3,7 +3,7 @@ from src.modules.update_form_status.app.update_form_status_usecase import Update
 from src.shared.domain.enums.form_status_enum import FORM_STATUS
 from src.shared.domain.repositories.form_repository_interface import IFormRepository
 from src.shared.domain.repositories.profile_repository_interface import IProfileRepository
-from src.shared.helpers.errors.usecase_errors import ForbiddenAction, NoItemsFound
+from src.shared.helpers.errors.usecase_errors import DuplicatedItem, ForbiddenAction, NoItemsFound
 from src.shared.infra.repositories.form_repository_mock import FormRepositoryMock
 from src.shared.infra.repositories.profile_repository_mock import ProfileRepositoryMock
 
@@ -15,12 +15,37 @@ class Test_UpdateFormStatusUseCase:
         profile_repo = ProfileRepositoryMock()
         usecase = UpdateFormStatusUsecase(repo, profile_repo)
 
-        form = repo.forms[0]
+        form = repo.forms[2]
         profile = profile_repo.profiles[0]
 
         result = usecase(profile.profile_id, form.form_id, FORM_STATUS.IN_PROGRESS)
 
         assert result.status == FORM_STATUS.IN_PROGRESS
+        assert result.start_date is not None
+    
+    def test_update_form_status_usecase_go_back(self):
+        repo = FormRepositoryMock()
+        profile_repo = ProfileRepositoryMock()
+        usecase = UpdateFormStatusUsecase(repo, profile_repo)
+
+        form = repo.forms[0]
+        profile = profile_repo.profiles[0]
+
+        result = usecase(profile.profile_id, form.form_id, FORM_STATUS.NOT_STARTED)
+
+        assert result.status == FORM_STATUS.NOT_STARTED
+        assert result.start_date is None
+    
+    def test_update_form_status_usecase_same_status(self):
+        repo = FormRepositoryMock()
+        profile_repo = ProfileRepositoryMock()
+        usecase = UpdateFormStatusUsecase(repo, profile_repo)
+
+        form = repo.forms[0]
+        profile = profile_repo.profiles[0]
+
+        with pytest.raises(DuplicatedItem):
+            usecase(profile.profile_id, form.form_id, FORM_STATUS.IN_PROGRESS)
     
     def test_update_form_status_usecase_profile_not_found(self):
         repo = FormRepositoryMock()

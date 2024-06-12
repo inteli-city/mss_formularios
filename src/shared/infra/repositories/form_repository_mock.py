@@ -64,7 +64,7 @@ class FormRepositoryMock(IFormRepository):
                 expiration_date=946407600000,
                 creation_date=946407600000,
                 start_date=946407600000,
-                conclusion_date=timestamp_yesterday(),
+                conclusion_date=None,
                 justification=justification,
                 comments=None,
                 sections=[section, section],
@@ -104,6 +104,37 @@ class FormRepositoryMock(IFormRepository):
                     information_field,
                 ]
             ),
+            Form(
+                form_title='FORM_TITLE',                
+                form_id='d61dbf66-a10f-11ed-a8fc-0242ac120012',
+                creator_user_id='d61dbf66-a10f-11ed-a8fc-0242ac120001',
+                user_id='d61dbf66-a10f-11ed-a8fc-0242ac120001',
+                vinculation_form_id='d61dbf66-a10f-11ed-a8fc-0242ac120010',
+                can_vinculate=True,
+                template='TEMPLATE',
+                area='1',
+                system='GAIA',
+                street='1',
+                city='1',
+                number=1,
+                latitude=1.0,
+                longitude=1.0,
+                region='REGION',
+                description=None,
+                priority=PRIORITY.EMERGENCY,
+                status=FORM_STATUS.NOT_STARTED,
+                expiration_date=946407600000,
+                creation_date=946407600000,
+                start_date=None,
+                conclusion_date=None,
+                justification=justification,
+                comments=None,
+                sections=[section, section],
+                information_fields=[
+                    information_field,
+                    information_field,
+                ]
+            ),
         ]
     
     def get_form_by_id(self, user_id: str, form_id: str) -> Form:
@@ -127,10 +158,11 @@ class FormRepositoryMock(IFormRepository):
         self.forms.append(form)
         return form
     
-    def update_form_status(self, user_id: str, form_id: str, status: FORM_STATUS) -> Form:
+    def update_form_status(self, user_id: str, form_id: str, status: FORM_STATUS, start_date: Optional[int] = None) -> Form:
         for form in self.forms:
             if form.form_id == form_id:
                 form.status = status
+                form.start_date = start_date
                 return form
         return None
     

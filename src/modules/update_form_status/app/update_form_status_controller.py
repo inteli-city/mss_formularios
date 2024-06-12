@@ -3,9 +3,9 @@ from .update_form_status_viewmodel import UpdateFormStatusViewmodel
 from src.shared.domain.enums.form_status_enum import FORM_STATUS
 from src.shared.helpers.errors.controller_errors import MissingParameters
 from src.shared.helpers.errors.domain_errors import EntityError
-from src.shared.helpers.errors.usecase_errors import ForbiddenAction, NoItemsFound
+from src.shared.helpers.errors.usecase_errors import DuplicatedItem, ForbiddenAction, NoItemsFound
 from src.shared.helpers.external_interfaces.external_interface import IRequest, IResponse
-from src.shared.helpers.external_interfaces.http_codes import OK, BadRequest, Forbidden, InternalServerError, NotFound
+from src.shared.helpers.external_interfaces.http_codes import OK, BadRequest, Conflict, Forbidden, InternalServerError, NotFound
 from src.shared.infra.dtos.user_formularios_api_gateway_dto import UserFormulariosApiGatewayDTO
 
 
@@ -44,6 +44,9 @@ class UpdateFormStatusController:
 
         except MissingParameters as err:
             return BadRequest(body={'message': err.message})
+        
+        except DuplicatedItem as err:
+            return Conflict(body={'message': err.message})
 
         except ForbiddenAction as err:
             return Forbidden(body={'message': err.message})

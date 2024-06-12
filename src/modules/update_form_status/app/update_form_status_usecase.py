@@ -1,7 +1,8 @@
+import datetime
 from src.shared.domain.enums.form_status_enum import FORM_STATUS
 from src.shared.domain.repositories.form_repository_interface import IFormRepository
 from src.shared.domain.repositories.profile_repository_interface import IProfileRepository
-from src.shared.helpers.errors.usecase_errors import ForbiddenAction, NoItemsFound
+from src.shared.helpers.errors.usecase_errors import DuplicatedItem, ForbiddenAction, NoItemsFound
 
 
 class UpdateFormStatusUsecase:
@@ -29,5 +30,15 @@ class UpdateFormStatusUsecase:
         if profile.profile_id != form.user_id:
             raise ForbiddenAction("Usuário não pode alterar o status de um formulário não direcionado a ele")
         
-        return self.form_repository.update_form_status(user_id=requester_id, form_id=form_id, status=status)
+        if status == form.status:
+            print(status)
+            print(form.status)
+            raise DuplicatedItem("O status do formulário já é o mesmo que o informado")
+        
+        if status is FORM_STATUS.NOT_STARTED and form.status is FORM_STATUS.IN_PROGRESS:
+            start_date = None
+        else:
+            start_date = datetime.datetime.now().timestamp()
+        
+        return self.form_repository.update_form_status(user_id=requester_id, form_id=form_id, status=status, start_date=start_date)
         

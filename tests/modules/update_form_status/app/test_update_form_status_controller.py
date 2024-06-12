@@ -20,7 +20,7 @@ class Test_UpdateFormStatusController:
                 "email": 'gabriel@gmail.com',
                 "cognito:groups": "GAIA, JUNDIAI,FORMULARIOS"
             },
-            "form_id": repo.forms[0].form_id,
+            "form_id": repo.forms[2].form_id,
             "status": "IN_PROGRESS",
         })
 

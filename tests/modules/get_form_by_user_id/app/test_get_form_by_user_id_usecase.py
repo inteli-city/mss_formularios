@@ -11,7 +11,7 @@ class Test_GetFormByUserIdUseCase:
         usecase = GetFormByUserIdUsecase(repo)
         forms = usecase(requester_user_id=repo.forms[0].user_id)
 
-        assert len(forms) == 1
+        assert len(forms) == 2
     
     def test_get_form_by_user_id_no_items_found(self):
         repo = FormRepositoryMock()

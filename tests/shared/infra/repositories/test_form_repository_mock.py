@@ -40,7 +40,7 @@ class Test_FormRepositoryMock:
         repo = FormRepositoryMock()
         form = repo.get_form_by_user_id(repo.forms[0].user_id)
 
-        assert len(form) == 1
+        assert len(form) == 2
 
     def test_form_repository_mock_create_form(self):
         repo = FormRepositoryMock()
@@ -51,7 +51,7 @@ class Test_FormRepositoryMock:
         )
         form_to_create = Form(
                 form_title='FORM TITLE',
-                form_id='d61dbf66-a10f-11ed-a8fc-0242ac120012',
+                form_id='d61dbf66-a10f-11ed-a8fc-0242ac120013',
                 creator_user_id='d61dbf66-a10f-11ed-a8fc-0242ac120001',
                 user_id='d61dbf66-a10f-11ed-a8fc-0242ac120002',
                 vinculation_form_id=None,
@@ -85,7 +85,7 @@ class Test_FormRepositoryMock:
             form=form_to_create
         )
 
-        assert form.form_id == 'd61dbf66-a10f-11ed-a8fc-0242ac120012'
+        assert form.form_id == 'd61dbf66-a10f-11ed-a8fc-0242ac120013'
 
     def test_form_repository_mock_create_form_duplicated_form_id(self):
         repo = FormRepositoryMock()

@@ -55,7 +55,106 @@ class Test_GetFormByUserIdController:
                     'expiration_date': 946407600000,
                     'creation_date': 946407600000,
                     'start_date': 946407600000,
-                    'conclusion_date': timestamp_yesterday(),
+                    'conclusion_date': None,
+                    'justification': {
+                        'options': [
+                            {
+                                'option': 'option',
+                                'required_image': True,
+                                'required_text': True
+                            }
+                        ],
+                        'selected_option': 'selected_option',
+                        'justification_text': 'text',
+                        'justification_image': 'image'
+                    },
+                    'comments': None,
+                    'sections': [
+                        {
+                            'section_id': '99999',
+                            'fields': [
+                                {
+                                    'field_type': 'TEXT_FIELD',
+                                    'placeholder': 'placeholder',
+                                    'required': True,
+                                    'key': 'key',
+                                    'regex': 'regex',
+                                    'formatting': 'formatting',
+                                    'max_length': 10,
+                                    'value': 'value'
+                                },
+                                {
+                                    'field_type': 'TEXT_FIELD',
+                                    'placeholder': 'placeholder',
+                                    'required': True,
+                                    'key': 'key',
+                                    'regex': 'regex',
+                                    'formatting': 'formatting',
+                                    'max_length': 10,
+                                    'value': 'value'
+                                }
+                            ]
+                        },
+                        {
+                            'section_id': '99999',
+                            'fields': [
+                                {
+                                    'field_type': 'TEXT_FIELD',
+                                    'placeholder': 'placeholder',
+                                    'required': True,
+                                    'key': 'key',
+                                    'regex': 'regex',
+                                    'formatting': 'formatting',
+                                    'max_length': 10,
+                                    'value': 'value'
+                                },
+                                {
+                                    'field_type': 'TEXT_FIELD',
+                                    'placeholder': 'placeholder',
+                                    'required': True,
+                                    'key': 'key',
+                                    'regex': 'regex',
+                                    'formatting': 'formatting',
+                                    'max_length': 10,
+                                    'value': 'value'
+                                }
+                            ]
+                        }
+                    ],
+                    'information_fields': [
+                        {
+                            'information_field_type': 'TEXT_INFORMATION_FIELD',
+                            'value': 'value'
+                        },
+                        {
+                            'information_field_type': 'TEXT_INFORMATION_FIELD',
+                            'value': 'value'
+                        },
+                    ]
+                },
+                {
+                    'form_title': 'FORM_TITLE',
+                    'form_id': 'd61dbf66-a10f-11ed-a8fc-0242ac120012',
+                    'creator_user_id': 'd61dbf66-a10f-11ed-a8fc-0242ac120001',
+                    'user_id': 'd61dbf66-a10f-11ed-a8fc-0242ac120001',
+                    'vinculation_form_id': 'd61dbf66-a10f-11ed-a8fc-0242ac120010',
+                    'can_vinculate': True,
+                    'template': 'TEMPLATE',
+                    'area': '1',
+                    'system': 'GAIA',
+                    'street': '1',
+                    'city': '1',
+                    'number': 1,
+                    'latitude': 1.0,
+                    'longitude': 1.0,
+                    'region': 'REGION',
+                    'description': None,
+                    'priority': 'EMERGENCY',
+                    'status': 'NOT_STARTED',
+                    'expiration_date': 946407600000,
+                    'creation_date': 946407600000,
+                    'start_date': None,
+                    'conclusion_date': None,
                     'justification': {
                         'options': [
                             {

@@ -1,3 +1,4 @@
+from datetime import datetime
 from decimal import Decimal
 from typing import List, Optional
 from src.shared.domain.entities.form import Form
@@ -22,6 +23,7 @@ class FormRepositoryDynamo(IFormRepository):
 
     def __init__(self):
         self.dynamo = DynamoDatasource(
+            endpoint_url=Environments.get_envs().endpoint_url,
             dynamo_table_name=Environments.get_envs().dynamo_table_name,
             region=Environments.get_envs().region,
             partition_key=Environments.get_envs().dynamo_partition_key,
@@ -52,9 +54,10 @@ class FormRepositoryDynamo(IFormRepository):
         
         return form
     
-    def update_form_status(self, user_id: str, form_id: str, status: FORM_STATUS) -> Form:
+    def update_form_status(self, user_id: str, form_id: str, status: FORM_STATUS, start_date: Optional[int] = None) -> Form:
         update_dict = {
-            "status": status.value
+            "status": status.value,
+            "start_date": Decimal(start_date) if start_date is not None else None
         }
 
         resp = self.dynamo.update_item(partition_key=self.form_partition_key_format(user_id), sort_key=self.form_sort_key_format(form_id), update_dict=update_dict)
@@ -71,7 +74,8 @@ class FormRepositoryDynamo(IFormRepository):
                 "selected_option": selected_option,
                 "justification_text": justification_text,
                 "justification_image": justification_image
-            }
+            },
+            "conclusion_date": Decimal(int(datetime.now().timestamp()))
         }
 
         resp = self.dynamo.update_item(partition_key=self.form_partition_key_format(user_id), sort_key=self.form_sort_key_format(form_id), update_dict=update_dict)
@@ -87,7 +91,8 @@ class FormRepositoryDynamo(IFormRepository):
             "sections": [
                 SectionDTO.from_entity(section).to_dynamo() for section in sections
             ],
-            "vinculation_form_id": vinculation_form_id
+            "vinculation_form_id": vinculation_form_id,
+            "conclusion_date": Decimal(int(datetime.now().timestamp()))
         }
 
         resp = self.dynamo.update_item(partition_key=self.form_partition_key_format(user_id), sort_key=self.form_sort_key_format(form_id), update_dict=update_dict)

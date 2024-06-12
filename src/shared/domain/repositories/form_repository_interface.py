@@ -22,7 +22,7 @@ class IFormRepository(ABC):
         pass
 
     @abstractmethod
-    def update_form_status(self, user_id: str, form_id: str, status: FORM_STATUS) -> Form:
+    def update_form_status(self, user_id: str, form_id: str, status: FORM_STATUS, start_date: Optional[int] = None) -> Form:
         pass
 
     @abstractmethod
