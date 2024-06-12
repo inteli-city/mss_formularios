@@ -54,6 +54,8 @@ class TextField(Field):
 
         if value is not None and type(value) is not str:
             raise EntityError('value')
+        if value is not None and (max_length is not None and len(value) > max_length):
+            raise EntityError('value')
         self.value = value
 
 class NumberField(Field):
@@ -77,6 +79,10 @@ class NumberField(Field):
         self.decimal = decimal
 
         if value is not None and type(value) is not float:
+            raise EntityError('value')
+        if value is not None and (min_value is not None and value < min_value):
+            raise EntityError('value')
+        if value is not None and (max_value is not None and value > max_value):
             raise EntityError('value')
         self.value = value
 
@@ -144,6 +150,10 @@ class DateField(Field):
 
         if value is not None and type(value) is not int:
             raise EntityError('value')
+        if value is not None and (min_date is not None and value < min_date):
+            raise EntityError('value')
+        if value is not None and (max_date is not None and value > max_date):
+            raise EntityError('value')
         self.value = value
     
 
@@ -174,6 +184,8 @@ class CheckBoxGroupField(Field):
         self.check_limit = check_limit
 
         if value is not None and (type(value) is not list or not all([type(val) is str for val in value]) or not all([val in options for val in value])):
+            raise EntityError('value')
+        if value is not None and (check_limit is not None and len(value) > check_limit):
             raise EntityError('value')
         self.value = value
 

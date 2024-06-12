@@ -31,10 +31,10 @@ class CompleteFormUsecase:
         if requester_id != form.user_id:
             raise ForbiddenAction("Usuário não pode concluir um formulário não direcionado a ele")
         
-        if form.status == FORM_STATUS.CANCELED or form.status == FORM_STATUS.CONCLUDED:
-            raise ForbiddenAction("Formulário já finalizado")
+        if form.status is not FORM_STATUS.IN_PROGRESS:
+            raise ForbiddenAction("Formulário não está em andamento")
+        
         for section in sections:
-            print(section)
             for field in section.fields:
                 if field.required and field.value is None:
                     raise ForbiddenAction("Campo obrigatório não preenchido")

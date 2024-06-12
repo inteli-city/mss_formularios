@@ -31,8 +31,6 @@ class UpdateFormStatusUsecase:
             raise ForbiddenAction("Usuário não pode alterar o status de um formulário não direcionado a ele")
         
         if status == form.status:
-            print(status)
-            print(form.status)
             raise DuplicatedItem("O status do formulário já é o mesmo que o informado")
         
         if status is FORM_STATUS.NOT_STARTED and form.status is FORM_STATUS.IN_PROGRESS:

@@ -108,7 +108,7 @@ class Test_Field:
     # TypeAheadField
 
     def test_type_ahead_field(self):
-        typeahead_field = TypeAheadField(placeholder='placeholder', required=True, key='key', regex='regex', formatting='formatting', options=['option1', 'option2'], max_length=1, value='option1')
+        typeahead_field = TypeAheadField(placeholder='placeholder', required=True, key='key', regex='regex', formatting='formatting', options=['option1'], max_length=1, value='option1')
 
         assert typeahead_field.field_type == FIELD_TYPE.TYPEAHEAD_FIELD
     
