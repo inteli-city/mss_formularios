@@ -22,7 +22,6 @@ class FormRepositoryDynamo(IFormRepository):
 
     def __init__(self):
         self.dynamo = DynamoDatasource(
-            endpoint_url=Environments.get_envs().endpoint_url,
             dynamo_table_name=Environments.get_envs().dynamo_table_name,
             region=Environments.get_envs().region,
             partition_key=Environments.get_envs().dynamo_partition_key,
@@ -39,7 +38,6 @@ class FormRepositoryDynamo(IFormRepository):
     def get_form_by_user_id(self, user_id: str) -> dict:
         query_string = Key(self.dynamo.partition_key).eq(self.form_partition_key_format(user_id))
         resp = self.dynamo.query(key_condition_expression=query_string, Select='ALL_ATTRIBUTES')
-        print(resp)
         forms = []
 
         for item in resp['Items']:

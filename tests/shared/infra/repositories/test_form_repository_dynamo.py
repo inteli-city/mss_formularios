@@ -79,5 +79,5 @@ class Test_FormRepositoryDynamo:
 
         assert len(forms) == 1
         assert isinstance(forms[0], Form)
-        assert forms[0].form_id == 'd61dbf66-a10f-11ed-a8fc-0242ac120010'
+        assert forms[0].user_id == '125fb34e-aacf-4a47-9914-82ea64ff9f32'
 
