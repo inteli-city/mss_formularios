@@ -52,10 +52,11 @@ class TextField(Field):
             raise EntityError('max_length')
         self.max_length = max_length
 
-        if value is not None and type(value) is not str:
-            raise EntityError('value')
-        if value is not None and (max_length is not None and len(value) > max_length):
-            raise EntityError('value')
+        if value is not None:
+            if type(value) is not str:
+                raise EntityError('value')
+            if max_length is not None and len(value) > max_length:
+                raise EntityError('value')
         self.value = value
 
 class NumberField(Field):
@@ -78,12 +79,13 @@ class NumberField(Field):
             raise EntityError('decimal')
         self.decimal = decimal
 
-        if value is not None and type(value) is not float:
-            raise EntityError('value')
-        if value is not None and (min_value is not None and value < min_value):
-            raise EntityError('value')
-        if value is not None and (max_value is not None and value > max_value):
-            raise EntityError('value')
+        if value is not None:
+            if type(value) is not float:
+                raise EntityError('value')
+            if min_value is not None and value < min_value:
+                raise EntityError('value')
+            if max_value is not None and value > max_value:
+                raise EntityError('value')
         self.value = value
 
 class DropDownField(Field):
@@ -148,12 +150,13 @@ class DateField(Field):
             raise EntityError('max_date')
         self.max_date = max_date
 
-        if value is not None and type(value) is not int:
-            raise EntityError('value')
-        if value is not None and (min_date is not None and value < min_date):
-            raise EntityError('value')
-        if value is not None and (max_date is not None and value > max_date):
-            raise EntityError('value')
+        if value is not None: 
+            if type(value) is not int:
+                raise EntityError('value')
+            if min_date is not None and value < min_date:
+                raise EntityError('value')
+            if max_date is not None and value > max_date:
+                raise EntityError('value')
         self.value = value
     
 
@@ -177,16 +180,18 @@ class CheckBoxGroupField(Field):
             raise EntityError('options')
         self.options = options
 
-        if check_limit is not None and type(check_limit) is not int:
-            raise EntityError('check_limit')
-        elif check_limit > len(options):
-            raise EntityError('check_limit')
+        if check_limit is not None:
+            if type(check_limit) is not int:
+                raise EntityError('check_limit')
+            if check_limit > len(options):
+                raise EntityError('check_limit')
         self.check_limit = check_limit
 
-        if value is not None and (type(value) is not list or not all([type(val) is str for val in value]) or not all([val in options for val in value])):
-            raise EntityError('value')
-        if value is not None and (check_limit is not None and len(value) > check_limit):
-            raise EntityError('value')
+        if value is not None: 
+            if type(value) is not list or not all([type(val) is str for val in value]) or not all([val in options for val in value]):
+                raise EntityError('value')
+            if check_limit is not None and len(value) > check_limit:
+                raise EntityError('value')
         self.value = value
 
 class SwitchButtonField(Field):
