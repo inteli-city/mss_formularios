@@ -283,5 +283,8 @@ class Test_GetFormByUserIdController:
 
         response = controller(data)
 
-        assert response.status_code == 404
-        assert response.body == 'Nenhum formulário encontrado'
+        assert response.status_code == 200
+        assert response.body == {
+            "form_list": [],
+            "message": "Formulários retornados com sucesso!"
+        }

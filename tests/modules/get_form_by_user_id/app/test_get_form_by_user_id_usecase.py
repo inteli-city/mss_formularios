@@ -18,6 +18,7 @@ class Test_GetFormByUserIdUseCase:
         usecase = GetFormByUserIdUsecase(repo)
         repo.forms = []
 
-        with pytest.raises(NoItemsFound):
-            usecase(requester_user_id='1')
+        forms = usecase(requester_user_id='1')
+
+        assert len(forms) == 0
         

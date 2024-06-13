@@ -11,8 +11,5 @@ class GetFormByUserIdUsecase:
     def __call__(self, requester_user_id: str) -> List[Form]:
 
         forms = self.form_repo.get_form_by_user_id(user_id=requester_user_id)
-
-        if not forms:
-            raise NoItemsFound("Nenhum formulário encontrado")
         
         return forms
