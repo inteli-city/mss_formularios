@@ -34,8 +34,6 @@ class Test_FieldDTO:
             "placeholder": "placeholder",
             "required": True,
             "key": "key",
-            "regex": "regex",
-            "formatting": "formatting",
             "max_value": 10,
             "min_value": 1,
             "decimal": True,
@@ -48,8 +46,6 @@ class Test_FieldDTO:
         assert field_dto.field.placeholder == "placeholder"
         assert field_dto.field.required == True
         assert field_dto.field.key == "key"
-        assert field_dto.field.regex == "regex"
-        assert field_dto.field.formatting == "formatting"
         assert field_dto.field.max_value == 10
         assert field_dto.field.min_value == 1
         assert field_dto.field.decimal == True
@@ -61,8 +57,6 @@ class Test_FieldDTO:
             "placeholder": "placeholder",
             "required": True,
             "key": "key",
-            "regex": "regex",
-            "formatting": "formatting",
             "options": ["option1", "option2"],
             "value": "option1"
         }
@@ -73,8 +67,6 @@ class Test_FieldDTO:
         assert field_dto.field.placeholder == "placeholder"
         assert field_dto.field.required == True
         assert field_dto.field.key == "key"
-        assert field_dto.field.regex == "regex"
-        assert field_dto.field.formatting == "formatting"
         assert field_dto.field.options == ["option1", "option2"]
         assert field_dto.field.value == "option1"
     
@@ -84,8 +76,6 @@ class Test_FieldDTO:
             "placeholder": "placeholder",
             "required": True,
             "key": "key",
-            "regex": "regex",
-            "formatting": "formatting",
             "options": ["option1", "option2"],
             "max_length": 10,
             "value": "option1"
@@ -97,8 +87,6 @@ class Test_FieldDTO:
         assert field_dto.field.placeholder == "placeholder"
         assert field_dto.field.required == True
         assert field_dto.field.key == "key"
-        assert field_dto.field.regex == "regex"
-        assert field_dto.field.formatting == "formatting"
         assert field_dto.field.options == ["option1", "option2"]
         assert field_dto.field.max_length == 10
         assert field_dto.field.value == "option1"
@@ -109,8 +97,6 @@ class Test_FieldDTO:
             "placeholder": "placeholder",
             "required": True,
             "key": "key",
-            "regex": "regex",
-            "formatting": "formatting",
             "options": ["option1", "option2"],
             "value": "option1"
         }
@@ -121,8 +107,6 @@ class Test_FieldDTO:
         assert field_dto.field.placeholder == "placeholder"
         assert field_dto.field.required == True
         assert field_dto.field.key == "key"
-        assert field_dto.field.regex == "regex"
-        assert field_dto.field.formatting == "formatting"
         assert field_dto.field.options == ["option1", "option2"]
         assert field_dto.field.value == "option1"
     
@@ -132,8 +116,6 @@ class Test_FieldDTO:
             "placeholder": "placeholder",
             "required": True,
             "key": "key",
-            "regex": "regex",
-            "formatting": "formatting",
             "min_date": 123456789,
             "max_date": 987654321,
             "value": 123456789
@@ -145,8 +127,6 @@ class Test_FieldDTO:
         assert field_dto.field.placeholder == "placeholder"
         assert field_dto.field.required == True
         assert field_dto.field.key == "key"
-        assert field_dto.field.regex == "regex"
-        assert field_dto.field.formatting == "formatting"
         assert field_dto.field.min_date == 123456789
         assert field_dto.field.max_date == 987654321
         assert field_dto.field.value == 123456789
@@ -157,8 +137,6 @@ class Test_FieldDTO:
             "placeholder": "placeholder",
             "required": True,
             "key": "key",
-            "regex": "regex",
-            "formatting": "formatting",
             "value": True
         }
 
@@ -168,8 +146,6 @@ class Test_FieldDTO:
         assert field_dto.field.placeholder == "placeholder"
         assert field_dto.field.required == True
         assert field_dto.field.key == "key"
-        assert field_dto.field.regex == "regex"
-        assert field_dto.field.formatting == "formatting"
         assert field_dto.field.value == True
     
     def test_field_dto_from_dynamo_checkbox_group_field(self):
@@ -178,8 +154,6 @@ class Test_FieldDTO:
             "placeholder": "placeholder",
             "required": True,
             "key": "key",
-            "regex": "regex",
-            "formatting": "formatting",
             "options": ["option1", "option2"],
             "check_limit": 1,
             "value": ["option1"]
@@ -191,8 +165,6 @@ class Test_FieldDTO:
         assert field_dto.field.placeholder == "placeholder"
         assert field_dto.field.required == True
         assert field_dto.field.key == "key"
-        assert field_dto.field.regex == "regex"
-        assert field_dto.field.formatting == "formatting"
         assert field_dto.field.options == ["option1", "option2"]
         assert field_dto.field.check_limit == 1
         assert field_dto.field.value == ["option1"]
@@ -203,8 +175,6 @@ class Test_FieldDTO:
             "placeholder": "placeholder",
             "required": True,
             "key": "key",
-            "regex": "regex",
-            "formatting": "formatting",
             "value": True
         }
 
@@ -214,8 +184,6 @@ class Test_FieldDTO:
         assert field_dto.field.placeholder == "placeholder"
         assert field_dto.field.required == True
         assert field_dto.field.key == "key"
-        assert field_dto.field.regex == "regex"
-        assert field_dto.field.formatting == "formatting"
         assert field_dto.field.value == True
     
     def test_field_dto_from_dynamo_file_field(self):
@@ -224,8 +192,6 @@ class Test_FieldDTO:
             "placeholder": "placeholder",
             "required": True,
             "key": "key",
-            "regex": "regex",
-            "formatting": "formatting",
             "value": ["value"],
             "file_type": "IMAGE",
             "min_quantity": 1,
@@ -238,8 +204,6 @@ class Test_FieldDTO:
         assert field_dto.field.placeholder == "placeholder"
         assert field_dto.field.required == True
         assert field_dto.field.key == "key"
-        assert field_dto.field.regex == "regex"
-        assert field_dto.field.formatting == "formatting"
         assert field_dto.field.value == ["value"]
         assert field_dto.field.file_type == FILE_TYPE.IMAGE
         assert field_dto.field.min_quantity == 1
@@ -265,7 +229,7 @@ class Test_FieldDTO:
         }
     
     def test_field_dto_to_dynamo_number_field(self):
-        field = NumberField(placeholder='placeholder', required=True, key='key', max_value=10, min_value=1, decimal=False, regex='regex', formatting='formatting', value=1.0)
+        field = NumberField(placeholder='placeholder', required=True, key='key', max_value=10, min_value=1, decimal=False, value=1.0)
 
         field_dto = FieldDTO(field)
 
@@ -276,8 +240,6 @@ class Test_FieldDTO:
             "placeholder": "placeholder",
             "required": True,
             "key": "key",
-            "regex": "regex",
-            "formatting": "formatting",
             "max_value": 10,
             "min_value": 1,
             "decimal": False,
@@ -285,7 +247,7 @@ class Test_FieldDTO:
         }
     
     def test_field_dto_to_dynamo_dropdown_field(self):
-        field = DropDownField(placeholder='placeholder', required=True, key='key', options=['option1', 'option2'], value='option1', regex='regex', formatting='formatting')
+        field = DropDownField(placeholder='placeholder', required=True, key='key', options=['option1', 'option2'], value='option1')
 
         field_dto = FieldDTO(field)
 
@@ -296,14 +258,12 @@ class Test_FieldDTO:
             "placeholder": "placeholder",
             "required": True,
             "key": "key",
-            "regex": "regex",
-            "formatting": "formatting",
             "options": ['option1', 'option2'],
             "value": 'option1'
         }
     
     def test_field_dto_to_dynamo_typeahead_field(self):
-        field = TypeAheadField(placeholder='placeholder', required=True, key='key', options=['option1', 'option2'], max_length=10, value='option1', regex='regex', formatting='formatting')
+        field = TypeAheadField(placeholder='placeholder', required=True, key='key', options=['option1', 'option2'], max_length=10, value='option1')
 
         field_dto = FieldDTO(field)
 
@@ -314,15 +274,13 @@ class Test_FieldDTO:
             "placeholder": "placeholder",
             "required": True,
             "key": "key",
-            "regex": "regex",
-            "formatting": "formatting",
             "options": ['option1', 'option2'],
             "max_length": 10,
             "value": 'option1'
         }
     
     def test_field_dto_to_dynamo_radio_group_field(self):
-        field = RadioGroupField(placeholder='placeholder', required=True, key='key', options=['option1', 'option2'], value='option1', regex='regex', formatting='formatting')
+        field = RadioGroupField(placeholder='placeholder', required=True, key='key', options=['option1', 'option2'], value='option1')
 
         field_dto = FieldDTO(field)
 
@@ -333,14 +291,12 @@ class Test_FieldDTO:
             "placeholder": "placeholder",
             "required": True,
             "key": "key",
-            "regex": "regex",
-            "formatting": "formatting",
             "options": ['option1', 'option2'],
             "value": 'option1'
         }
     
     def test_field_dto_to_dynamo_date_field(self):
-        field = DateField(placeholder='placeholder', required=True, key='key', min_date=123456789, max_date=987654321, value=123456789, regex='regex', formatting='formatting')
+        field = DateField(placeholder='placeholder', required=True, key='key', min_date=123456789, max_date=987654321, value=123456789)
 
         field_dto = FieldDTO(field)
 
@@ -351,15 +307,13 @@ class Test_FieldDTO:
             "placeholder": "placeholder",
             "required": True,
             "key": "key",
-            "regex": "regex",
-            "formatting": "formatting",
             "min_date": 123456789,
             "max_date": 987654321,
             "value": 123456789
         }
     
     def test_field_dto_to_dynamo_checkbox_field(self):
-        field = CheckboxField(placeholder='placeholder', required=True, key='key', value=True, regex='regex', formatting='formatting')
+        field = CheckboxField(placeholder='placeholder', required=True, key='key', value=True)
 
         field_dto = FieldDTO(field)
 
@@ -370,13 +324,11 @@ class Test_FieldDTO:
             "placeholder": "placeholder",
             "required": True,
             "key": "key",
-            "regex": "regex",
-            "formatting": "formatting",
             "value": True
         }
     
     def test_field_dto_to_dynamo_checkbox_group_field(self):
-        field = CheckBoxGroupField(placeholder='placeholder', required=True, key='key', options=['option1', 'option2'], check_limit=1, value=['option1'], regex='regex', formatting='formatting')
+        field = CheckBoxGroupField(placeholder='placeholder', required=True, key='key', options=['option1', 'option2'], check_limit=1, value=['option1'])
 
         field_dto = FieldDTO(field)
 
@@ -387,15 +339,13 @@ class Test_FieldDTO:
             "placeholder": "placeholder",
             "required": True,
             "key": "key",
-            "regex": "regex",
-            "formatting": "formatting",
             "options": ['option1', 'option2'],
             "check_limit": 1,
             "value": ['option1']
         }
     
     def test_field_dto_to_dynamo_switch_button_field(self):
-        field = SwitchButtonField(placeholder='placeholder', required=True, key='key', value=True, regex='regex', formatting='formatting')
+        field = SwitchButtonField(placeholder='placeholder', required=True, key='key', value=True)
 
         field_dto = FieldDTO(field)
 
@@ -406,13 +356,11 @@ class Test_FieldDTO:
             "placeholder": "placeholder",
             "required": True,
             "key": "key",
-            "regex": "regex",
-            "formatting": "formatting",
             "value": True
         }
     
     def test_field_dto_to_dynamo_file_field(self):
-        field = FileField(placeholder='placeholder', required=True, key='key', file_type=FILE_TYPE.IMAGE, min_quantity=1, max_quantity=2, value=['value'], regex='regex', formatting='formatting')
+        field = FileField(placeholder='placeholder', required=True, key='key', file_type=FILE_TYPE.IMAGE, min_quantity=1, max_quantity=2, value=['value'])
 
         field_dto = FieldDTO(field)
 
@@ -423,8 +371,6 @@ class Test_FieldDTO:
             "placeholder": "placeholder",
             "required": True,
             "key": "key",
-            "regex": "regex",
-            "formatting": "formatting",
             "value": ['value'],
             "file_type": "IMAGE",
             "min_quantity": 1,

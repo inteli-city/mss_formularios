@@ -12,12 +12,10 @@ class Field(abc.ABC):
     placeholder: str
     required: bool
     key: str
-    regex: Optional[str]
-    formatting: Optional[str]
 
 
     @abc.abstractmethod
-    def __init__(self, field_type: FIELD_TYPE, placeholder: str, required: bool, key: str, regex: Optional[str] = None, formatting: Optional[str] = None):
+    def __init__(self, field_type: FIELD_TYPE, placeholder: str, required: bool, key: str):
         if type(field_type) is not FIELD_TYPE:
             raise EntityError('field_type')
         self.field_type = field_type
@@ -33,7 +31,15 @@ class Field(abc.ABC):
         if type(key) is not str:
             raise EntityError('key')
         self.key = key
+        
+class TextField(Field):
+    max_length: Optional[int]
+    value: Optional[str]
+    regex: Optional[str]
+    formatting: Optional[str]
 
+    def __init__(self, placeholder: str, required: bool, key: str, max_length: int, formatting: Optional[str] = None, regex: Optional[str] = None, value: Optional[str] = None):
+        super().__init__(FIELD_TYPE.TEXT_FIELD, placeholder, required, key)
         if regex is not None and type(regex) is not str:
             raise EntityError('regex')
         self.regex = regex
@@ -41,13 +47,7 @@ class Field(abc.ABC):
         if formatting is not None and type(formatting) is not str:
             raise EntityError('formatting')
         self.formatting = formatting
-
-class TextField(Field):
-    max_length: Optional[int]
-    value: Optional[str]
-
-    def __init__(self, placeholder: str, required: bool, key: str, max_length: int, formatting: Optional[str] = None, regex: Optional[str] = None, value: Optional[str] = None):
-        super().__init__(FIELD_TYPE.TEXT_FIELD, placeholder, required, key, regex, formatting)
+        
         if max_length is not None and type(max_length) is not int:
             raise EntityError('max_length')
         self.max_length = max_length
@@ -65,8 +65,8 @@ class NumberField(Field):
     decimal: bool
     value: Optional[float]
 
-    def __init__(self, placeholder: str, required: bool, key: str, decimal: bool, max_value: int = None, min_value: int = None, regex: Optional[str] = None, formatting: Optional[str] = None, value: Optional[float] = None):
-        super().__init__(FIELD_TYPE.NUMBER_FIELD, placeholder, required, key, regex, formatting)
+    def __init__(self, placeholder: str, required: bool, key: str, decimal: bool, max_value: int = None, min_value: int = None, value: Optional[float] = None):
+        super().__init__(FIELD_TYPE.NUMBER_FIELD, placeholder, required, key)
         if max_value is not None and type(max_value) is not int:
             raise EntityError('max_value')
         self.max_value = max_value
@@ -92,8 +92,8 @@ class DropDownField(Field):
     options: List[str]
     value: Optional[str]
 
-    def __init__(self, placeholder: str, required: bool, key: str, options: List[str], regex: Optional[str] = None, formatting: Optional[str] = None, value: Optional[str] = None):
-        super().__init__(FIELD_TYPE.DROPDOWN_FIELD, placeholder, required, key, regex, formatting)
+    def __init__(self, placeholder: str, required: bool, key: str, options: List[str], value: Optional[str] = None):
+        super().__init__(FIELD_TYPE.DROPDOWN_FIELD, placeholder, required, key)
         if type(options) is not list:
             raise EntityError('options')
         self.options = options
@@ -107,8 +107,8 @@ class TypeAheadField(Field):
     max_length: Optional[int]
     value: Optional[str]
 
-    def __init__(self, placeholder: str, required: bool, key: str, options: List[str], max_length: Optional[int] = None, regex: Optional[str] = None, formatting: Optional[str] = None, value: Optional[str] = None):
-        super().__init__(FIELD_TYPE.TYPEAHEAD_FIELD, placeholder, required, key, regex, formatting)
+    def __init__(self, placeholder: str, required: bool, key: str, options: List[str], max_length: Optional[int] = None, value: Optional[str] = None):
+        super().__init__(FIELD_TYPE.TYPEAHEAD_FIELD, placeholder, required, key)
         if type(options) is not list:
             raise EntityError('options')
         self.options = options
@@ -125,8 +125,8 @@ class RadioGroupField(Field):
     options: List[str]
     value: Optional[str]
 
-    def __init__(self, placeholder: str, required: bool, key: str, options: List[str], regex: Optional[str] = None, formatting: Optional[str] = None, value: Optional[str] = None):
-        super().__init__(FIELD_TYPE.RADIO_GROUP_FIELD, placeholder, required, key, regex, formatting)
+    def __init__(self, placeholder: str, required: bool, key: str, options: List[str], value: Optional[str] = None):
+        super().__init__(FIELD_TYPE.RADIO_GROUP_FIELD, placeholder, required, key)
         if type(options) is not list:
             raise EntityError('options')
         self.options = options
@@ -140,8 +140,8 @@ class DateField(Field):
     max_date: Optional[int] # timestamp
     value: Optional[int] # timestamp
 
-    def __init__(self, placeholder: str, required: bool, key: str, min_date: Optional[int] = None, max_date: Optional[int] = None, regex: Optional[str] = None, formatting: Optional[str] = None, value: Optional[int] = None):
-        super().__init__(FIELD_TYPE.DATE_FIELD, placeholder, required, key, regex, formatting)
+    def __init__(self, placeholder: str, required: bool, key: str, min_date: Optional[int] = None, max_date: Optional[int] = None, value: Optional[int] = None):
+        super().__init__(FIELD_TYPE.DATE_FIELD, placeholder, required, key)
         if min_date is not None and type(min_date) is not int:
             raise EntityError('min_date')
         self.min_date = min_date
@@ -163,8 +163,8 @@ class DateField(Field):
 class CheckboxField(Field):
     value: Optional[bool]
 
-    def __init__(self, placeholder: str, required: bool, key: str, regex: Optional[str] = None, formatting: Optional[str] = None, value: Optional[bool] = None):
-        super().__init__(FIELD_TYPE.CHECKBOX_FIELD, placeholder, required, key, regex, formatting)
+    def __init__(self, placeholder: str, required: bool, key: str, value: Optional[bool] = None):
+        super().__init__(FIELD_TYPE.CHECKBOX_FIELD, placeholder, required, key)
         if value is not None and type(value) is not bool:
             raise EntityError('value')
         self.value = value
@@ -174,8 +174,8 @@ class CheckBoxGroupField(Field):
     check_limit: Optional[int]
     value: Optional[List[str]]
 
-    def __init__(self, placeholder: str, required: bool, key: str, options: List[str], check_limit: Optional[int] = None, regex: Optional[str] = None, formatting: Optional[str] = None, value: Optional[List[str]] = None):
-        super().__init__(FIELD_TYPE.CHECKBOX_GROUP_FIELD, placeholder, required, key, regex, formatting)
+    def __init__(self, placeholder: str, required: bool, key: str, options: List[str], check_limit: Optional[int] = None, value: Optional[List[str]] = None):
+        super().__init__(FIELD_TYPE.CHECKBOX_GROUP_FIELD, placeholder, required, key)
         if type(options) is not list:
             raise EntityError('options')
         self.options = options
@@ -197,8 +197,8 @@ class CheckBoxGroupField(Field):
 class SwitchButtonField(Field):
     value: Optional[bool]
 
-    def __init__(self, placeholder: str, required: bool, key: str, regex: Optional[str] = None, formatting: Optional[str] = None, value: Optional[bool] = None,):
-        super().__init__(FIELD_TYPE.SWITCH_BUTTON_FIELD, placeholder, required, key, regex, formatting)
+    def __init__(self, placeholder: str, required: bool, key: str, value: Optional[bool] = None,):
+        super().__init__(FIELD_TYPE.SWITCH_BUTTON_FIELD, placeholder, required, key)
         if value is not None and type(value) is not bool:
             raise EntityError('value')
         self.value = value
@@ -209,8 +209,8 @@ class FileField(Field):
     max_quantity: int
     value: Optional[List[str]]
 
-    def __init__(self, placeholder: str, required: bool, key: str, file_type: FILE_TYPE, min_quantity: int, max_quantity: int, regex: Optional[str] = None, formatting: Optional[str] = None, value: Optional[List[str]] = None):
-        super().__init__(FIELD_TYPE.FILE_FIELD, placeholder, required, key, regex, formatting)
+    def __init__(self, placeholder: str, required: bool, key: str, file_type: FILE_TYPE, min_quantity: int, max_quantity: int, value: Optional[List[str]] = None):
+        super().__init__(FIELD_TYPE.FILE_FIELD, placeholder, required, key)
         if type(file_type) is not FILE_TYPE:
             raise EntityError('file_type')
         self.file_type = file_type

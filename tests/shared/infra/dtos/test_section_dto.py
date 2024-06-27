@@ -48,7 +48,6 @@ class Test_SectionDTO:
                     'placeholder': 'placeholder',
                     'required': True,
                     'key': 'key',
-                    'regex': 'regex',
                     'decimal': True,
                     'max_value': 10,
                     'min_value': 10,
@@ -64,8 +63,6 @@ class Test_SectionDTO:
         assert section.fields[0].placeholder == 'placeholder'
         assert section.fields[0].required == True
         assert section.fields[0].key == 'key'
-        assert section.fields[0].regex == 'regex'
-        assert section.fields[0].formatting == None
         assert section.fields[0].decimal == True
         assert section.fields[0].max_value == 10
         assert section.fields[0].min_value == 10
@@ -79,8 +76,6 @@ class Test_SectionDTO:
                     'placeholder': 'placeholder',
                     'required': True,
                     'key': 'key',
-                    'regex': 'regex',
-                    'formatting': 'formatting',
                     'options': ['option1', 'option2']
                 },
             ]
@@ -94,8 +89,6 @@ class Test_SectionDTO:
         assert section.fields[0].placeholder == 'placeholder'
         assert section.fields[0].required == True
         assert section.fields[0].key == 'key'
-        assert section.fields[0].regex == 'regex'
-        assert section.fields[0].formatting == 'formatting'
         assert section.fields[0].options == ['option1', 'option2']
 
     def test_section_dto_from_request_type_ahead(self):
@@ -107,8 +100,6 @@ class Test_SectionDTO:
                     'placeholder': 'placeholder',
                     'required': True,
                     'key': 'key',
-                    'regex': 'regex',
-                    'formatting': 'formatting',
                     'options': ['option1', 'option2']
                 },
             ]
@@ -122,8 +113,6 @@ class Test_SectionDTO:
         assert section.fields[0].placeholder == 'placeholder'
         assert section.fields[0].required == True
         assert section.fields[0].key == 'key'
-        assert section.fields[0].regex == 'regex'
-        assert section.fields[0].formatting == 'formatting'
         assert section.fields[0].options == ['option1', 'option2']
     
     def test_section_dto_from_request_radio_group(self):
@@ -135,8 +124,6 @@ class Test_SectionDTO:
                     'placeholder': 'placeholder',
                     'required': True,
                     'key': 'key',
-                    'regex': 'regex',
-                    'formatting': 'formatting',
                     'options': ['option1', 'option2']
                 },
             ]
@@ -150,8 +137,6 @@ class Test_SectionDTO:
         assert section.fields[0].placeholder == 'placeholder'
         assert section.fields[0].required == True
         assert section.fields[0].key == 'key'
-        assert section.fields[0].regex == 'regex'
-        assert section.fields[0].formatting == 'formatting'
         assert section.fields[0].options == ['option1', 'option2']
 
     def test_section_dto_from_request_date(self):
@@ -163,8 +148,6 @@ class Test_SectionDTO:
                     'placeholder': 'placeholder',
                     'required': True,
                     'key': 'key',
-                    'regex': 'regex',
-                    'formatting': 'formatting',
                     'min_date': 10,
                     'max_date': 10,
                     'value': 10
@@ -180,8 +163,6 @@ class Test_SectionDTO:
         assert section.fields[0].placeholder == 'placeholder'
         assert section.fields[0].required == True
         assert section.fields[0].key == 'key'
-        assert section.fields[0].regex == 'regex'
-        assert section.fields[0].formatting == 'formatting'
         assert section.fields[0].min_date == 10
         assert section.fields[0].max_date == 10
         assert section.fields[0].value == 10
@@ -195,8 +176,6 @@ class Test_SectionDTO:
                     'placeholder': 'placeholder',
                     'required': True,
                     'key': 'key',
-                    'regex': 'regex',
-                    'formatting': 'formatting',
                     'value': True
                 },
             ]
@@ -210,8 +189,6 @@ class Test_SectionDTO:
         assert section.fields[0].placeholder == 'placeholder'
         assert section.fields[0].required == True
         assert section.fields[0].key == 'key'
-        assert section.fields[0].regex == 'regex'
-        assert section.fields[0].formatting == 'formatting'
         assert section.fields[0].value == True
 
     def test_section_dto_from_request_check_box_group(self):
@@ -223,8 +200,6 @@ class Test_SectionDTO:
                     'placeholder': 'placeholder',
                     'required': True,
                     'key': 'key',
-                    'regex': 'regex',
-                    'formatting': 'formatting',
                     'options': ['option1', 'option2'],
                     'check_limit': 1
                 },
@@ -239,8 +214,6 @@ class Test_SectionDTO:
         assert section.fields[0].placeholder == 'placeholder'
         assert section.fields[0].required == True
         assert section.fields[0].key == 'key'
-        assert section.fields[0].regex == 'regex'
-        assert section.fields[0].formatting == 'formatting'
         assert section.fields[0].options == ['option1', 'option2']
         assert section.fields[0].check_limit == 1
 
@@ -253,8 +226,6 @@ class Test_SectionDTO:
                     'placeholder': 'placeholder',
                     'required': True,
                     'key': 'key',
-                    'regex': 'regex',
-                    'formatting': 'formatting',
                     'value': True
                 },
             ]
@@ -268,8 +239,6 @@ class Test_SectionDTO:
         assert section.fields[0].placeholder == 'placeholder'
         assert section.fields[0].required == True
         assert section.fields[0].key == 'key'
-        assert section.fields[0].regex == 'regex'
-        assert section.fields[0].formatting == 'formatting'
         assert section.fields[0].value == True
 
     def test_section_dto_from_request_file(self):
@@ -281,8 +250,6 @@ class Test_SectionDTO:
                     'placeholder': 'placeholder',
                     'required': True,
                     'key': 'key',
-                    'regex': 'regex',
-                    'formatting': 'formatting',
                     'file_type': 'IMAGE',
                     'min_quantity': 1,
                     'max_quantity': 10
@@ -298,8 +265,6 @@ class Test_SectionDTO:
         assert section.fields[0].placeholder == 'placeholder'
         assert section.fields[0].required == True
         assert section.fields[0].key == 'key'
-        assert section.fields[0].regex == 'regex'
-        assert section.fields[0].formatting == 'formatting'
         assert section.fields[0].file_type == FILE_TYPE.IMAGE
         assert section.fields[0].min_quantity == 1
         assert section.fields[0].max_quantity == 10
@@ -439,8 +404,6 @@ class Test_SectionDTO:
                     'placeholder': 'placeholder',
                     'required': True,
                     'key': 'key',
-                    'regex': 'regex',
-                    'formatting': 'formatting',
                     'max_value': 10,
                     'min_value': 10,
                 }
@@ -459,8 +422,6 @@ class Test_SectionDTO:
                     'placeholder': 'placeholder',
                     'required': True,
                     'key': 'key',
-                    'regex': 'regex',
-                    'formatting': 'formatting',
                 }
             ]
         }
@@ -477,8 +438,6 @@ class Test_SectionDTO:
                     'placeholder': 'placeholder',
                     'required': True,
                     'key': 'key',
-                    'regex': 'regex',
-                    'formatting': 'formatting',
                 }
             ]
         }
@@ -495,8 +454,6 @@ class Test_SectionDTO:
                     'placeholder': 'placeholder',
                     'required': True,
                     'key': 'key',
-                    'regex': 'regex',
-                    'formatting': 'formatting',
                 }
             ]
         }
@@ -513,8 +470,6 @@ class Test_SectionDTO:
                     'placeholder': 'placeholder',
                     'required': True,
                     'key': 'key',
-                    'regex': 'regex',
-                    'formatting': 'formatting',
                 }
             ]
         }
@@ -531,8 +486,6 @@ class Test_SectionDTO:
                     'placeholder': 'placeholder',
                     'required': True,
                     'key': 'key',
-                    'regex': 'regex',
-                    'formatting': 'formatting',
                 }
             ]
         }
@@ -549,8 +502,6 @@ class Test_SectionDTO:
                     'placeholder': 'placeholder',
                     'required': True,
                     'key': 'key',
-                    'regex': 'regex',
-                    'formatting': 'formatting',
                 }
             ]
         }
@@ -567,8 +518,6 @@ class Test_SectionDTO:
                     'placeholder': 'placeholder',
                     'required': True,
                     'key': 'key',
-                    'regex': 'regex',
-                    'formatting': 'formatting',
                     'file_type': 'IMAGE',
                     'max_quantity': 10,
                 }
@@ -587,8 +536,6 @@ class Test_SectionDTO:
                     'placeholder': 'placeholder',
                     'required': True,
                     'key': 'key',
-                    'regex': 'regex',
-                    'formatting': 'formatting',
                     'file_type': 'IMAGE',
                     'min_quantity': 10,
                 }

@@ -42,7 +42,7 @@ class Test_CancelFormViewmodel:
         assert response == excepted
     
     def test_field_viewmodel_with_enum(self):
-        viewmodel = FieldViewmodel(field=FileField(placeholder='placeholder', required=True, key='key', regex='regex', formatting='formatting', file_type=FILE_TYPE.IMAGE, min_quantity=1, max_quantity=10, value=['value']))
+        viewmodel = FieldViewmodel(field=FileField(placeholder='placeholder', required=True, key='key', file_type=FILE_TYPE.IMAGE, min_quantity=1, max_quantity=10, value=['value']))
 
         response = viewmodel.to_dict()
 
@@ -51,8 +51,6 @@ class Test_CancelFormViewmodel:
             'placeholder': 'placeholder',
             'required': True,
             'key': 'key',
-            'regex': 'regex',
-            'formatting': 'formatting',
             'file_type': 'IMAGE',
             'min_quantity': 1,
             'max_quantity': 10,
@@ -93,7 +91,7 @@ class Test_CancelFormViewmodel:
     
     def test_section_viewmodel(self):
 
-        field = FileField(placeholder='placeholder', required=True, key='key', regex='regex', formatting='formatting', file_type=FILE_TYPE.IMAGE, min_quantity=1, max_quantity=10, value=['value'])
+        field = FileField(placeholder='placeholder', required=True, key='key', file_type=FILE_TYPE.IMAGE, min_quantity=1, max_quantity=10, value=['value'])
 
         viewmodel = SectionViewmodel(
             section=Section(
@@ -111,8 +109,6 @@ class Test_CancelFormViewmodel:
                 'placeholder': 'placeholder',
                 'required': True,
                 'key': 'key',
-                'regex': 'regex',
-                'formatting': 'formatting',
                 'file_type': 'IMAGE',
                 'min_quantity': 1,
                 'max_quantity': 10,
@@ -156,7 +152,7 @@ class Test_CancelFormViewmodel:
         assert response == excepted
     
     def test_form_viewmodel(self):
-        field = FileField(placeholder='placeholder', required=True, key='key', regex='regex', formatting='formatting', file_type=FILE_TYPE.IMAGE, min_quantity=1, max_quantity=10, value=['value'])
+        field = FileField(placeholder='placeholder', required=True, key='key', file_type=FILE_TYPE.IMAGE, min_quantity=1, max_quantity=10, value=['value'])
 
         section = Section(
                 section_id='section_id',
@@ -242,8 +238,6 @@ class Test_CancelFormViewmodel:
                     'placeholder': 'placeholder',
                     'required': True,
                     'key': 'key',
-                    'regex': 'regex',
-                    'formatting': 'formatting',
                     'file_type': 'IMAGE',
                     'min_quantity': 1,
                     'max_quantity': 10,
@@ -270,7 +264,7 @@ class Test_CancelFormViewmodel:
         assert response == excepted
     
     def test_cancel_form_viewmodel(self):
-        field = FileField(placeholder='placeholder', required=True, key='key', regex='regex', formatting='formatting', file_type=FILE_TYPE.IMAGE, min_quantity=1, max_quantity=10, value=['value'])
+        field = FileField(placeholder='placeholder', required=True, key='key', file_type=FILE_TYPE.IMAGE, min_quantity=1, max_quantity=10, value=['value'])
 
         section = Section(
                 section_id='section_id',
@@ -360,8 +354,6 @@ class Test_CancelFormViewmodel:
                                     'placeholder': 'placeholder',
                                     'required': True,
                                     'key': 'key',
-                                    'regex': 'regex',
-                                    'formatting': 'formatting',
                                     'file_type': 'IMAGE',
                                     'min_quantity': 1,
                                     'max_quantity': 10,

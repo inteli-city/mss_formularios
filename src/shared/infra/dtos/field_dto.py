@@ -52,8 +52,6 @@ class FieldDTO:
                 placeholder=field_dict.get('placeholder'),
                 required=field_dict.get('required'),
                 key=field_dict.get('key'),
-                regex=field_dict.get('regex'),
-                formatting=field_dict.get('formatting'),
                 decimal=field_dict.get('decimal'),
                 max_value=int(field_dict.get('max_value')) if field_dict.get('max_value') is not None else None,
                 min_value=int(field_dict.get('min_value')) if field_dict.get('min_value') is not None else None,
@@ -72,8 +70,6 @@ class FieldDTO:
                 placeholder=field_dict.get('placeholder'),
                 required=field_dict.get('required'),
                 key=field_dict.get('key'),
-                regex=field_dict.get('regex'),
-                formatting=field_dict.get('formatting'),
                 options=field_dict.get('options'),
                 max_length=int(field_dict.get('max_length')) if field_dict.get('max_length') is not None else None,
                 value=field_dict.get('value')
@@ -89,8 +85,6 @@ class FieldDTO:
                 placeholder=field_dict.get('placeholder'),
                 required=field_dict.get('required'),
                 key=field_dict.get('key'),
-                regex=field_dict.get('regex'),
-                formatting=field_dict.get('formatting'),
                 min_date=int(field_dict.get('min_date')) if field_dict.get('min_date') is not None else None,
                 max_date=int(field_dict.get('max_date')) if field_dict.get('max_date') is not None else None,
                 value=int(field_dict.get('value')) if field_dict.get('value') is not None else None
@@ -106,8 +100,6 @@ class FieldDTO:
                 placeholder=field_dict.get('placeholder'),
                 required=field_dict.get('required'),
                 key=field_dict.get('key'),
-                regex=field_dict.get('regex'),
-                formatting=field_dict.get('formatting'),
                 options=field_dict.get('options'),
                 check_limit=int(field_dict.get('check_limit')) if field_dict.get('check_limit') is not None else None,
                 value=field_dict.get('value')
@@ -126,10 +118,8 @@ class FieldDTO:
             if field_dict.get('max_quantity') is None:
                 raise MissingParameters('max_quantity')
             field = FileField(
-                formatting=field_dict.get('formatting'),
                 key=field_dict.get('key'),
                 placeholder=field_dict.get('placeholder'),
-                regex=field_dict.get('regex'),
                 required=field_dict.get('required'),
                 file_type=FILE_TYPE[field_dict.get('file_type')],
                 min_quantity=int(field_dict.get('min_quantity')) if field_dict.get('min_quantity') is not None else None,
@@ -145,12 +135,12 @@ class FieldDTO:
             "placeholder": self.field.placeholder,
             "required": self.field.required,
             "key": self.field.key,
-            "regex": self.field.regex,
-            "formatting": self.field.formatting
         }
 
         if isinstance(self.field, TextField):
             dynamo_dict.update({
+                "regex": self.field.regex,
+                "formatting": self.field.formatting,
                 "max_length": self.field.max_length,
                 "value": self.field.value
             })
