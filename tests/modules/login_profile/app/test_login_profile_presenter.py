@@ -55,4 +55,4 @@ class Test_LoginProfilePresenter:
 
         response = lambda_handler(event, None)
         assert response["statusCode"] == 200
-        assert json.loads(response["body"])["message"] == 'Login realizado com sucesso!'
+        assert json.loads(response["body"])['message'] == 'Login realizado com sucesso!'

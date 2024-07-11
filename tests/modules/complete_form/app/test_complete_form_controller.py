@@ -78,7 +78,7 @@ class Test_CompleteFormController:
         response = controller(data)
 
         assert response.status_code == 400
-        assert response.body['message'] == 'Parâmetro ausente: requester_user'
+        assert response.body == 'Parâmetro ausente: requester_user'
     
     def test_complete_form_controller_missing_form_id(self):
         repo = FormRepositoryMock()
@@ -116,7 +116,7 @@ class Test_CompleteFormController:
         response = controller(data)
 
         assert response.status_code == 400
-        assert response.body['message'] == 'Parâmetro ausente: form_id'
+        assert response.body == 'Parâmetro ausente: form_id'
 
     def test_complete_form_controller_missing_sections(self):
         repo = FormRepositoryMock()
@@ -138,7 +138,7 @@ class Test_CompleteFormController:
         response = controller(data)
 
         assert response.status_code == 400
-        assert response.body['message'] == 'Parâmetro ausente: sections'
+        assert response.body == 'Parâmetro ausente: sections'
     
     def test_complete_form_controller_wrong_type_sections(self):
         repo = FormRepositoryMock()
@@ -161,7 +161,7 @@ class Test_CompleteFormController:
         response = controller(data)
 
         assert response.status_code == 400
-        assert response.body['message'] == 'Campo sections deveria ser do tipo list, mas foi recebido um campo do tipo <class \'str\'>'
+        assert response.body == 'Campo sections deveria ser do tipo list, mas foi recebido um campo do tipo <class \'str\'>'
     
     def test_complete_form_controller_sections_empty(self):
         repo = FormRepositoryMock()
@@ -184,7 +184,7 @@ class Test_CompleteFormController:
         response = controller(data)
 
         assert response.status_code == 400
-        assert response.body['message'] == 'Parâmetro ausente: sections'
+        assert response.body == 'Parâmetro ausente: sections'
 
     def test_complete_form_controller_wrong_type_vinculation_form_id(self):
         repo = FormRepositoryMock()
@@ -223,4 +223,4 @@ class Test_CompleteFormController:
         response = controller(data)
 
         assert response.status_code == 400
-        assert response.body['message'] == 'Campo vinculation_form_id deveria ser do tipo str, mas foi recebido um campo do tipo <class \'int\'>'
+        assert response.body == 'Campo vinculation_form_id deveria ser do tipo str, mas foi recebido um campo do tipo <class \'int\'>'

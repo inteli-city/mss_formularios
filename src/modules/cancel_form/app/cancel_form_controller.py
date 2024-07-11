@@ -51,19 +51,19 @@ class CancelFormController:
             return OK(viewmodel.to_dict())
         
         except NoItemsFound as err:
-            return NotFound(body={'message': err.message})
+            return NotFound(body=err.message)
 
         except MissingParameters as err:
-            return BadRequest(body={'message': err.message})
+            return BadRequest(body= err.message)
         
         except WrongTypeParameter as err:
-            return BadRequest(body={'message': err.message})
+            return BadRequest(body=err.message)
 
         except ForbiddenAction as err:
-            return Forbidden(body={'message': err.message})
+            return Forbidden(body=err.message)
         
         except EntityError as err:
-            return BadRequest(body={'message': f"Parâmetro inválido: {err.message}"})
+            return BadRequest(body=f"Parâmetro inválido: {err.message}")
         
         except Exception as err:
             return InternalServerError(body=err.args[0])

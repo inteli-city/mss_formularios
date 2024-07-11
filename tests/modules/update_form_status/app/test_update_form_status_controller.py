@@ -43,7 +43,7 @@ class Test_UpdateFormStatusController:
         response = controller(data)
 
         assert response.status_code == 400
-        assert response.body['message'] == 'Parâmetro ausente: requester_user'
+        assert response.body == 'Parâmetro ausente: requester_user'
 
 
     def test_update_form_status_controller_missing_form_id(self):
@@ -65,7 +65,7 @@ class Test_UpdateFormStatusController:
         response = controller(data)
 
         assert response.status_code == 400
-        assert response.body['message'] == 'Parâmetro ausente: form_id'
+        assert response.body == 'Parâmetro ausente: form_id'
     
     def test_update_form_status_controller_missing_status(self):
         repo = FormRepositoryMock()
@@ -86,7 +86,7 @@ class Test_UpdateFormStatusController:
         response = controller(data)
 
         assert response.status_code == 400
-        assert response.body['message'] == 'Parâmetro ausente: status'
+        assert response.body == 'Parâmetro ausente: status'
     
     def test_update_form_status_controller_invalid_status(self):
         repo = FormRepositoryMock()
@@ -108,7 +108,7 @@ class Test_UpdateFormStatusController:
         response = controller(data)
 
         assert response.status_code == 400
-        assert response.body['message'] == 'Parâmetro inválido: status'
+        assert response.body == 'Parâmetro inválido: status'
     
 
     def test_update_form_status_controller_no_items_found(self):
@@ -131,4 +131,4 @@ class Test_UpdateFormStatusController:
         response = controller(data)
 
         assert response.status_code == 404
-        assert response.body['message'] == 'Formulário não encontrado'
+        assert response.body == 'Formulário não encontrado'

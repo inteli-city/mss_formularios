@@ -151,7 +151,7 @@ class Test_CreateFormController:
         response = controller(data)
 
         assert response.status_code == 201
-        assert response.body["message"] == "Formulário criado com sucesso!"
+        assert response.body['message'] == "Formulário criado com sucesso!"
     
     def test_create_form_controller_missing_request_user(self):
         repo = FormRepositoryMock()
@@ -229,7 +229,7 @@ class Test_CreateFormController:
         response = controller(data)
 
         assert response.status_code == 400
-        assert response.body["message"] == "Parâmetro ausente: requester_user"
+        assert response.body == "Parâmetro ausente: requester_user"
     
     def test_create_form_controller_missing_user_id(self):
         repo = FormRepositoryMock()
@@ -292,7 +292,7 @@ class Test_CreateFormController:
         response = controller(data)
 
         assert response.status_code == 400
-        assert response.body["message"] == "Parâmetro ausente: user_id"
+        assert response.body == "Parâmetro ausente: user_id"
     
     def test_create_form_controller_missing_template(self):
         repo = FormRepositoryMock()
@@ -355,7 +355,7 @@ class Test_CreateFormController:
         response = controller(data)
 
         assert response.status_code == 400
-        assert response.body["message"] == "Parâmetro ausente: template"
+        assert response.body == "Parâmetro ausente: template"
     
     def test_create_form_controller_missing_area(self):
         repo = FormRepositoryMock()
@@ -418,7 +418,7 @@ class Test_CreateFormController:
         response = controller(data)
 
         assert response.status_code == 400
-        assert response.body["message"] == "Parâmetro ausente: area"
+        assert response.body == "Parâmetro ausente: area"
     
     def test_create_form_controller_missing_system(self):
         repo = FormRepositoryMock()
@@ -481,7 +481,7 @@ class Test_CreateFormController:
         response = controller(data)
 
         assert response.status_code == 400
-        assert response.body["message"] == "Parâmetro ausente: system"
+        assert response.body == "Parâmetro ausente: system"
     
     def test_create_form_controller_missing_street(self):
         repo = FormRepositoryMock()
@@ -544,7 +544,7 @@ class Test_CreateFormController:
         response = controller(data)
 
         assert response.status_code == 400
-        assert response.body["message"] == "Parâmetro ausente: street"
+        assert response.body == "Parâmetro ausente: street"
     
     def test_create_form_controller_missing_city(self):
         repo = FormRepositoryMock()
@@ -607,7 +607,7 @@ class Test_CreateFormController:
         response = controller(data)
 
         assert response.status_code == 400
-        assert response.body["message"] == "Parâmetro ausente: city"
+        assert response.body == "Parâmetro ausente: city"
     
     def test_create_form_controller_missing_number(self):
         repo = FormRepositoryMock()
@@ -670,7 +670,7 @@ class Test_CreateFormController:
         response = controller(data)
 
         assert response.status_code == 400
-        assert response.body["message"] == "Parâmetro ausente: number"
+        assert response.body == "Parâmetro ausente: number"
     
     def test_create_form_controller_missing_latitude(self):
         repo = FormRepositoryMock()
@@ -733,7 +733,7 @@ class Test_CreateFormController:
         response = controller(data)
 
         assert response.status_code == 400
-        assert response.body["message"] == "Parâmetro ausente: latitude"
+        assert response.body == "Parâmetro ausente: latitude"
     
     def test_create_form_controller_missing_longitude(self):
         repo = FormRepositoryMock()
@@ -796,7 +796,7 @@ class Test_CreateFormController:
         response = controller(data)
 
         assert response.status_code == 400
-        assert response.body["message"] == "Parâmetro ausente: longitude"
+        assert response.body == "Parâmetro ausente: longitude"
     
     def test_create_form_controller_missing_region(self):
         repo = FormRepositoryMock()
@@ -859,7 +859,7 @@ class Test_CreateFormController:
         response = controller(data)
 
         assert response.status_code == 400
-        assert response.body["message"] == "Parâmetro ausente: region"
+        assert response.body == "Parâmetro ausente: region"
     
     def test_create_form_controller_missing_priority(self):
         repo = FormRepositoryMock()
@@ -922,7 +922,7 @@ class Test_CreateFormController:
         response = controller(data)
 
         assert response.status_code == 400
-        assert response.body["message"] == "Parâmetro ausente: priority"
+        assert response.body == "Parâmetro ausente: priority"
     
     def test_create_form_controller_priority_not_in_enum(self):
         repo = FormRepositoryMock()
@@ -986,7 +986,7 @@ class Test_CreateFormController:
         response = controller(data)
 
         assert response.status_code == 400
-        assert response.body["message"] == "Parâmetro inválido: priority"
+        assert response.body == "Parâmetro inválido: priority"
     
     def test_create_form_controller_missing_expiration_date(self):
         repo = FormRepositoryMock()
@@ -1050,7 +1050,7 @@ class Test_CreateFormController:
         response = controller(data)
 
         assert response.status_code == 400
-        assert response.body["message"] == "Parâmetro ausente: expiration_date"
+        assert response.body == "Parâmetro ausente: expiration_date"
     
     def test_create_form_controller_missing_sections(self):
         repo = FormRepositoryMock()
@@ -1110,5 +1110,5 @@ class Test_CreateFormController:
         response = controller(data)
 
         assert response.status_code == 400
-        assert response.body["message"] == "Parâmetro ausente: sections"
+        assert response.body == "Parâmetro ausente: sections"
     

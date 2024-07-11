@@ -25,7 +25,7 @@ class GetFormByUserIdController:
             return OK(viewmodel.to_dict())
         
         except NoItemsFound as err:
-            return NotFound(body=f'{err.message}')
+            return NotFound(body=err.message)
 
         except MissingParameters as err:
             return BadRequest(body=err.message)

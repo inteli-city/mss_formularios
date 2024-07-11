@@ -55,4 +55,4 @@ class Test_GetFormByUserPresenter:
         
         response = lambda_handler(event, None)
         assert response["statusCode"] == 200
-        assert json.loads(response["body"])["message"] == 'Formulários retornados com sucesso!'
+        assert json.loads(response["body"])['message'] == 'Formulários retornados com sucesso!'

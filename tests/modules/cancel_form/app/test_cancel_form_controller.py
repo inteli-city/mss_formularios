@@ -50,7 +50,7 @@ class Test_CancelFormController:
         response = controller(data)
 
         assert response.status_code == 400
-        assert response.body['message'] == 'Parâmetro ausente: requester_user'
+        assert response.body == 'Parâmetro ausente: requester_user'
     
     def test_cancel_form_controller_missing_form_id(self):
         repo = FormRepositoryMock()
@@ -73,7 +73,7 @@ class Test_CancelFormController:
         response = controller(data)
 
         assert response.status_code == 400
-        assert response.body['message'] == 'Parâmetro ausente: form_id'
+        assert response.body == 'Parâmetro ausente: form_id'
     
     def test_cancel_form_controller_missing_selected_option(self):
         repo = FormRepositoryMock()
@@ -96,7 +96,7 @@ class Test_CancelFormController:
         response = controller(data)
 
         assert response.status_code == 400
-        assert response.body['message'] == 'Parâmetro ausente: selected_option'
+        assert response.body == 'Parâmetro ausente: selected_option'
     
     def test_cancel_form_controller_wrong_type_selected_option(self):
         repo = FormRepositoryMock()
@@ -120,7 +120,7 @@ class Test_CancelFormController:
         response = controller(data)
 
         assert response.status_code == 400
-        assert response.body['message'] == 'Campo selected_option deveria ser do tipo str, mas foi recebido um campo do tipo <class \'int\'>'
+        assert response.body == 'Campo selected_option deveria ser do tipo str, mas foi recebido um campo do tipo <class \'int\'>'
     
     def test_cancel_form_controller_wrong_type_justification_text(self):
         repo = FormRepositoryMock()
@@ -144,7 +144,7 @@ class Test_CancelFormController:
         response = controller(data)
 
         assert response.status_code == 400
-        assert response.body['message'] == 'Campo justification_text deveria ser do tipo str, mas foi recebido um campo do tipo <class \'int\'>'
+        assert response.body == 'Campo justification_text deveria ser do tipo str, mas foi recebido um campo do tipo <class \'int\'>'
     
     def test_cancel_form_controller_wrong_type_justification_image(self):
         repo = FormRepositoryMock()
@@ -168,4 +168,4 @@ class Test_CancelFormController:
         response = controller(data)
 
         assert response.status_code == 400
-        assert response.body['message'] == 'Campo justification_image deveria ser do tipo str, mas foi recebido um campo do tipo <class \'int\'>'
+        assert response.body == 'Campo justification_image deveria ser do tipo str, mas foi recebido um campo do tipo <class \'int\'>'

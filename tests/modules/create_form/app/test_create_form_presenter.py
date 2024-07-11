@@ -125,7 +125,7 @@ class Test_CreateFormPresenter:
         response_json = json.loads(response["body"])
 
         assert response["statusCode"] == 201
-        assert response_json["message"] == "Formulário criado com sucesso!"
+        assert response_json['message'] == "Formulário criado com sucesso!"
         assert response_json["form"]["form_id"] is not None
         assert response_json["form"]["status"] == "NOT_STARTED"
         assert response_json["form"]["form_title"] == "FORM TITLE"
