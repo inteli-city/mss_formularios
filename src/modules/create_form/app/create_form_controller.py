@@ -99,10 +99,10 @@ class CreateFormController:
                     SectionDTO.from_request(section).to_entity()
                     for section in request.data.get('sections')
                 ],
-                information_fields=[
+                information_fields= [
                     InformationFieldDTO.from_request(information_field).to_entity()
                     for information_field in request.data.get('information_fields')
-                ]
+                ] if request.data.get('information_fields') is not None else None
             )
 
             viewmodel = CreateFormViewmodel(form=form)
