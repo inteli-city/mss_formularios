@@ -27,6 +27,9 @@ class CreateFormController:
             if request.data.get('form_title') is None:
                 raise MissingParameters('form_title')
             
+            if request.data.get('user_id') is None:
+                request.data['user_id'] = requester_user.user_id
+            
             if request.data.get('can_vinculate') is None:
                 raise MissingParameters('can_vinculate')
             
@@ -75,7 +78,7 @@ class CreateFormController:
             form = self.CreateFormUsecase(
                 form_title=request.data.get('form_title'),
                 creator_user_id=requester_user.user_id,
-                user_id=requester_user.user_id,
+                user_id=request.data.get('user_id'),
                 vinculation_form_id=request.data.get('vinculation_form_id'),
                 can_vinculate=request.data.get('can_vinculate'),
                 template=request.data.get('template'),
