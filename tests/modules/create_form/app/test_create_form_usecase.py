@@ -9,6 +9,7 @@ from src.shared.domain.enums.form_status_enum import FORM_STATUS
 from src.shared.domain.enums.priority_enum import PRIORITY
 from src.shared.helpers.errors.usecase_errors import ForbiddenAction
 from src.shared.infra.repositories.form_repository_mock import FormRepositoryMock
+from src.shared.infra.repositories.image_repository_mock import ImageRepositoryMock
 from src.shared.infra.repositories.profile_repository_mock import ProfileRepositoryMock
 
 justification_option = JustificationOption(
@@ -29,8 +30,8 @@ class Test_CreateFormUsecase:
     def test_create_form_usecase(self):
         repo = FormRepositoryMock()
         repo_profile = ProfileRepositoryMock()
-
-        usecase = CreateFormUsecase(repo, repo_profile)
+        image_repo = ImageRepositoryMock()
+        usecase = CreateFormUsecase(repo, repo_profile, image_repo)
 
         text_field = TextField(placeholder='placeholder', required=True, key='key', regex='regex', formatting='formatting', max_length=10, value='value')
         section = Section(section_id='99999', fields=[text_field, text_field])
@@ -89,8 +90,8 @@ class Test_CreateFormUsecase:
     def test_create_form_usecase_creator_profile_none(self):
         repo = FormRepositoryMock()
         repo_profile = ProfileRepositoryMock()
-
-        usecase = CreateFormUsecase(repo, repo_profile)
+        image_repo = ImageRepositoryMock()
+        usecase = CreateFormUsecase(repo, repo_profile, image_repo)
 
         text_field = TextField(placeholder='placeholder', required=True, key='key', regex='regex', formatting='formatting', max_length=10, value='value')
         section = Section(section_id='99999', fields=[text_field, text_field])
@@ -125,8 +126,8 @@ class Test_CreateFormUsecase:
     def test_create_form_usecase_creator_profile_not_enabled(self):
         repo = FormRepositoryMock()
         repo_profile = ProfileRepositoryMock()
-
-        usecase = CreateFormUsecase(repo, repo_profile)
+        image_repo = ImageRepositoryMock()
+        usecase = CreateFormUsecase(repo, repo_profile, image_repo)
 
         text_field = TextField(placeholder='placeholder', required=True, key='key', regex='regex', formatting='formatting', max_length=10, value='value')
         section = Section(section_id='99999', fields=[text_field, text_field])
@@ -161,8 +162,8 @@ class Test_CreateFormUsecase:
     def test_create_form_usecase_creator_profile_not_in_system(self):
         repo = FormRepositoryMock()
         repo_profile = ProfileRepositoryMock()
-
-        usecase = CreateFormUsecase(repo, repo_profile)
+        image_repo = ImageRepositoryMock()
+        usecase = CreateFormUsecase(repo, repo_profile, image_repo)
 
         text_field = TextField(placeholder='placeholder', required=True, key='key', regex='regex', formatting='formatting', max_length=10, value='value')
         section = Section(section_id='99999', fields=[text_field, text_field])

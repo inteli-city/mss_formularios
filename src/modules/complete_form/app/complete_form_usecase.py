@@ -1,17 +1,22 @@
 from typing import List, Optional
+import uuid
+from src.shared.domain.entities.field import FileField
 from src.shared.domain.entities.form import Form
 from src.shared.domain.entities.section import Section
 from src.shared.domain.enums.form_status_enum import FORM_STATUS
 from src.shared.domain.repositories.form_repository_interface import IFormRepository
+from src.shared.domain.repositories.image_repository_interface import IImageRepository
 from src.shared.domain.repositories.profile_repository_interface import IProfileRepository
+from src.shared.environments import Environments
 from src.shared.helpers.errors.usecase_errors import ForbiddenAction, NoItemsFound
 
 
 class CompleteFormUsecase:
 
-    def __init__(self, form_repo: IFormRepository,  profile_repo: IProfileRepository):
+    def __init__(self, form_repo: IFormRepository,  profile_repo: IProfileRepository, image_repo: IImageRepository):
         self.form_repo = form_repo
         self.profile_repo = profile_repo
+        self.image_repo = image_repo
     
     def __call__(self, requester_id: str, form_id: str, sections: List[Section], vinculation_form_id: Optional[str] = None) -> Form:
 
@@ -43,5 +48,12 @@ class CompleteFormUsecase:
             vinculation_form = self.form_repo.get_form_by_id(user_id=requester_id, form_id=vinculation_form_id)
             if vinculation_form is None:
                 raise NoItemsFound("Formulário de vinculação não encontrado")
+        
+        for section in sections:
+            for field in section.fields:
+                if field is FileField:
+                    image_path = f'{form_id}/sections/{section.section_id}/{str(uuid.uuid4())}'
+                    self.image_repo.put_image(base_64_image=field.value, image_path=image_path)
+                    field.value = f'https://{Environments.get_envs().bucket_name}.s3.sa-east-1.amazonaws.com/{image_path}'
         
         return self.form_repo.complete_form(user_id=requester_id, form_id=form_id, sections=sections, vinculation_form_id=vinculation_form_id)

@@ -2,6 +2,7 @@ from src.modules.complete_form.app.complete_form_controller import CompleteFormC
 from src.modules.complete_form.app.complete_form_usecase import CompleteFormUsecase
 from src.shared.helpers.external_interfaces.http_models import HttpRequest
 from src.shared.infra.repositories.form_repository_mock import FormRepositoryMock
+from src.shared.infra.repositories.image_repository_mock import ImageRepositoryMock
 from src.shared.infra.repositories.profile_repository_mock import ProfileRepositoryMock
 
 
@@ -10,7 +11,8 @@ class Test_CompleteFormController:
     def test_complete_form_controller(self):
         repo = FormRepositoryMock()
         repo_profile = ProfileRepositoryMock()
-        usecase = CompleteFormUsecase(repo, repo_profile)
+        image_repo = ImageRepositoryMock()
+        usecase = CompleteFormUsecase(repo, repo_profile, image_repo)
 
         controller = CompleteFormController(usecase)
 
@@ -49,7 +51,8 @@ class Test_CompleteFormController:
     def test_complete_form_controller_missing_requester_user(self):
         repo = FormRepositoryMock()
         repo_profile = ProfileRepositoryMock()
-        usecase = CompleteFormUsecase(repo, repo_profile)
+        image_repo = ImageRepositoryMock()
+        usecase = CompleteFormUsecase(repo, repo_profile, image_repo)
 
         controller = CompleteFormController(usecase)
 
@@ -83,7 +86,8 @@ class Test_CompleteFormController:
     def test_complete_form_controller_missing_form_id(self):
         repo = FormRepositoryMock()
         repo_profile = ProfileRepositoryMock()
-        usecase = CompleteFormUsecase(repo, repo_profile)
+        image_repo = ImageRepositoryMock()
+        usecase = CompleteFormUsecase(repo, repo_profile, image_repo)
 
         controller = CompleteFormController(usecase)
 
@@ -121,7 +125,8 @@ class Test_CompleteFormController:
     def test_complete_form_controller_missing_sections(self):
         repo = FormRepositoryMock()
         repo_profile = ProfileRepositoryMock()
-        usecase = CompleteFormUsecase(repo, repo_profile)
+        image_repo = ImageRepositoryMock()
+        usecase = CompleteFormUsecase(repo, repo_profile, image_repo)
 
         controller = CompleteFormController(usecase)
 
@@ -143,7 +148,8 @@ class Test_CompleteFormController:
     def test_complete_form_controller_wrong_type_sections(self):
         repo = FormRepositoryMock()
         repo_profile = ProfileRepositoryMock()
-        usecase = CompleteFormUsecase(repo, repo_profile)
+        image_repo = ImageRepositoryMock()
+        usecase = CompleteFormUsecase(repo, repo_profile, image_repo)
 
         controller = CompleteFormController(usecase)
 
@@ -166,7 +172,8 @@ class Test_CompleteFormController:
     def test_complete_form_controller_sections_empty(self):
         repo = FormRepositoryMock()
         repo_profile = ProfileRepositoryMock()
-        usecase = CompleteFormUsecase(repo, repo_profile)
+        image_repo = ImageRepositoryMock()
+        usecase = CompleteFormUsecase(repo, repo_profile, image_repo)
 
         controller = CompleteFormController(usecase)
 
@@ -189,7 +196,8 @@ class Test_CompleteFormController:
     def test_complete_form_controller_wrong_type_vinculation_form_id(self):
         repo = FormRepositoryMock()
         repo_profile = ProfileRepositoryMock()
-        usecase = CompleteFormUsecase(repo, repo_profile)
+        image_repo = ImageRepositoryMock()
+        usecase = CompleteFormUsecase(repo, repo_profile, image_repo)
 
         controller = CompleteFormController(usecase)
 

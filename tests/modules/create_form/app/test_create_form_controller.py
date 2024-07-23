@@ -2,6 +2,7 @@ from src.modules.create_form.app.create_form_controller import CreateFormControl
 from src.modules.create_form.app.create_form_usecase import CreateFormUsecase
 from src.shared.helpers.external_interfaces.http_models import HttpRequest
 from src.shared.infra.repositories.form_repository_mock import FormRepositoryMock
+from src.shared.infra.repositories.image_repository_mock import ImageRepositoryMock
 from src.shared.infra.repositories.profile_repository_mock import ProfileRepositoryMock
 
 
@@ -9,7 +10,8 @@ class Test_CreateFormController:
     def test_create_form_controller(self):
         repo = FormRepositoryMock()
         repo_profile = ProfileRepositoryMock()
-        usecase = CreateFormUsecase(repo, repo_profile)
+        image_repo = ImageRepositoryMock()
+        usecase = CreateFormUsecase(repo, repo_profile, image_repo)
 
         controller = CreateFormController(usecase)
 
@@ -156,7 +158,8 @@ class Test_CreateFormController:
     def test_create_form_controller_missing_request_user(self):
         repo = FormRepositoryMock()
         repo_profile = ProfileRepositoryMock()
-        usecase = CreateFormUsecase(repo, repo_profile)
+        image_repo = ImageRepositoryMock()
+        usecase = CreateFormUsecase(repo, repo_profile, image_repo)
 
         controller = CreateFormController(usecase)
 
@@ -297,7 +300,8 @@ class Test_CreateFormController:
     def test_create_form_controller_missing_template(self):
         repo = FormRepositoryMock()
         repo_profile = ProfileRepositoryMock()
-        usecase = CreateFormUsecase(repo, repo_profile)
+        image_repo = ImageRepositoryMock()
+        usecase = CreateFormUsecase(repo, repo_profile, image_repo)
 
         controller = CreateFormController(usecase)
 
@@ -360,7 +364,8 @@ class Test_CreateFormController:
     def test_create_form_controller_missing_area(self):
         repo = FormRepositoryMock()
         repo_profile = ProfileRepositoryMock()
-        usecase = CreateFormUsecase(repo, repo_profile)
+        image_repo = ImageRepositoryMock()
+        usecase = CreateFormUsecase(repo, repo_profile, image_repo)
 
         controller = CreateFormController(usecase)
 
@@ -423,7 +428,8 @@ class Test_CreateFormController:
     def test_create_form_controller_missing_system(self):
         repo = FormRepositoryMock()
         repo_profile = ProfileRepositoryMock()
-        usecase = CreateFormUsecase(repo, repo_profile)
+        image_repo = ImageRepositoryMock()
+        usecase = CreateFormUsecase(repo, repo_profile, image_repo)
 
         controller = CreateFormController(usecase)
 
@@ -486,7 +492,8 @@ class Test_CreateFormController:
     def test_create_form_controller_missing_street(self):
         repo = FormRepositoryMock()
         repo_profile = ProfileRepositoryMock()
-        usecase = CreateFormUsecase(repo, repo_profile)
+        image_repo = ImageRepositoryMock()
+        usecase = CreateFormUsecase(repo, repo_profile, image_repo)
 
         controller = CreateFormController(usecase)
 
@@ -549,7 +556,8 @@ class Test_CreateFormController:
     def test_create_form_controller_missing_city(self):
         repo = FormRepositoryMock()
         repo_profile = ProfileRepositoryMock()
-        usecase = CreateFormUsecase(repo, repo_profile)
+        image_repo = ImageRepositoryMock()
+        usecase = CreateFormUsecase(repo, repo_profile, image_repo)
 
         controller = CreateFormController(usecase)
 
@@ -612,7 +620,8 @@ class Test_CreateFormController:
     def test_create_form_controller_missing_number(self):
         repo = FormRepositoryMock()
         repo_profile = ProfileRepositoryMock()
-        usecase = CreateFormUsecase(repo, repo_profile)
+        image_repo = ImageRepositoryMock()
+        usecase = CreateFormUsecase(repo, repo_profile, image_repo)
 
         controller = CreateFormController(usecase)
 
@@ -675,7 +684,8 @@ class Test_CreateFormController:
     def test_create_form_controller_missing_latitude(self):
         repo = FormRepositoryMock()
         repo_profile = ProfileRepositoryMock()
-        usecase = CreateFormUsecase(repo, repo_profile)
+        image_repo = ImageRepositoryMock()
+        usecase = CreateFormUsecase(repo, repo_profile, image_repo)
 
         controller = CreateFormController(usecase)
 
@@ -738,7 +748,8 @@ class Test_CreateFormController:
     def test_create_form_controller_missing_longitude(self):
         repo = FormRepositoryMock()
         repo_profile = ProfileRepositoryMock()
-        usecase = CreateFormUsecase(repo, repo_profile)
+        image_repo = ImageRepositoryMock()
+        usecase = CreateFormUsecase(repo, repo_profile, image_repo)
 
         controller = CreateFormController(usecase)
 
@@ -801,7 +812,8 @@ class Test_CreateFormController:
     def test_create_form_controller_missing_region(self):
         repo = FormRepositoryMock()
         repo_profile = ProfileRepositoryMock()
-        usecase = CreateFormUsecase(repo, repo_profile)
+        image_repo = ImageRepositoryMock()
+        usecase = CreateFormUsecase(repo, repo_profile, image_repo)
 
         controller = CreateFormController(usecase)
 
@@ -864,7 +876,8 @@ class Test_CreateFormController:
     def test_create_form_controller_missing_priority(self):
         repo = FormRepositoryMock()
         repo_profile = ProfileRepositoryMock()
-        usecase = CreateFormUsecase(repo, repo_profile)
+        image_repo = ImageRepositoryMock()
+        usecase = CreateFormUsecase(repo, repo_profile, image_repo)
 
         controller = CreateFormController(usecase)
 
@@ -927,7 +940,8 @@ class Test_CreateFormController:
     def test_create_form_controller_priority_not_in_enum(self):
         repo = FormRepositoryMock()
         repo_profile = ProfileRepositoryMock()
-        usecase = CreateFormUsecase(repo, repo_profile)
+        image_repo = ImageRepositoryMock()
+        usecase = CreateFormUsecase(repo, repo_profile, image_repo)
 
         controller = CreateFormController(usecase)
 
@@ -991,7 +1005,8 @@ class Test_CreateFormController:
     def test_create_form_controller_missing_expiration_date(self):
         repo = FormRepositoryMock()
         repo_profile = ProfileRepositoryMock()
-        usecase = CreateFormUsecase(repo, repo_profile)
+        image_repo = ImageRepositoryMock()
+        usecase = CreateFormUsecase(repo, repo_profile, image_repo)
 
         controller = CreateFormController(usecase)
 
@@ -1055,7 +1070,8 @@ class Test_CreateFormController:
     def test_create_form_controller_missing_sections(self):
         repo = FormRepositoryMock()
         repo_profile = ProfileRepositoryMock()
-        usecase = CreateFormUsecase(repo, repo_profile)
+        image_repo = ImageRepositoryMock()
+        usecase = CreateFormUsecase(repo, repo_profile, image_repo)
 
         controller = CreateFormController(usecase)
 

@@ -2,21 +2,23 @@ from datetime import datetime
 from typing import List, Optional
 import uuid
 from src.shared.domain.entities.form import Form
-from src.shared.domain.entities.information_field import InformationField
+from src.shared.domain.entities.information_field import ImageInformationField, InformationField
 from src.shared.domain.entities.justification import Justification
 from src.shared.domain.entities.section import Section
 from src.shared.domain.enums.form_status_enum import FORM_STATUS
 from src.shared.domain.enums.priority_enum import PRIORITY
-from src.shared.domain.enums.role_enum import ROLE
 from src.shared.domain.repositories.form_repository_interface import IFormRepository
+from src.shared.domain.repositories.image_repository_interface import IImageRepository
 from src.shared.domain.repositories.profile_repository_interface import IProfileRepository
+from src.shared.environments import Environments
 from src.shared.helpers.errors.usecase_errors import ForbiddenAction
 
 
 class CreateFormUsecase:
-    def __init__(self, form_repo: IFormRepository, profile_repo: IProfileRepository):
+    def __init__(self, form_repo: IFormRepository, profile_repo: IProfileRepository, image_repo: IImageRepository):
         self.form_repo = form_repo
         self.profile_repo = profile_repo
+        self.image_repo = image_repo
 
     def __call__(self,
                     form_title: str,
@@ -52,10 +54,18 @@ class CreateFormUsecase:
         
         if not system in profile.systems:
             raise ForbiddenAction("Usuário não tem permissão para criar formulário para esse sistema")
+        
+        form_id = str(uuid.uuid4())
+
+        for information_field in information_fields:
+            if information_field is ImageInformationField:
+                image_path = f'{form_id}/informationField/{str(uuid.uuid4())}'
+                self.image_repo.put_image(base_64_image=information_field.file_path, image_path=image_path)
+                information_field.file_path = f'https://{Environments.get_envs().bucket_name}.s3.sa-east-1.amazonaws.com/{image_path}'
 
         form = Form(
             form_title=form_title,
-            form_id=str(uuid.uuid4()),
+            form_id=form_id,
             creator_user_id=creator_user_id,
             user_id=user_id,
             vinculation_form_id=vinculation_form_id,
