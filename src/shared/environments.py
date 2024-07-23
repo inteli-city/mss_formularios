@@ -29,6 +29,7 @@ class Environments:
     dynamo_partition_key: str
     dynamo_sort_key: str
     client_id: str
+    bucket_name: str
 
     def _configure_local(self):
         from dotenv import load_dotenv
@@ -49,6 +50,7 @@ class Environments:
             self.dynamo_partition_key = "PK"
             self.dynamo_sort_key = "SK"
             self.client_id = "test"
+            self.bucket_name = "test"
         else:
             self.region = os.environ.get("AWS_REGION")
             self.endpoint_url = os.environ.get("ENDPOINT_URL")
@@ -58,6 +60,7 @@ class Environments:
             self.dynamo_sort_key = os.environ.get("DYNAMO_SORT_KEY")
             self.user_pool_id = os.environ.get("USER_POOL_ID")
             self.client_id = os.environ.get("APP_CLIENT_ID")
+            self.bucket_name = os.environ.get("BUCKET_NAME")
 
     @staticmethod
     def get_form_repo() -> IFormRepository:
