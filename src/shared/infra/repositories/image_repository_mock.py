@@ -3,5 +3,5 @@ from src.shared.domain.repositories.image_repository_interface import IImageRepo
 
 class ImageRepositoryMock(IImageRepository):
 
-    def save_image(self, base_64_image: str, image_path: str) -> None:
+    def save_image(self, base_64_image: str, image_path: str, content_type: str = 'image/png') -> None:
         pass
