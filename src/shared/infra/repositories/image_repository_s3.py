@@ -10,11 +10,8 @@ from src.shared.helpers.errors.usecase_errors import ErrorWithImage
 class ImageRepositoryS3(IImageRepository):
 
     def __init__(self):
-        self.client = boto3.client('s3', 
-                          aws_access_key_id=Environments.get_envs().aws_access_key, 
-                          aws_secret_access_key=Environments.get_envs().aws_secret_access_key
-                        )
-
+        self.client = boto3.client('s3', region_name=Environments.get_envs().region)
+        
     def put_image(self, base_64_image: str, image_path: str) -> None:
         try:
             file_content = base64.b64decode(base_64_image)
