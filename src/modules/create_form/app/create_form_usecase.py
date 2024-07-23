@@ -58,8 +58,8 @@ class CreateFormUsecase:
         form_id = str(uuid.uuid4())
 
         for information_field in information_fields:
-            if information_field is ImageInformationField:
-                image_path = f'{form_id}/informationField/{str(uuid.uuid4())}'
+            if isinstance(information_field, ImageInformationField):
+                image_path = f'{form_id}/informationField/{str(uuid.uuid4())}.png'
                 self.image_repo.put_image(base_64_image=information_field.file_path, image_path=image_path)
                 information_field.file_path = f'https://{Environments.get_envs().bucket_name}.s3.sa-east-1.amazonaws.com/{image_path}'
 

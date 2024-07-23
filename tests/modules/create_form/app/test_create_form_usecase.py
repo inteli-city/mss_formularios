@@ -3,6 +3,7 @@ from datetime import datetime
 import pytest
 from src.modules.create_form.app.create_form_usecase import CreateFormUsecase
 from src.shared.domain.entities.field import TextField
+from src.shared.domain.entities.information_field import ImageInformationField, TextInformationField
 from src.shared.domain.entities.justification import Justification, JustificationOption
 from src.shared.domain.entities.section import Section
 from src.shared.domain.enums.form_status_enum import FORM_STATUS
@@ -84,6 +85,7 @@ class Test_CreateFormUsecase:
         assert form.conclusion_date == None
         assert form.justification == justification
         assert form.comments == '123'
+        assert isinstance(form.information_fields[0], TextInformationField)
         assert len(form.sections) == 1
         assert len(form.information_fields) == 2
 

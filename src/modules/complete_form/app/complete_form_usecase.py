@@ -51,8 +51,8 @@ class CompleteFormUsecase:
         
         for section in sections:
             for field in section.fields:
-                if field is FileField:
-                    image_path = f'{form_id}/sections/{section.section_id}/{str(uuid.uuid4())}'
+                if isinstance(field, FileField):
+                    image_path = f'{form_id}/sections/{section.section_id}/{str(uuid.uuid4())}.png'
                     self.image_repo.put_image(base_64_image=field.value, image_path=image_path)
                     field.value = f'https://{Environments.get_envs().bucket_name}.s3.sa-east-1.amazonaws.com/{image_path}'
         
