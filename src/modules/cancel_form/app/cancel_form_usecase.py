@@ -49,8 +49,8 @@ class CancelFormUsecase:
         
         if justification_image:
             image_path = f'{form_id}/justification/{str(uuid.uuid4())}.png'
+            self.image_repo.put_image(base_64_image=justification_image, image_path=image_path)
             justification_image = f'https://{Environments.get_envs().bucket_name}.s3.sa-east-1.amazonaws.com/{image_path}'
-            self.image_repo.put_image(base_64_image=justification_image, image_path=justification_image)
             
         justification = Justification(
             options=form.justification.options,

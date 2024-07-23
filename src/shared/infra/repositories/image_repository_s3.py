@@ -4,7 +4,8 @@ from src.shared.domain.repositories.image_repository_interface import IImageRepo
 from src.shared.environments import Environments
 import boto3
 
-from src.shared.helpers.errors.usecase_errors import ErrorSavingImage
+from src.shared.helpers.errors.usecase_errors import ErrorWithImage
+
 
 class ImageRepositoryS3(IImageRepository):
 
@@ -20,4 +21,4 @@ class ImageRepositoryS3(IImageRepository):
             self.client.put_object(Body=file_content, Bucket=Environments.get_envs().bucket_name, Key=image_path)
         
         except Exception as e:
-            raise ErrorSavingImage(e.args[0])
+            raise ErrorWithImage(e.args[0])
