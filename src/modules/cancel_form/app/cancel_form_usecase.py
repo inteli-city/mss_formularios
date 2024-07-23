@@ -1,5 +1,7 @@
 from typing import Optional
 import uuid
+from datetime import datetime
+
 from src.shared.domain.entities.form import Form
 from src.shared.domain.entities.justification import Justification
 from src.shared.domain.enums.form_status_enum import FORM_STATUS
@@ -48,7 +50,7 @@ class CancelFormUsecase:
                 raise EntityError("Opção de justificativa inválida")
         
         if justification_image:
-            image_path = f'{form_id}/justification/{str(uuid.uuid4())}.png'
+            image_path = f'{datetime.now().year}/{form_id}/justification/{str(uuid.uuid4())}.png'
             self.image_repo.put_image(base_64_image=justification_image, image_path=image_path)
             justification_image = f'https://{Environments.get_envs().bucket_name}.s3.sa-east-1.amazonaws.com/{image_path}'
             
