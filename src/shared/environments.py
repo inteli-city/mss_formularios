@@ -3,6 +3,7 @@ from enum import Enum
 import os
 
 from src.shared.domain.repositories.form_repository_interface import IFormRepository
+from src.shared.domain.repositories.image_repository_interface import IImageRepository
 from src.shared.domain.repositories.profile_repository_interface import IProfileRepository
 from src.shared.domain.repositories.user_repository_interface import IUserRepository
 
@@ -92,6 +93,17 @@ class Environments:
         elif Environments.get_envs().stage in [STAGE.PROD, STAGE.DEV, STAGE.HOMOLOG]:
             from src.shared.infra.repositories.user_repository_cognito import UserRepositoryCognito
             return UserRepositoryCognito
+        else:
+            raise Exception("No repository found for this stage")
+    
+    @staticmethod
+    def get_image_repo() -> IImageRepository:
+        if Environments.get_envs().stage == STAGE.TEST:
+            from src.shared.infra.repositories.image_repository_mock import ImageRepositoryMock
+            return ImageRepositoryMock
+        elif Environments.get_envs().stage in [STAGE.PROD, STAGE.DEV, STAGE.HOMOLOG]:
+            from src.shared.infra.repositories.image_repository_s3 import ImageRepositoryS3
+            return ImageRepositoryS3
         else:
             raise Exception("No repository found for this stage")
 
