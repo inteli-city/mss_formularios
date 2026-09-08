@@ -185,4 +185,8 @@ def build_form_dict(
         "scheduled_end_at": form.scheduled_end_at,
         "attributes": form.attributes,
         "completed_by": form.completed_by,
+        "possession": form.possession.value,
+        "claimed_at": form.claimed_at,
+        "released_at": form.released_at,
+        "assignment_source": form.assignment_source.value if form.assignment_source else None,
     }

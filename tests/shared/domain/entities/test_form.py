@@ -5,10 +5,13 @@ from src.shared.domain.entities.form import Form
 from src.shared.domain.entities.information_field import FileInformationField
 from src.shared.domain.entities.justification import Justification, JustificationOption, SelectedJustification
 from src.shared.domain.entities.section import MAX_SECTION_INSTANCE, Section
+from src.shared.domain.enums.assignment_source_enum import AssignmentSource
 from src.shared.domain.enums.form_origin_enum import FormOrigin
 from src.shared.domain.enums.form_status_enum import FormStatus
+from src.shared.domain.enums.possession_enum import Possession
 from src.shared.domain.enums.priority_enum import Priority
 from src.shared.helpers.errors.domain_errors import EntityError
+from src.shared.helpers.errors.usecase_errors import ForbiddenAction
 
 
 valid_id = 'd61dbf66-a10f-11ed-a8fc-0242ac120001'
@@ -295,3 +298,101 @@ class TestFormUberlandiaFields:
         form = make_form(status=FormStatus.IN_PROGRESS, justification=justification)
         with pytest.raises(EntityError):
             form.complete(completed_at=1, updated_at=1, completed_by="not-a-valid-uuid")
+
+
+class TestFormPossession:
+    """Especificação Uberlândia §6.1.1: possession como campo próprio, e o
+    mecanismo de claim/release (RN-UBE-001/002/004)."""
+
+    CLAIMER_ID = 'd61dbf66-a10f-11ed-a8fc-0242ac120099'
+
+    def test_possession_defaults_to_owned_when_user_id_present(self):
+        form = make_form(justification=justification)
+        assert form.possession == Possession.OWNED
+
+    def test_possession_defaults_to_open_when_user_id_none(self):
+        form = make_form(user_id=None, justification=justification)
+        assert form.possession == Possession.OPEN
+
+    def test_possession_explicit_value_is_respected(self):
+        form = make_form(user_id=None, possession=Possession.OPEN, justification=justification)
+        assert form.possession == Possession.OPEN
+
+    def test_rejects_possession_not_enum(self):
+        with pytest.raises(EntityError):
+            make_form(possession="OPEN", justification=justification)
+
+    def test_claim_sets_owner_and_possession(self):
+        form = make_form(user_id=None, possession=Possession.OPEN, justification=justification)
+
+        form.claim(user_id=self.CLAIMER_ID, claimed_at=1, updated_at=2)
+
+        assert form.user_id == self.CLAIMER_ID
+        assert form.possession == Possession.OWNED
+        assert form.claimed_at == 1
+        assert form.updated_at == 2
+        assert form.assignment_source == AssignmentSource.CLAIM
+
+    def test_claim_with_manager_source(self):
+        form = make_form(user_id=None, possession=Possession.OPEN, justification=justification)
+        form.claim(user_id=self.CLAIMER_ID, claimed_at=1, updated_at=2, source=AssignmentSource.MANAGER)
+        assert form.assignment_source == AssignmentSource.MANAGER
+
+    def test_claim_already_owned_raises(self):
+        form = make_form(justification=justification)  # já OWNED por default
+        with pytest.raises(ForbiddenAction):
+            form.claim(user_id=self.CLAIMER_ID, claimed_at=1, updated_at=2)
+
+    def test_claim_rejects_invalid_user_id(self):
+        form = make_form(user_id=None, possession=Possession.OPEN, justification=justification)
+        with pytest.raises(EntityError):
+            form.claim(user_id="not-a-valid-uuid", claimed_at=1, updated_at=2)
+
+    def test_release_reopens_pool_and_resets_status(self):
+        form = make_form(status=FormStatus.IN_PROGRESS, in_progress_at=1, justification=justification)
+
+        form.release(released_at=5, updated_at=6)
+
+        assert form.user_id is None
+        assert form.possession == Possession.OPEN
+        assert form.status == FormStatus.PENDING
+        assert form.in_progress_at is None
+        assert form.released_at == 5
+        assert form.updated_at == 6
+
+    def test_release_blanks_base_section_fields(self):
+        form = make_form(status=FormStatus.IN_PROGRESS, justification=justification)
+        form.sections[0].fields[0].set_value("preenchido")
+
+        form.release(released_at=1, updated_at=1)
+
+        assert form.sections[0].fields[0].value is None
+
+    def test_release_drops_duplicated_section_instances(self):
+        field_a = TextField(label='Nome', required=False, key='nome', order=1, max_length=50)
+        sec = Section(section_id=1, fields=[field_a], is_duplicable=True)
+        form = make_form(sections=[sec], status=FormStatus.IN_PROGRESS, justification=justification)
+        form.apply_field_values([
+            {"section_id": 1, "section_instance": 1, "field_key": "nome", "value": "extra"},
+        ])
+        assert len(form.sections) == 2
+
+        form.release(released_at=1, updated_at=1)
+
+        assert len(form.sections) == 1
+        assert form.sections[0].section_instance == 0
+
+    def test_release_when_already_open_raises(self):
+        form = make_form(user_id=None, possession=Possession.OPEN, justification=justification)
+        with pytest.raises(ForbiddenAction):
+            form.release(released_at=1, updated_at=1)
+
+    def test_release_finished_form_raises(self):
+        form = make_form(status=FormStatus.COMPLETED, completed_at=1, justification=justification)
+        with pytest.raises(ForbiddenAction):
+            form.release(released_at=1, updated_at=1)
+
+    def test_ensure_assigned_to_pool_form_gives_claim_first_message(self):
+        form = make_form(user_id=None, possession=Possession.OPEN, justification=justification)
+        with pytest.raises(ForbiddenAction, match="Reivindique a OS"):
+            form.ensure_assigned_to(self.CLAIMER_ID, "mensagem genérica")

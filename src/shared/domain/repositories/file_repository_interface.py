@@ -30,3 +30,13 @@ class IFileRepository(ABC):
         aos novos arquivos que trouxeram expectativa de integridade.
         """
         pass
+
+    @abstractmethod
+    def delete_files(self, file_paths: Set[str]) -> None:
+        """
+        Remove os arquivos do bucket (RN-UBE-012, especificação Uberlândia
+        §6.2) — usado por `release` para descartar o conteúdo devolvido ao
+        pool. `reconcile_form_files` é a rede de segurança, não o mecanismo
+        principal: a remoção aqui é explícita.
+        """
+        pass

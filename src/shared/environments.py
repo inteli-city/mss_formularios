@@ -10,6 +10,7 @@ from src.shared.domain.repositories.template_repository_interface import ITempla
 from src.shared.domain.repositories.sync_state_repository_interface import ISyncStateRepository
 from src.shared.domain.repositories.sync_error_form_repository_interface import ISyncErrorFormRepository
 from src.shared.domain.repositories.system_config_repository_interface import ISystemConfigRepository
+from src.shared.domain.repositories.form_event_repository_interface import IFormEventRepository
 
 class Stage(Enum):
     DOTENV = "DOTENV"
@@ -219,6 +220,17 @@ class Environments:
         elif Environments.get_envs().stage in [Stage.PROD, Stage.DEV, Stage.HOMOLOG]:
             from src.shared.infra.repositories.system_config_repository_dynamo import SystemConfigRepositoryDynamo
             return SystemConfigRepositoryDynamo()
+        else:
+            raise ValueError(Environments.NO_REPOSITORY_FOUND_ERROR)
+
+    @staticmethod
+    def get_form_event_repo() -> IFormEventRepository:
+        if Environments.get_envs().stage in [Stage.TEST, Stage.DOTENV]:
+            from src.shared.infra.repositories.form_event_repository_mock import FormEventRepositoryMock
+            return FormEventRepositoryMock()
+        elif Environments.get_envs().stage in [Stage.PROD, Stage.DEV, Stage.HOMOLOG]:
+            from src.shared.infra.repositories.form_event_repository_dynamo import FormEventRepositoryDynamo
+            return FormEventRepositoryDynamo()
         else:
             raise ValueError(Environments.NO_REPOSITORY_FOUND_ERROR)
 

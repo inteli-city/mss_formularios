@@ -30,6 +30,9 @@ class TestGetFormViewmodel:
         assert viewmodel['in_progress_at'] == form.in_progress_at
         assert viewmodel['completed_at'] == form.completed_at
         assert viewmodel['cancelled_at'] == form.cancelled_at
+        assert viewmodel['possession'] == form.possession.value
+        assert viewmodel['number'] == form.number
+        assert viewmodel['attributes'] == form.attributes
 
     def test_get_form_viewmodel_with_duplicated_sections(self):
         """Instâncias duplicadas devem sair no GET com seu section_instance real, não o default 0."""

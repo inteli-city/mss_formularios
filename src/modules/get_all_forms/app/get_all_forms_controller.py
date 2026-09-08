@@ -88,6 +88,7 @@ class GetAllFormsController:
                 created_at_start=created_at_start,
                 created_at_end=created_at_end,
                 search=search,
+                scope=payload.scope,
             )
 
             viewmodel = GetAllFormsViewmodel(forms=forms, limit=limit, last_evaluated_key=next_key)

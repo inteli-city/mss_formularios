@@ -79,3 +79,17 @@ class FileRepositoryS3(IFileRepository):
             }
         except Exception as err:
             raise ErrorWithFile(get_exception_message(err))
+
+    def delete_files(self, file_paths: Set[str]) -> None:
+        if not file_paths:
+            return
+        try:
+            # delete_objects aceita até 1000 keys por chamada — bem acima do
+            # que um único formulário jamais acumula (poucos campos de
+            # arquivo, cada um com no máximo alguma dezena de fotos).
+            self.client.delete_objects(
+                Bucket=Environments.get_envs().bucket_name,
+                Delete={"Objects": [{"Key": path} for path in file_paths]},
+            )
+        except Exception as err:
+            raise ErrorWithFile(get_exception_message(err))
