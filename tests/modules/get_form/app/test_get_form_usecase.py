@@ -7,6 +7,7 @@ sys.path.append(os.getcwd())
 
 from src.modules.get_form.app.get_form_usecase import GetFormUsecase
 from src.shared.domain.enums.form_status_enum import FormStatus
+from src.shared.domain.enums.possession_enum import Possession
 from src.shared.helpers.errors.usecase_errors import ForbiddenAction, NoItemsFound
 from src.shared.infra.repositories.form_repository_mock import FormRepositoryMock
 
@@ -38,3 +39,15 @@ class TestGetFormUsecase:
 
         with pytest.raises(ForbiddenAction):
             usecase(requester_user_id="another-user-id-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", form_id=form.id)
+
+    def test_get_form_pool_form_readable_by_anyone(self):
+        """Especificação Uberlândia §6.3: OS aberta no pool não exige posse pra leitura."""
+        repo = FormRepositoryMock()
+        usecase = GetFormUsecase(repo)
+        form = repo.forms[2]
+        form.user_id = None
+        form.possession = Possession.OPEN
+
+        result = usecase(requester_user_id="another-user-id-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", form_id=form.id)
+
+        assert result.id == form.id

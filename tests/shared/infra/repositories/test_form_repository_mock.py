@@ -210,3 +210,84 @@ class TestFormRepositoryMockExternalIdIdempotency:
         assert repo.get_form_by_external_id('UBERLANDIA', 'OS-7514') is not None
         assert repo.get_form_by_external_id('UBERLANDIA', 'OS-UNKNOWN') is None
         assert repo.get_form_by_external_id('GAIA', 'OS-7514') is None
+
+
+class TestFormRepositoryMockPool:
+    """Especificação Uberlândia §6: claim_form/release_form/get_pool_forms."""
+
+    def _pool_form(self, **overrides):
+        text_field = TextField(label='label', required=True, key='key', order=1, regex='regex', max_length=10, value='value')
+        section = Section(section_id=1, fields=[text_field])
+        base = dict(
+            id='d61dbf66-a10f-11ed-a8fc-0242ac120030',
+            form_title='FORM TITLE',
+            created_by='d61dbf66-a10f-11ed-a8fc-0242ac120001',
+            user_id=None,
+            system='UBERLANDIA',
+            street='1',
+            city='1',
+            latitude=1.0,
+            longitude=1.0,
+            priority=Priority.EMERGENCY,
+            status=FormStatus.PENDING,
+            created_at=1,
+            updated_at=1,
+            justification=justification,
+            sections=[section],
+        )
+        base.update(overrides)
+        return Form(**base)
+
+    def test_claim_form_sets_owner(self):
+        repo = FormRepositoryMock()
+        repo.forms.append(self._pool_form())
+
+        claimed = repo.claim_form(
+            form_id='d61dbf66-a10f-11ed-a8fc-0242ac120030',
+            user_id='d61dbf66-a10f-11ed-a8fc-0242ac120001',
+            claimed_at=1,
+            updated_at=2,
+        )
+
+        assert claimed.user_id == 'd61dbf66-a10f-11ed-a8fc-0242ac120001'
+        assert claimed.possession.value == 'OWNED'
+
+    def test_claim_form_already_owned_raises_duplicated_item(self):
+        repo = FormRepositoryMock()
+        with pytest.raises(DuplicatedItem):
+            repo.claim_form(
+                form_id=repo.forms[0].id,  # já OWNED no seed
+                user_id='d61dbf66-a10f-11ed-a8fc-0242ac120099',
+                claimed_at=1,
+                updated_at=2,
+            )
+
+    def test_claim_form_not_found_returns_none(self):
+        repo = FormRepositoryMock()
+        assert repo.claim_form(
+            form_id='00000000-0000-0000-0000-000000000000',
+            user_id='d61dbf66-a10f-11ed-a8fc-0242ac120001',
+            claimed_at=1,
+            updated_at=2,
+        ) is None
+
+    def test_release_form_reopens_pool(self):
+        repo = FormRepositoryMock()
+        form = repo.forms[0]
+        form.status = FormStatus.IN_PROGRESS
+
+        released = repo.release_form(form_id=form.id, sections=form.sections, released_at=1, updated_at=2)
+
+        assert released.user_id is None
+        assert released.possession.value == 'OPEN'
+        assert released.status == FormStatus.PENDING
+
+    def test_get_pool_forms_only_returns_open_forms_of_the_system(self):
+        repo = FormRepositoryMock()
+        repo.forms.append(self._pool_form())
+        repo.forms.append(self._pool_form(id='d61dbf66-a10f-11ed-a8fc-0242ac120031', system='GAIA'))
+
+        pool_forms, next_key = repo.get_pool_forms(system='UBERLANDIA')
+
+        assert [f.id for f in pool_forms] == ['d61dbf66-a10f-11ed-a8fc-0242ac120030']
+        assert next_key is None

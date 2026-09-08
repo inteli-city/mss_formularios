@@ -53,3 +53,7 @@ class FormResponseSchema(ResponseContractModel):
     scheduled_end_at: int | None = None
     attributes: dict[str, list[str]] = Field(default_factory=dict)
     completed_by: str | None = None
+    possession: str
+    claimed_at: int | None = None
+    released_at: int | None = None
+    assignment_source: str | None = None

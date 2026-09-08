@@ -113,6 +113,33 @@ class LambdaStack(Construct):
             authorizer=authorizer,
         )
 
+        self.claim_form = self.create_lambda_api_gateway_integration(
+            module_name="claim_form",
+            method="POST",
+            api_resource=form_id_resource,
+            path="claim",
+            environment_variables=environment_variables,
+            authorizer=authorizer,
+        )
+
+        self.release_form = self.create_lambda_api_gateway_integration(
+            module_name="release_form",
+            method="POST",
+            api_resource=form_id_resource,
+            path="release",
+            environment_variables=environment_variables,
+            authorizer=authorizer,
+        )
+
+        self.assign_form = self.create_lambda_api_gateway_integration(
+            module_name="assign_form",
+            method="POST",
+            api_resource=form_id_resource,
+            path="assign",
+            environment_variables=environment_variables,
+            authorizer=authorizer,
+        )
+
         self.refresh_presign = self.create_lambda_api_gateway_integration(
             module_name="refresh_presign",
             method="POST",
@@ -138,6 +165,15 @@ class LambdaStack(Construct):
             )
             for lambda_fn in (self.create_form, self.submit_form, self.cancel_form, self.refresh_presign):
                 lambda_fn.add_to_role_policy(s3_put_policy)
+
+            # release_form apaga do S3 o conteúdo descartado ao devolver a OS
+            # ao pool (RN-UBE-012, especificação Uberlândia §6.2).
+            s3_delete_policy = iam.PolicyStatement(
+                effect=iam.Effect.ALLOW,
+                actions=["s3:DeleteObject"],
+                resources=[f"arn:aws:s3:::{bucket_name}/*"],
+            )
+            self.release_form.add_to_role_policy(s3_delete_policy)
 
         self.plan_route = self.create_lambda_api_gateway_integration(
             module_name="plan_route",
@@ -351,6 +387,9 @@ class LambdaStack(Construct):
             self.get_all_forms,
             self.start_form,
             self.get_form,
+            self.claim_form,
+            self.release_form,
+            self.assign_form,
             self.create_template,
             self.update_template,
             self.get_template,
@@ -386,6 +425,9 @@ class LambdaStack(Construct):
             self.login_profile,
             self.delete_profile,
             self.update_profile,
+            self.release_form,
+            self.assign_form,
+            self.get_all_forms,
             self.get_location_history,
         ]
 

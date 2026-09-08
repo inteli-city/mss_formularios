@@ -79,3 +79,20 @@ class TestGetAllFormsController:
         assert len(response.body["forms"]) == 2
         statuses = {item["status"] for item in response.body["forms"]}
         assert statuses == {"PENDING", "IN_PROGRESS"}
+
+
+class TestGetAllFormsControllerScope:
+    def test_invalid_scope_returns_400(self):
+        repo = FormRepositoryMock()
+        controller = GetAllFormsController(GetAllFormsUsecase(repo))
+
+        request = HttpRequest(body={
+            "requester_user": {
+                "sub": repo.forms[0].user_id, "name": "User", "email": "user@test.com",
+                "cognito:groups": "FORMULARIOS,GAIA",
+            },
+            "scope": "not-a-valid-scope",
+        })
+
+        response = controller(request)
+        assert response.status_code == 400

@@ -3,7 +3,11 @@ from src.shared.domain.entities.justification import Justification, Justificatio
 from src.shared.domain.enums.form_status_enum import FormStatus
 from src.shared.domain.enums.priority_enum import Priority
 from src.shared.helpers.contracts.endpoints.get_form_contract import GetFormResponseSchema
-from src.shared.helpers.viewmodels.form_dict_builders import build_field_vars_dict, build_section_dict
+from src.shared.helpers.viewmodels.form_dict_builders import (
+    build_field_vars_dict,
+    build_information_field_dict,
+    build_section_dict,
+)
 
 
 class JustificationOptionViewmodel:
@@ -75,6 +79,20 @@ class GetFormViewmodel:
         self.created_by = form.created_by
         self.created_at = form.created_at
         self.updated_at = form.updated_at
+        self.information_fields = form.information_fields
+        self.number = form.number
+        self.external_id = form.external_id
+        self.origin = form.origin
+        self.service_type = form.service_type
+        self.occurred_at = form.occurred_at
+        self.scheduled_start_at = form.scheduled_start_at
+        self.scheduled_end_at = form.scheduled_end_at
+        self.attributes = form.attributes
+        self.completed_by = form.completed_by
+        self.possession = form.possession
+        self.claimed_at = form.claimed_at
+        self.released_at = form.released_at
+        self.assignment_source = form.assignment_source
 
     def to_dict(self):
         payload = {
@@ -102,6 +120,24 @@ class GetFormViewmodel:
             "created_by": self.created_by,
             "created_at": self.created_at,
             "updated_at": self.updated_at,
+            "information_fields": (
+                [build_information_field_dict(info) for info in self.information_fields]
+                if self.information_fields
+                else None
+            ),
+            "number": self.number,
+            "external_id": self.external_id,
+            "origin": self.origin.value if self.origin else None,
+            "service_type": self.service_type,
+            "occurred_at": self.occurred_at,
+            "scheduled_start_at": self.scheduled_start_at,
+            "scheduled_end_at": self.scheduled_end_at,
+            "attributes": self.attributes,
+            "completed_by": self.completed_by,
+            "possession": self.possession.value,
+            "claimed_at": self.claimed_at,
+            "released_at": self.released_at,
+            "assignment_source": self.assignment_source.value if self.assignment_source else None,
         }
         validated = GetFormResponseSchema.model_validate(payload).model_dump()
         validated["priority"] = self.priority.value if isinstance(self.priority, Priority) else self.priority

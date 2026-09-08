@@ -26,6 +26,12 @@ class FakeS3Client:
         self.calls.append(kwargs)
         return "https://presigned.example/test"
 
+    def delete_objects(self, **kwargs):
+        if self.should_fail:
+            raise RuntimeError("boom")
+        self.calls.append(kwargs)
+        return {"Deleted": kwargs["Delete"]["Objects"]}
+
 
 def test_file_repository_s3_generate_presigned_url(monkeypatch):
     os.environ["STAGE"] = "TEST"
@@ -68,3 +74,34 @@ def test_file_repository_s3_generate_presigned_url_error(monkeypatch):
 
     with pytest.raises(ErrorWithFile):
         repo.generate_presigned_url(file_path="path/file.jpg", mimetype="image/jpeg", expires_in=1200)
+
+
+def test_file_repository_s3_delete_files(monkeypatch):
+    client = FakeS3Client()
+    monkeypatch.setattr("src.shared.infra.repositories.file_repository_s3._create_s3_client", lambda *args, **kwargs: client)
+    repo = FileRepositoryS3()
+
+    repo.delete_files({"path/a.jpg", "path/b.jpg"})
+
+    assert len(client.calls) == 1
+    keys = {obj["Key"] for obj in client.calls[0]["Delete"]["Objects"]}
+    assert keys == {"path/a.jpg", "path/b.jpg"}
+
+
+def test_file_repository_s3_delete_files_empty_set_is_noop(monkeypatch):
+    client = FakeS3Client()
+    monkeypatch.setattr("src.shared.infra.repositories.file_repository_s3._create_s3_client", lambda *args, **kwargs: client)
+    repo = FileRepositoryS3()
+
+    repo.delete_files(set())
+
+    assert client.calls == []
+
+
+def test_file_repository_s3_delete_files_error(monkeypatch):
+    client = FakeS3Client(should_fail=True)
+    monkeypatch.setattr("src.shared.infra.repositories.file_repository_s3._create_s3_client", lambda *args, **kwargs: client)
+    repo = FileRepositoryS3()
+
+    with pytest.raises(ErrorWithFile):
+        repo.delete_files({"path/a.jpg"})

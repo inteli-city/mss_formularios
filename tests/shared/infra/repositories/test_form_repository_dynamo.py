@@ -53,6 +53,7 @@ class FakeFormDynamo:
         self.scan_items_responses = None
         self.update_response = {"Attributes": items[0]} if items else {}
         self.update_exception = None
+        self.update_should_conflict_once = False
         self.last_update = None
 
     def put_item(self, item, partition_key, sort_key, is_decimal=False, **kwargs):
@@ -81,7 +82,10 @@ class FakeFormDynamo:
             return self.scan_items_responses.pop(0)
         return self.scan_items_response
 
-    def update_item(self, partition_key, sort_key, update_dict, condition_expression=None):
+    def update_item(self, partition_key, sort_key, update_dict, condition_expression=None, remove_attrs=None):
+        if condition_expression is not None and self.update_should_conflict_once:
+            self.update_should_conflict_once = False
+            raise _ConditionalCheckFailed()
         if self.update_exception is not None:
             raise self.update_exception
         self.last_update = {
@@ -89,6 +93,7 @@ class FakeFormDynamo:
             "sort_key": sort_key,
             "update_dict": update_dict,
             "condition_expression": condition_expression,
+            "remove_attrs": remove_attrs,
         }
         return self.update_response
 
@@ -463,3 +468,99 @@ def test_form_repository_dynamo_update_form_sets_completed_by():
     )
 
     assert repo.dynamo.last_update["update_dict"]["completed_by"] == form.user_id
+
+
+class TestFormRepositoryDynamoPool:
+    """Especificação Uberlândia §6/§14.1: GSI3, claim_form, release_form, get_pool_forms."""
+
+    def test_create_form_pool_writes_gsi3_not_gsi1(self):
+        repo = FormRepositoryDynamo.__new__(FormRepositoryDynamo)
+        repo.dynamo = FakeFormDynamo([])
+        form = _uberlandia_form(external_id=None)
+
+        repo.create_form(form)
+
+        saved_item, _, _, _, _ = repo.dynamo.put_calls[0]
+        assert "GSI1PK" not in saved_item
+        assert "GSI1SK" not in saved_item
+        assert "user_id" not in saved_item
+        assert saved_item["GSI3PK"] == "pool#UBERLANDIA"
+        assert "GSI3SK" in saved_item
+
+    def test_create_form_directed_writes_gsi1_not_gsi3(self):
+        repo = FormRepositoryDynamo.__new__(FormRepositoryDynamo)
+        repo.dynamo = FakeFormDynamo([])
+        form = _uberlandia_form(external_id=None, user_id="d61dbf66-a10f-11ed-a8fc-0242ac120001")
+
+        repo.create_form(form)
+
+        saved_item, _, _, _, _ = repo.dynamo.put_calls[0]
+        assert "GSI3PK" not in saved_item
+        assert saved_item["GSI1PK"] == "user#d61dbf66-a10f-11ed-a8fc-0242ac120001"
+
+    def test_claim_form_writes_gsi1_and_removes_gsi3(self):
+        repo, form, item = _make_repo_with_item()
+        pool_item = dict(item)
+        pool_item["user_id"] = None
+        repo.dynamo.get_item_response = {"Item": pool_item}
+        repo.dynamo.update_response = {"Attributes": item}
+
+        claimed = repo.claim_form(form_id=form.id, user_id="d61dbf66-a10f-11ed-a8fc-0242ac120099", claimed_at=1, updated_at=2)
+
+        assert claimed is not None
+        update_dict = repo.dynamo.last_update["update_dict"]
+        assert update_dict["user_id"] == "d61dbf66-a10f-11ed-a8fc-0242ac120099"
+        assert update_dict["possession"] == "OWNED"
+        assert "GSI1PK" in update_dict
+        assert repo.dynamo.last_update["remove_attrs"] == ["GSI3PK", "GSI3SK"]
+        assert repo.dynamo.last_update["condition_expression"] is not None
+
+    def test_claim_form_not_found_returns_none(self):
+        repo = FormRepositoryDynamo.__new__(FormRepositoryDynamo)
+        repo.dynamo = FakeFormDynamo([])
+        repo.dynamo.get_item_response = {}
+
+        assert repo.claim_form(form_id="missing", user_id="d61dbf66-a10f-11ed-a8fc-0242ac120099", claimed_at=1, updated_at=2) is None
+
+    def test_claim_form_conflict_raises_duplicated_item_with_current_owner(self):
+        repo, form, item = _make_repo_with_item()
+        owned_item = dict(item)
+        owned_item["user_id"] = "d61dbf66-a10f-11ed-a8fc-0242ac120001"
+        repo.dynamo.get_item_response = {"Item": owned_item}
+        repo.dynamo.update_should_conflict_once = True
+
+        with pytest.raises(DuplicatedItem) as exc_info:
+            repo.claim_form(form_id=form.id, user_id="d61dbf66-a10f-11ed-a8fc-0242ac120099", claimed_at=1, updated_at=2)
+
+        assert "d61dbf66-a10f-11ed-a8fc-0242ac120001" in str(exc_info.value)
+
+    def test_release_form_sets_pool_fields_and_removes_owner(self):
+        repo, form, item = _make_repo_with_item()
+        repo.dynamo.get_item_response = {"Item": item}
+        repo.dynamo.update_response = {"Attributes": item}
+
+        released = repo.release_form(form_id=form.id, sections=form.sections, released_at=1, updated_at=2)
+
+        assert released is not None
+        update_dict = repo.dynamo.last_update["update_dict"]
+        assert update_dict["possession"] == "OPEN"
+        assert update_dict["status"] == "PENDING"
+        assert "GSI3PK" in update_dict
+        assert repo.dynamo.last_update["remove_attrs"] == ["user_id", "GSI1PK", "GSI1SK", "in_progress_at", "assignment_source"]
+
+    def test_release_form_not_found_returns_none(self):
+        repo = FormRepositoryDynamo.__new__(FormRepositoryDynamo)
+        repo.dynamo = FakeFormDynamo([])
+        repo.dynamo.get_item_response = {}
+
+        assert repo.release_form(form_id="missing", sections=[], released_at=1, updated_at=2) is None
+
+    def test_get_pool_forms_queries_pool_index(self):
+        repo, form, item = _make_repo_with_item()
+        repo.dynamo.query_response = {"Items": [item], "LastEvaluatedKey": None}
+
+        forms, next_key = repo.get_pool_forms(system="UBERLANDIA", limit=10)
+
+        assert len(forms) == 1
+        assert next_key is None
+        assert repo.dynamo.query_kwargs["IndexName"] == "PoolIndex"

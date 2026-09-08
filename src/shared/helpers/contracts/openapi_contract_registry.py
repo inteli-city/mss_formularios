@@ -3,7 +3,9 @@ from typing import Optional, Type
 
 from pydantic import BaseModel
 
+from src.shared.helpers.contracts.endpoints.assign_form_contract import AssignFormRequestSchema, AssignFormResponseSchema
 from src.shared.helpers.contracts.endpoints.cancel_form_contract import CancelFormRequestSchema, CancelFormResponseSchema
+from src.shared.helpers.contracts.endpoints.claim_form_contract import ClaimFormResponseSchema
 from src.shared.helpers.contracts.endpoints.create_form_contract import CreateFormRequestSchema, CreateFormResponseSchema
 from src.shared.helpers.contracts.endpoints.create_template_contract import (
     CreateTemplateRequestSchema,
@@ -33,6 +35,7 @@ from src.shared.helpers.contracts.endpoints.refresh_presign_contract import (
     RefreshPresignRequestSchema,
     RefreshPresignResponseSchema,
 )
+from src.shared.helpers.contracts.endpoints.release_form_contract import ReleaseFormResponseSchema
 from src.shared.helpers.contracts.endpoints.start_form_contract import StartFormRequestSchema
 from src.shared.helpers.contracts.endpoints.submit_form_contract import SubmitFormRequestSchema, SubmitFormResponseSchema
 from src.shared.helpers.contracts.endpoints.sync_origin_callback_contract import (
@@ -116,6 +119,31 @@ _CONTRACTS = [
         success_status_code=200,
         request_model=CancelFormRequestSchema,
         response_model=CancelFormResponseSchema,
+    ),
+    EndpointContract(
+        path="/forms/{formId}/claim",
+        method="post",
+        tag="Forms",
+        summary="Reivindica uma OS aberta no pool (especificação Uberlândia)",
+        success_status_code=200,
+        response_model=ClaimFormResponseSchema,
+    ),
+    EndpointContract(
+        path="/forms/{formId}/release",
+        method="post",
+        tag="Forms",
+        summary="Devolve uma OS ao pool, descartando o conteúdo (especificação Uberlândia)",
+        success_status_code=200,
+        response_model=ReleaseFormResponseSchema,
+    ),
+    EndpointContract(
+        path="/forms/{formId}/assign",
+        method="post",
+        tag="Forms",
+        summary="Gestor/Fiscal atribui uma OS do pool a um usuário (especificação Uberlândia)",
+        success_status_code=200,
+        request_model=AssignFormRequestSchema,
+        response_model=AssignFormResponseSchema,
     ),
     EndpointContract(
         path="/forms/route-plan",

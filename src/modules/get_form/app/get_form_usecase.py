@@ -1,4 +1,5 @@
 from src.shared.domain.entities.form import Form
+from src.shared.domain.enums.possession_enum import Possession
 from src.shared.domain.repositories.form_repository_interface import IFormRepository
 from src.shared.helpers.errors.usecase_errors import ForbiddenAction, NoItemsFound
 
@@ -13,7 +14,10 @@ class GetFormUsecase:
         if form is None:
             raise NoItemsFound("Formulário não encontrado")
 
-        if form.user_id != requester_user_id:
+        # OS aberta no pool (§6.3, especificação Uberlândia): leitura livre pra
+        # qualquer usuário — o filtro fino por escopo é a Fase 2. Direcionada
+        # continua só pro dono.
+        if form.possession is Possession.OWNED and form.user_id != requester_user_id:
             raise ForbiddenAction("Usuário não é o preenchedor deste formulário")
 
         return form

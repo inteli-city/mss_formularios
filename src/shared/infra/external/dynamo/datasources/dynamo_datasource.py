@@ -91,33 +91,44 @@ class DynamoDatasource:
         resp = self.dynamo_table.put_item(Item=DynamoDatasource._parse_float_to_decimal(item))
         return resp
 
-    def update_item(self, partition_key: str, sort_key: str, update_dict: dict, condition_expression=None):
+    def update_item(self, partition_key: str, sort_key: str, update_dict: dict, condition_expression=None, remove_attrs=None):
         """
         Update an item in the table with its keys (Partition and Sort) and attributes to update
         If the attribute does not exist, it will be created. It won't change attributes not mentioned.
         @param key: dict with the keys (Partition and Sort)
         @param update_attributes: dict with the attributes to update
+        @param remove_attrs: nomes de atributos a apagar do item (REMOVE) — usado quando
+            `None` não basta (release_form precisa que GSI1PK/user_id deixem de EXISTIR,
+            não fiquem gravados como NULL, que ainda conta como presente pro DynamoDB).
         @return: dict with the response from DynamoDB
         """
 
         update_dict = DynamoDatasource._parse_float_to_decimal(update_dict)
         data_key_value_pairs = list(update_dict.items())
+        remove_attrs = remove_attrs or []
 
-        update_expression = "SET " + ", ".join([f"#attr{i} = :val{i}" for i in range(len(data_key_value_pairs))]) # SET attribute1=:value1, attribute2=:value2
         expression_attribute_names = {f"#attr{i}": data_key_value_pairs[i][0] for i in range(len(data_key_value_pairs))} # {"_attribute1": "attribute1", ":_attribute2": "attribute2"}
         expression_value_names = {f":val{i}": data_key_value_pairs[i][1] for i in range(len(data_key_value_pairs))} # {":value1": "value1", ":value2": "value2"}
 
-        
-        
+        expression_clauses = []
+        if data_key_value_pairs:
+            expression_clauses.append("SET " + ", ".join(f"#attr{i} = :val{i}" for i in range(len(data_key_value_pairs))))
+        if remove_attrs:
+            remove_names = {f"#rm{i}": attr for i, attr in enumerate(remove_attrs)}
+            expression_attribute_names.update(remove_names)
+            expression_clauses.append("REMOVE " + ", ".join(remove_names.keys()))
+        update_expression = " ".join(expression_clauses)
+
         key = {self.partition_key: partition_key, self.sort_key: sort_key if sort_key else None}
         key_without_none_values = {k: v for k, v in key.items() if v is not None}
         kwargs = {
             "Key": key_without_none_values,
             "UpdateExpression": update_expression,
             "ExpressionAttributeNames": expression_attribute_names,
-            "ExpressionAttributeValues": expression_value_names,
             "ReturnValues": "ALL_NEW",
         }
+        if expression_value_names:
+            kwargs["ExpressionAttributeValues"] = expression_value_names
         if condition_expression is not None:
             kwargs["ConditionExpression"] = condition_expression
 

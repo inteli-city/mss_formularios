@@ -7,7 +7,8 @@ from src.shared.helpers.external_interfaces.http_lambda_requests import LambdaHt
 
 
 repo = Environments.get_form_repo()
-usecase = GetAllFormsUsecase(repo)
+profile_repo = Environments.get_profile_repo()
+usecase = GetAllFormsUsecase(repo, profile_repo)
 controller = GetAllFormsController(usecase)
 
 

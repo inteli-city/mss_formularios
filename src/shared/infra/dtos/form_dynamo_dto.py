@@ -4,8 +4,10 @@ from src.shared.domain.entities.form import Form
 from src.shared.domain.entities.information_field import InformationField
 from src.shared.domain.entities.justification import Justification
 from src.shared.domain.entities.section import Section
+from src.shared.domain.enums.assignment_source_enum import AssignmentSource
 from src.shared.domain.enums.form_origin_enum import FormOrigin
 from src.shared.domain.enums.form_status_enum import FormStatus
+from src.shared.domain.enums.possession_enum import Possession
 from src.shared.domain.enums.priority_enum import Priority
 from src.shared.infra.dtos.information_field_dto import InformationFieldDTO
 from src.shared.infra.dtos.justification_dto import JustificationDTO
@@ -45,6 +47,10 @@ class FormDynamoDTO:
     scheduled_end_at: Optional[int]
     attributes: Dict[str, List[str]]
     completed_by: Optional[str]
+    possession: Optional[Possession]
+    claimed_at: Optional[int]
+    released_at: Optional[int]
+    assignment_source: Optional[AssignmentSource]
 
     def __init__(
         self,
@@ -80,6 +86,10 @@ class FormDynamoDTO:
         scheduled_end_at: Optional[int] = None,
         attributes: Optional[Dict[str, List[str]]] = None,
         completed_by: Optional[str] = None,
+        possession: Optional[Possession] = None,
+        claimed_at: Optional[int] = None,
+        released_at: Optional[int] = None,
+        assignment_source: Optional[AssignmentSource] = None,
     ):
         self.form_title = form_title
         self.id = id
@@ -113,6 +123,10 @@ class FormDynamoDTO:
         self.scheduled_end_at = scheduled_end_at
         self.attributes = attributes if attributes is not None else {}
         self.completed_by = completed_by
+        self.possession = possession
+        self.claimed_at = claimed_at
+        self.released_at = released_at
+        self.assignment_source = assignment_source
 
     @staticmethod
     def from_entity(form: Form) -> "FormDynamoDTO":
@@ -149,6 +163,10 @@ class FormDynamoDTO:
             scheduled_end_at=form.scheduled_end_at,
             attributes=form.attributes,
             completed_by=form.completed_by,
+            possession=form.possession,
+            claimed_at=form.claimed_at,
+            released_at=form.released_at,
+            assignment_source=form.assignment_source,
         )
 
     def to_dynamo(self) -> dict:
@@ -189,6 +207,10 @@ class FormDynamoDTO:
             "scheduled_end_at": self.scheduled_end_at,
             "attributes": self.attributes,
             "completed_by": self.completed_by,
+            "possession": self.possession.value if isinstance(self.possession, Possession) else self.possession,
+            "claimed_at": self.claimed_at,
+            "released_at": self.released_at,
+            "assignment_source": self.assignment_source.value if isinstance(self.assignment_source, AssignmentSource) else self.assignment_source,
         }
 
     @staticmethod
@@ -234,6 +256,10 @@ class FormDynamoDTO:
             scheduled_end_at=int(data["scheduled_end_at"]) if data.get("scheduled_end_at") is not None else None,
             attributes=dict(data.get("attributes") or {}),
             completed_by=data.get("completed_by"),
+            possession=Possession(data["possession"]) if data.get("possession") is not None else None,
+            claimed_at=int(data["claimed_at"]) if data.get("claimed_at") is not None else None,
+            released_at=int(data["released_at"]) if data.get("released_at") is not None else None,
+            assignment_source=AssignmentSource(data["assignment_source"]) if data.get("assignment_source") is not None else None,
         )
 
     def to_entity(self) -> Form:
@@ -270,6 +296,10 @@ class FormDynamoDTO:
             scheduled_end_at=self.scheduled_end_at,
             attributes=self.attributes,
             completed_by=self.completed_by,
+            possession=self.possession,
+            claimed_at=self.claimed_at,
+            released_at=self.released_at,
+            assignment_source=self.assignment_source,
         )
 
     def to_dict(self) -> dict:
