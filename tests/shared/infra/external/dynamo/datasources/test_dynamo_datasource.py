@@ -62,6 +62,37 @@ def test_update_item_omits_empty_sort_key_and_condition():
     assert "ConditionExpression" not in kwargs
 
 
+def test_update_item_with_remove_attrs_builds_set_and_remove():
+    datasource = _make_datasource()
+
+    datasource.update_item(
+        partition_key="pk-1",
+        sort_key="sk-1",
+        update_dict={"status": "PENDING"},
+        remove_attrs=["user_id", "GSI1PK"],
+    )
+
+    kwargs = datasource.dynamo_table.update_item_kwargs
+    assert kwargs["UpdateExpression"] == "SET #attr0 = :val0 REMOVE #rm0, #rm1"
+    assert kwargs["ExpressionAttributeNames"] == {"#attr0": "status", "#rm0": "user_id", "#rm1": "GSI1PK"}
+    assert kwargs["ExpressionAttributeValues"] == {":val0": "PENDING"}
+
+
+def test_update_item_with_only_remove_attrs_has_no_set_clause():
+    datasource = _make_datasource()
+
+    datasource.update_item(
+        partition_key="pk-1",
+        sort_key="sk-1",
+        update_dict={},
+        remove_attrs=["user_id"],
+    )
+
+    kwargs = datasource.dynamo_table.update_item_kwargs
+    assert kwargs["UpdateExpression"] == "REMOVE #rm0"
+    assert "ExpressionAttributeValues" not in kwargs
+
+
 def test_put_item_forwards_condition_expression():
     datasource = _make_datasource()
 

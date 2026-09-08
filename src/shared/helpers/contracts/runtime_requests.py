@@ -3,6 +3,7 @@ from typing import Any
 from pydantic import AliasChoices, Field, StrictBool, field_validator, model_validator
 
 from src.shared.helpers.contracts.base import RequestContractModel
+from src.shared.helpers.contracts.endpoints.assign_form_contract import AssignFormRequestSchema
 from src.shared.helpers.contracts.endpoints.cancel_form_contract import CancelFormRequestSchema
 from src.shared.helpers.contracts.endpoints.create_form_contract import CreateFormRequestSchema
 from src.shared.helpers.contracts.endpoints.create_template_contract import CreateTemplateRequestSchema
@@ -54,6 +55,21 @@ class UpdateTemplateControllerRequestSchema(RequestContractModel):
 
 
 class StartFormControllerRequestSchema(StartFormRequestSchema):
+    requester_user: RequesterUserSchema
+    form_id: str
+
+
+class ClaimFormControllerRequestSchema(RequestContractModel):
+    requester_user: RequesterUserSchema
+    form_id: str
+
+
+class ReleaseFormControllerRequestSchema(RequestContractModel):
+    requester_user: RequesterUserSchema
+    form_id: str
+
+
+class AssignFormControllerRequestSchema(AssignFormRequestSchema):
     requester_user: RequesterUserSchema
     form_id: str
 
@@ -134,6 +150,7 @@ class GetAllFormsControllerRequestSchema(RequestContractModel):
     created_at_start: int | None = None
     created_at_end: int | None = None
     exclusive_start_key: str | None = None
+    scope: str = Field(default="mine", pattern="^(mine|pool|all)$")
 
     @field_validator("limit", "created_at_start", "created_at_end", mode="before")
     @classmethod

@@ -6,7 +6,9 @@ from botocore.exceptions import ClientError
 from src.shared.domain.entities.form import Form
 from src.shared.domain.entities.justification import Justification
 from src.shared.domain.entities.section import Section
+from src.shared.domain.enums.assignment_source_enum import AssignmentSource
 from src.shared.domain.enums.form_status_enum import FormStatus
+from src.shared.domain.enums.possession_enum import Possession
 from src.shared.domain.repositories.form_repository_interface import IFormRepository
 from src.shared.environments import Environments
 from src.shared.infra.dtos.form_dynamo_dto import FormDynamoDTO
@@ -50,6 +52,18 @@ class FormRepositoryDynamo(IFormRepository):
     @staticmethod
     def form_external_id_lock_sort_key_format() -> str:
         return "LOCK"
+
+    @staticmethod
+    def form_gsi3_partition_key_format(system: str) -> str:
+        # ponytail: sem o sufixo de valor de escopo do §14.1 (pool#{system}#{bairro})
+        # — sem a filtragem de RBAC da Fase 2, particionar por valor seria
+        # inútil (ninguém saberia por qual valor consultar). Adicionar o
+        # sufixo quando a Fase 2 tiver Profile.scope realmente filtrando.
+        return f"pool#{system}"
+
+    @staticmethod
+    def form_gsi3_sort_key_format(priority: str, created_at: int) -> str:
+        return f"priority#{priority}#created_at#{int(created_at):013d}"
 
     def __init__(self):
         self.dynamo = DynamoDatasource(
@@ -295,8 +309,18 @@ class FormRepositoryDynamo(IFormRepository):
                 return existing
 
         item = FormDynamoDTO.from_entity(form).to_dynamo()
+        # user_id (e os campos de posse que dependem dele) precisam ficar
+        # AUSENTES do item quando a OS nasce no pool, não gravados como
+        # `null` — `null` ainda conta como presente pro attribute_not_exists()
+        # que `claim_form` usa pra exclusividade (RN-UBE-002).
+        if form.user_id is None:
+            for pool_field in ("user_id", "claimed_at", "assignment_source"):
+                item.pop(pool_field, None)
 
-        if form.user_id is not None:
+        if form.possession is Possession.OPEN:
+            item["GSI3PK"] = self.form_gsi3_partition_key_format(form.system)
+            item["GSI3SK"] = self.form_gsi3_sort_key_format(priority=form.priority.value, created_at=form.created_at)
+        else:
             item["GSI1PK"] = self.form_gsi1_partition_key_format(form.user_id)
             item["GSI1SK"] = self.form_gsi1_sort_key_format(priority=form.priority.value, status=form.status, created_at=form.created_at)
         item["GSI2PK"] = self.form_gsi2_partition_key_format(form.system)
@@ -363,6 +387,105 @@ class FormRepositoryDynamo(IFormRepository):
             return None
 
         return FormDynamoDTO.from_dynamo(resp['Attributes']).to_entity()
+
+    def claim_form(
+        self,
+        form_id: str,
+        user_id: str,
+        claimed_at: int,
+        updated_at: int,
+        source: AssignmentSource = AssignmentSource.CLAIM,
+    ) -> Optional[Form]:
+        current_form = self.get_form_by_id(user_id=user_id, form_id=form_id)
+        if current_form is None:
+            return None
+
+        update_dict = {
+            "user_id": user_id,
+            "possession": Possession.OWNED.value,
+            "claimed_at": Decimal(claimed_at),
+            "assignment_source": source.value,
+            "updated_at": Decimal(updated_at),
+            "GSI1PK": self.form_gsi1_partition_key_format(user_id),
+            "GSI1SK": self.form_gsi1_sort_key_format(
+                priority=current_form.priority.value, status=current_form.status, created_at=current_form.created_at
+            ),
+            "GSI2PK": self.form_gsi2_partition_key_format(current_form.system),
+            "GSI2SK": self.form_gsi2_sort_key_format(updated_at=updated_at, form_id=form_id),
+        }
+        try:
+            resp = self.dynamo.update_item(
+                partition_key=self.form_partition_key_format(form_id),
+                sort_key=self.form_sort_key_format(),
+                update_dict=update_dict,
+                condition_expression=Attr("user_id").not_exists(),
+                remove_attrs=["GSI3PK", "GSI3SK"],
+            )
+        except ClientError as err:
+            if err.response.get("Error", {}).get("Code") == "ConditionalCheckFailedException":
+                latest = self.get_form_by_id(user_id=user_id, form_id=form_id)
+                owner = latest.user_id if latest is not None else "outro usuário"
+                raise DuplicatedItem(f"Formulário já reivindicado por {owner}")
+            raise
+
+        if "Attributes" not in resp:
+            return None
+        return FormDynamoDTO.from_dynamo(resp["Attributes"]).to_entity()
+
+    def release_form(self, form_id: str, sections: List[Section], released_at: int, updated_at: int) -> Optional[Form]:
+        current_form = self.get_form_by_id(user_id="", form_id=form_id)
+        if current_form is None:
+            return None
+
+        update_dict = {
+            "status": FormStatus.PENDING.value,
+            "possession": Possession.OPEN.value,
+            "released_at": Decimal(released_at),
+            "updated_at": Decimal(updated_at),
+            "sections": [SectionDTO.from_entity(section).to_dynamo() for section in sections],
+            "GSI2PK": self.form_gsi2_partition_key_format(current_form.system),
+            "GSI2SK": self.form_gsi2_sort_key_format(updated_at=updated_at, form_id=form_id),
+            "GSI3PK": self.form_gsi3_partition_key_format(current_form.system),
+            "GSI3SK": self.form_gsi3_sort_key_format(priority=current_form.priority.value, created_at=current_form.created_at),
+        }
+        resp = self.dynamo.update_item(
+            partition_key=self.form_partition_key_format(form_id),
+            sort_key=self.form_sort_key_format(),
+            update_dict=update_dict,
+            remove_attrs=["user_id", "GSI1PK", "GSI1SK", "in_progress_at", "assignment_source"],
+        )
+
+        if "Attributes" not in resp:
+            return None
+        return FormDynamoDTO.from_dynamo(resp["Attributes"]).to_entity()
+
+    def get_pool_forms(
+        self,
+        system: str,
+        limit: Optional[int] = None,
+        exclusive_start_key: Optional[dict] = None,
+    ) -> Tuple[List[Form], Optional[str]]:
+        query_kwargs = {
+            "key_condition_expression": Key("GSI3PK").eq(self.form_gsi3_partition_key_format(system)),
+            "IndexName": "PoolIndex",
+            "Select": "ALL_ATTRIBUTES",
+        }
+
+        items = []
+        start_key = exclusive_start_key
+        use_dynamo_limit = limit is not None
+        while True:
+            if not self._apply_pagination_kwargs(query_kwargs, items, start_key, limit, use_dynamo_limit):
+                break
+            resp = self.dynamo.query(**query_kwargs)
+            items.extend(resp.get("Items", []))
+            start_key = resp.get("LastEvaluatedKey")
+            if start_key is None:
+                break
+
+        forms = [FormDynamoDTO.from_dynamo(item).to_entity() for item in items]
+        next_key = start_key if use_dynamo_limit else None
+        return forms, encode_pagination_token(next_key)
 
     @staticmethod
     def _coerce_update_value(value):

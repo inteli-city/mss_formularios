@@ -59,6 +59,24 @@ class DynamoStack(Construct):
                 projection_type=aws_dynamodb.ProjectionType.ALL
             )
 
+            # GSI esparso do pool aberto (especificação Uberlândia §14.1). GSI3PK
+            # só existe no item enquanto `possession = OPEN` — o pool é
+            # literalmente o conteúdo deste índice, sem filtro nem varredura.
+            # Gaia nunca escreve GSI3PK (allow_unassigned_forms=false), então
+            # não sente este índice.
+            self.gsi_pool = self.dynamo_table_forms.add_global_secondary_index(
+                index_name="PoolIndex",
+                partition_key=aws_dynamodb.Attribute(
+                    name="GSI3PK",
+                    type=aws_dynamodb.AttributeType.STRING
+                ),
+                sort_key=aws_dynamodb.Attribute(
+                    name="GSI3SK",
+                    type=aws_dynamodb.AttributeType.STRING
+                ),
+                projection_type=aws_dynamodb.ProjectionType.ALL
+            )
+
             CfnOutput(self, 'DynamoFormulariosRemovalPolicy',
                         value=REMOVAL_POLICY.value,
                         export_name=f'Formularios{self.github_ref_name}DynamoRemovalPolicyValue')

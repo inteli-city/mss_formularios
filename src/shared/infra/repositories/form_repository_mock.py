@@ -5,7 +5,9 @@ from src.shared.domain.entities.form import Form
 from src.shared.domain.entities.information_field import FileInformationField
 from src.shared.domain.entities.justification import Justification, JustificationOption, SelectedJustification
 from src.shared.domain.entities.section import Section
+from src.shared.domain.enums.assignment_source_enum import AssignmentSource
 from src.shared.domain.enums.form_status_enum import FormStatus
+from src.shared.domain.enums.possession_enum import Possession
 from src.shared.domain.enums.priority_enum import Priority
 from src.shared.domain.repositories.form_repository_interface import IFormRepository
 from src.shared.helpers.errors.usecase_errors import DuplicatedItem, ForbiddenAction
@@ -312,4 +314,52 @@ class FormRepositoryMock(IFormRepository):
             }
             next_key = encode_pagination_token(next_key)
 
+        return deepcopy(page), next_key
+
+    def claim_form(
+        self,
+        form_id: str,
+        user_id: str,
+        claimed_at: int,
+        updated_at: int,
+        source: AssignmentSource = AssignmentSource.CLAIM,
+    ) -> Optional[Form]:
+        form = next((f for f in self.forms if f.id == form_id), None)
+        if form is None:
+            return None
+        if form.possession is not Possession.OPEN:
+            raise DuplicatedItem(f"Formulário já reivindicado por {form.user_id}")
+        form.claim(user_id=user_id, claimed_at=claimed_at, updated_at=updated_at, source=source)
+        return deepcopy(form)
+
+    def release_form(self, form_id: str, sections: List[Section], released_at: int, updated_at: int) -> Optional[Form]:
+        form = next((f for f in self.forms if f.id == form_id), None)
+        if form is None:
+            return None
+        form.user_id = None
+        form.possession = Possession.OPEN
+        form.status = FormStatus.PENDING
+        form.in_progress_at = None
+        form.assignment_source = None
+        form.released_at = released_at
+        form.updated_at = updated_at
+        form.sections = sections
+        return deepcopy(form)
+
+    def get_pool_forms(
+        self,
+        system: str,
+        limit: Optional[int] = None,
+        exclusive_start_key: Optional[dict] = None,
+    ) -> tuple[List[Form], Optional[str]]:
+        forms = [f for f in self.forms if f.system == system and f.possession == Possession.OPEN]
+        forms = sorted(forms, key=lambda f: (-int(f.priority.value), f.created_at))
+
+        start = self._parse_start_index(forms, exclusive_start_key)
+        if limit is None:
+            return deepcopy(forms[start:]), None
+
+        end = start + limit
+        page = forms[start:end]
+        next_key = self._build_next_key(forms, end)
         return deepcopy(page), next_key

@@ -8,8 +8,10 @@ from src.shared.domain.entities.information_field import InformationField
 from src.shared.domain.entities.justification import Justification
 from src.shared.domain.entities.section import MAX_SECTION_INSTANCE, Section
 from src.shared.domain.entities.stored_file import StoredFile
+from src.shared.domain.enums.assignment_source_enum import AssignmentSource
 from src.shared.domain.enums.form_origin_enum import FormOrigin
 from src.shared.domain.enums.form_status_enum import FormStatus
+from src.shared.domain.enums.possession_enum import Possession
 from src.shared.domain.enums.priority_enum import Priority
 from src.shared.domain.validators import ensure_non_negative_int, ensure_str_list_dict
 from src.shared.helpers.errors.domain_errors import EntityError
@@ -51,6 +53,10 @@ class Form(abc.ABC):
     scheduled_end_at: Optional[int]
     attributes: Dict[str, List[str]]
     completed_by: Optional[str]
+    possession: Possession
+    claimed_at: Optional[int]
+    released_at: Optional[int]
+    assignment_source: Optional[AssignmentSource]
 
     ID_LENGTH = 36
 
@@ -98,6 +104,10 @@ class Form(abc.ABC):
         scheduled_end_at: Optional[int] = None,
         attributes: Optional[Dict[str, List[str]]] = None,
         completed_by: Optional[str] = None,
+        possession: Optional[Possession] = None,
+        claimed_at: Optional[int] = None,
+        released_at: Optional[int] = None,
+        assignment_source: Optional[AssignmentSource] = None,
     ):
 
         # Validação dividida em blocos para manter a complexidade de cada
@@ -111,6 +121,7 @@ class Form(abc.ABC):
             external_id, origin, service_type, occurred_at,
             scheduled_start_at, scheduled_end_at, attributes, completed_by,
         )
+        self._init_pool_fields(possession, claimed_at, released_at, assignment_source)
 
     def _init_identity(self, form_title, id, user_id, created_by, template):
         if not isinstance(form_title, str):
@@ -256,6 +267,27 @@ class Form(abc.ABC):
             raise EntityError('ID de quem concluiu inválido')
         self.completed_by = completed_by
 
+    def _init_pool_fields(self, possession, claimed_at, released_at, assignment_source):
+        """Posse (especificação Uberlândia §6.1.1) — campo próprio, companheiro
+        de `status`, não inferido da presença de `user_id`. Quando omitido,
+        assume o valor coerente com `user_id` (compatibilidade com todo
+        formulário existente, sempre direcionado)."""
+        if possession is not None and not isinstance(possession, Possession):
+            raise EntityError('possession inválido')
+        self.possession = possession if possession is not None else (
+            Possession.OWNED if self.user_id is not None else Possession.OPEN
+        )
+
+        for label, value in (('claimed_at', claimed_at), ('released_at', released_at)):
+            if value is not None and not isinstance(value, int):
+                raise EntityError(f'{label} deve ser um timestamp inteiro')
+        self.claimed_at = claimed_at
+        self.released_at = released_at
+
+        if assignment_source is not None and not isinstance(assignment_source, AssignmentSource):
+            raise EntityError('assignment_source inválido')
+        self.assignment_source = assignment_source
+
     @staticmethod
     def validate_id(id_to_validate: str) -> bool:
         if not isinstance(id_to_validate, str):
@@ -301,8 +333,48 @@ class Form(abc.ABC):
         self.updated_at = updated_at
 
     def ensure_assigned_to(self, user_id: str, message: str):
+        if self.possession is Possession.OPEN:
+            raise ForbiddenAction("Reivindique a OS antes de executá-la")
         if self.user_id != user_id:
             raise ForbiddenAction(message)
+
+    def claim(self, user_id: str, claimed_at: int, updated_at: int, source: AssignmentSource = AssignmentSource.CLAIM):
+        """Reivindica (ou atribui, quando `source=MANAGER`) uma OS do pool.
+        A exclusividade de verdade (RN-UBE-002) é garantida pela escrita
+        condicional no repositório — esta checagem é só a mensagem amigável
+        para o caminho comum (form já lido antes da tentativa)."""
+        if self.possession is not Possession.OPEN:
+            raise ForbiddenAction("Formulário não está disponível no pool")
+        if not Form.validate_id(user_id):
+            raise EntityError('ID do usuário inválido ou ausente')
+
+        self.user_id = user_id
+        self.possession = Possession.OWNED
+        self.claimed_at = claimed_at
+        self.assignment_source = source
+        self.updated_at = updated_at
+
+    def release(self, released_at: int, updated_at: int):
+        """Devolve ao pool (RN-UBE-004): descarta o conteúdo preenchido —
+        respostas voltam ao estado em branco e instâncias duplicadas de
+        seção são removidas — para que o próximo executor não herde nada
+        de quem devolveu (decisão P5)."""
+        if self.possession is not Possession.OWNED:
+            raise ForbiddenAction("Formulário já está no pool")
+        if self.is_finished():
+            raise ForbiddenAction("Formulário já finalizado não pode voltar ao pool")
+
+        self.sections = [section for section in self.sections if section.section_instance == 0]
+        for section in self.sections:
+            for field in section.fields:
+                field.set_value(None)
+
+        self.user_id = None
+        self.possession = Possession.OPEN
+        self.status = FormStatus.PENDING
+        self.in_progress_at = None
+        self.released_at = released_at
+        self.updated_at = updated_at
 
     def is_finished(self) -> bool:
         return self.status in [FormStatus.CANCELLED, FormStatus.COMPLETED]
