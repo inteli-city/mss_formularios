@@ -50,6 +50,7 @@ class Environments:
     kuma_heartbeat_push_url: Optional[str]
     kuma_missing_files_push_url: Optional[str]
     reconcile_systems: Tuple[str, ...]
+    apex_sync_enabled: bool
 
     @staticmethod
     def _parse_bool(value) -> bool:
@@ -100,6 +101,11 @@ class Environments:
             self.kuma_heartbeat_push_url = None
             self.kuma_missing_files_push_url = None
             self.reconcile_systems = ("GAIA",)
+            # True em TEST: os testes de OriginRepositoryApex mockam urlopen e
+            # querem exercitar o caminho de envio de verdade — nenhuma chamada
+            # de rede real acontece de qualquer forma. O risco real é só em
+            # dev/homolog (Lambda de verdade, rede de verdade), coberto abaixo.
+            self.apex_sync_enabled = True
         else:
             self.region = os.environ.get("REGION")
             self.endpoint_url = os.environ.get("ENDPOINT_URL")
@@ -123,6 +129,17 @@ class Environments:
             self.kuma_heartbeat_push_url = os.environ.get("KUMA_HEARTBEAT_PUSH_URL")
             self.kuma_missing_files_push_url = os.environ.get("KUMA_MISSING_FILES_PUSH_URL")
             self.reconcile_systems = self._parse_csv(os.environ.get("RECONCILE_SYSTEMS"))
+            # O endpoint do Apex (OriginRepositoryApex) é o mesmo sistema real de
+            # produção em qualquer stage — não existe sandbox por ambiente. Sem
+            # este gate, sync_forms_origin em dev/homolog envia formulário de
+            # teste pro Apex de produção de verdade (incidente confirmado em
+            # 2026-09-08). Default: só PROD envia; outros stages avançam o
+            # checkpoint sem POSTar de verdade. Override via env var pro dia em
+            # que o Apex disponibilizar um sandbox de homolog/dev.
+            default_apex_sync_enabled = "true" if self.stage == Stage.PROD else "false"
+            self.apex_sync_enabled = self._parse_bool(
+                os.environ.get("APEX_SYNC_ENABLED", default_apex_sync_enabled)
+            )
 
     @staticmethod
     def get_form_repo() -> IFormRepository:
