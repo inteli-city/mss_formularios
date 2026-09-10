@@ -90,3 +90,23 @@ def test_openapi_contract_keeps_legacy_template_request_field_names():
     assert "is_active" not in create_template_schema["properties"]
     assert "isActive" in update_template_schema["properties"]
     assert "is_active" not in update_template_schema["properties"]
+
+
+def test_openapi_contract_generator_declares_path_parameters():
+    """Sem isto, geradores de tipo (openapi-typescript etc.) não sabem que
+    {formId}/{user_id}/{template_id} existem, e o client do front cai em
+    `path?: never` (achado real do time de front)."""
+    openapi_doc = build_openapi_from_contracts()
+
+    submit_params = openapi_doc["paths"]["/forms/{formId}/submit"]["parameters"]
+    assert submit_params == [
+        {"name": "formId", "in": "path", "required": True, "schema": {"type": "string"}}
+    ]
+
+    profile_params = openapi_doc["paths"]["/profiles/{user_id}"]["parameters"]
+    assert profile_params == [
+        {"name": "user_id", "in": "path", "required": True, "schema": {"type": "string"}}
+    ]
+
+    # rota sem parâmetro de path não ganha a chave à toa
+    assert "parameters" not in openapi_doc["paths"]["/forms"]

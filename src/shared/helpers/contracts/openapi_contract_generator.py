@@ -1,9 +1,25 @@
+import re
 from copy import deepcopy
 from typing import Any, Dict, Iterable, Type
 
 from pydantic import BaseModel
 
 from src.shared.helpers.contracts.openapi_contract_registry import EndpointContract, get_endpoint_contracts
+
+_PATH_PARAM_PATTERN = re.compile(r"\{(\w+)\}")
+
+
+def _extract_path_parameters(path: str) -> list[dict]:
+    """
+    contract.path só guarda o texto da rota (ex.: "/forms/{formId}/submit") —
+    sem isto, o JSON nunca declara que {formId} é um path param, e geradores
+    de tipo (openapi-typescript etc.) caem em `path?: never` por falta de
+    schema, quebrando o client do front.
+    """
+    return [
+        {"name": name, "in": "path", "required": True, "schema": {"type": "string"}}
+        for name in _PATH_PARAM_PATTERN.findall(path)
+    ]
 
 
 def _rewrite_refs(node: Any) -> Any:
@@ -51,6 +67,10 @@ def _build_paths(contracts: Iterable[EndpointContract]) -> dict:
     paths = {}
     for contract in contracts:
         path_item = deepcopy(paths.get(contract.path, {}))
+        if "parameters" not in path_item:
+            path_params = _extract_path_parameters(contract.path)
+            if path_params:
+                path_item["parameters"] = path_params
         operation = {
             "summary": contract.summary,
             "tags": [contract.tag],
