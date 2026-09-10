@@ -31,3 +31,27 @@ def test_environments_get_envs_caches_and_resets(monkeypatch):
     assert third is not first
 
     Environments._reset_instance()
+
+
+def test_apex_sync_enabled_defaults(monkeypatch):
+    """O Apex não tem sandbox por ambiente — só PROD envia de verdade por
+    padrão (achado de incidente real: dev sincronizou forms de teste pro
+    Apex de produção via GAIA, 2026-09-08)."""
+    for stage, expected in (("DEV", False), ("HOMOLOG", False), ("PROD", True)):
+        Environments._reset_instance()
+        monkeypatch.setenv("STAGE", stage)
+        monkeypatch.delenv("APEX_SYNC_ENABLED", raising=False)
+
+        assert Environments.get_envs().apex_sync_enabled is expected
+
+    Environments._reset_instance()
+
+
+def test_apex_sync_enabled_can_be_overridden(monkeypatch):
+    Environments._reset_instance()
+    monkeypatch.setenv("STAGE", "DEV")
+    monkeypatch.setenv("APEX_SYNC_ENABLED", "true")
+
+    assert Environments.get_envs().apex_sync_enabled is True
+
+    Environments._reset_instance()

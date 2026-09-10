@@ -6,6 +6,7 @@ import urllib.request
 from typing import Optional, Tuple
 
 from src.shared.domain.repositories.origin_repository_interface import IOriginRepository
+from src.shared.environments import Environments
 
 
 DEFAULT_URL_TEMPLATE = (
@@ -44,6 +45,7 @@ class OriginRepositoryApex(IOriginRepository):
         self.url_template = DEFAULT_URL_TEMPLATE
         self.gaia_url_template = GAIA_URL_TEMPLATE
         self.timeout = int(os.environ.get("SYNC_FORMS_TIMEOUT", "20"))
+        self.sync_enabled = Environments.get_envs().apex_sync_enabled
 
     def _build_url(self, origin_system: str) -> str:
         normalized_system = (origin_system or "").strip().lower()
@@ -171,6 +173,17 @@ class OriginRepositoryApex(IOriginRepository):
     ) -> Tuple[bool, int, str]:
         if not payloads:
             return True, self.SUCCESS_STATUS_CODE, "EMPTY_BATCH"
+
+        if not self.sync_enabled:
+            # Não existe sandbox do Apex por ambiente — a URL é a mesma em
+            # qualquer stage. Fora de PROD, avança o checkpoint sem enviar de
+            # verdade (ver Environments.apex_sync_enabled).
+            if logger:
+                logger.info(
+                    "apex sync skipped (não é PROD)",
+                    extra={"origin_system": origin_system, "forms_count": len(payloads)},
+                )
+            return True, self.SUCCESS_STATUS_CODE, "SKIPPED_NON_PROD"
 
         url = self._build_url(origin_system)
         first_form_id, last_form_id = self._get_batch_info(payloads)

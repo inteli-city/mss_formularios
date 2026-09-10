@@ -202,3 +202,34 @@ def test_origin_repository_apex_sync_forms_servicos_poa_keeps_default_host(monke
         "forms": [{"id": "form-1"}],
         "execution_id": "exec-2",
     }
+
+
+def test_origin_repository_apex_sync_forms_skips_when_disabled(monkeypatch):
+    """Achado de incidente real (2026-09-08): sem este gate, dev/homolog
+    enviam formulário de teste pro Apex de produção de verdade — não existe
+    sandbox por ambiente. Ver Environments.apex_sync_enabled."""
+    calls = []
+
+    def fake_urlopen(req, timeout):
+        calls.append((req, timeout))
+        return FakeResponse(200, '{"failed_form_ids":[]}')
+
+    monkeypatch.setattr(
+        "src.shared.infra.repositories.origin_repository_apex.urllib.request.urlopen",
+        fake_urlopen,
+    )
+
+    repo = OriginRepositoryApex()
+    repo.sync_enabled = False
+
+    ok, status, body = repo.sync_forms(
+        origin_system="gaia",
+        payloads=[{"id": "form-1"}],
+        execution_id="exec-3",
+        logger=FakeLogger(),
+    )
+
+    assert ok is True
+    assert status == 200
+    assert body == "SKIPPED_NON_PROD"
+    assert calls == []  # nenhuma chamada de rede real foi feita
