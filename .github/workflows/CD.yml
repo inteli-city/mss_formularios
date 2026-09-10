@@ -9,6 +9,16 @@ on:
 
   workflow_dispatch:
 
+# Dois pushes próximos na mesma branch (ex.: dois merges seguidos) disparavam
+# dois `cdk deploy` em paralelo contra a MESMA stack do CloudFormation — a
+# segunda execução falha com "Cannot delete ChangeSet in status
+# CREATE_IN_PROGRESS" (incidente real em 2026-09-10). `cancel-in-progress:
+# false` enfileira em vez de cancelar o deploy que já está rodando: cancelar
+# um `cdk deploy` no meio corre risco de deixar a stack em estado inconsistente.
+concurrency:
+  group: cd-${{ github.ref_name }}
+  cancel-in-progress: false
+
 jobs:
   DeployToAWS:
     environment:
