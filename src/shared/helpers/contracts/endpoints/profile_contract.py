@@ -1,4 +1,4 @@
-from typing import Annotated
+from typing import Annotated, Literal
 
 from pydantic import Field, StringConstraints
 
@@ -11,6 +11,11 @@ UserIdStr = Annotated[str, StringConstraints(strip_whitespace=True, min_length=3
 # (não está em requirements.txt). Validação canônica fica na entidade Profile.
 EmailLikeStr = Annotated[str, StringConstraints(pattern=r"^[^@\s]+@[^@\s]+\.[^@\s]+$")]
 
+# MANAGER/SUPERVISOR só existem via PUT /profiles/{user_id} (integração Apex,
+# especificação Uberlândia §7.4) — criação continua restrita a ADMIN/INSPECTOR.
+ProfileRoleLiteral = Literal["ADMIN", "INSPECTOR", "MANAGER", "SUPERVISOR"]
+CreatableProfileRoleLiteral = Literal["ADMIN", "INSPECTOR"]
+
 
 class CreateProfileRequestSchema(RequestContractModel):
     """
@@ -19,7 +24,7 @@ class CreateProfileRequestSchema(RequestContractModel):
     """
 
     user_id: UserIdStr
-    role: str = Field(pattern="^(ADMIN|INSPECTOR)$")
+    role: CreatableProfileRoleLiteral
     name: NonEmptyStr
     email: EmailLikeStr
     system: NonEmptyStr
@@ -28,7 +33,7 @@ class CreateProfileRequestSchema(RequestContractModel):
 
 class ProfileResponseSchema(ResponseContractModel):
     user_id: str
-    role: str
+    role: ProfileRoleLiteral
     name: str
     email: str
     system: str
@@ -66,7 +71,7 @@ class UpdateProfileRequestSchema(RequestContractModel):
     muda. Apenas ADMIN ativo pode chamar (validado no controller).
     """
 
-    role: str = Field(pattern="^(ADMIN|INSPECTOR|MANAGER|SUPERVISOR)$")
+    role: ProfileRoleLiteral
     scope: dict[str, list[str]] = Field(default_factory=dict)
 
 
