@@ -1,9 +1,16 @@
+from typing import Literal
+
 from pydantic import Field
 
 from src.shared.helpers.contracts.base import NonNegativeStrictInt, RequestContractModel, ResponseContractModel
 from .field import GenericFieldSchema
 from .information_field import InformationFieldSchema
 from .justification import JustificationSchema
+
+FormStatusLiteral = Literal["PENDING", "IN_PROGRESS", "COMPLETED", "SENT", "CANCELLED"]
+FormOriginLiteral = Literal["CITIZEN", "AI", "FIELD", "ORIGIN_SYSTEM"]
+PossessionLiteral = Literal["OPEN", "OWNED"]
+AssignmentSourceLiteral = Literal["ORIGIN_SYSTEM", "CLAIM", "MANAGER"]
 
 
 class FormSectionSchema(RequestContractModel):
@@ -22,7 +29,7 @@ class FormSectionSchema(RequestContractModel):
 
 class FormResponseSchema(ResponseContractModel):
     id: str
-    status: str
+    status: FormStatusLiteral
     form_title: str
     user_id: str | None = None
     template: str | None = None
@@ -32,7 +39,9 @@ class FormResponseSchema(ResponseContractModel):
     street: str
     latitude: float
     longitude: float
-    priority: int
+    priority: int = Field(
+        ge=0, le=3, description="0 = Baixa, 1 = Média, 2 = Alta, 3 = Emergência."
+    )
     observation: str | None = None
     expiration_date: int | None = None
     justification: JustificationSchema
@@ -46,14 +55,26 @@ class FormResponseSchema(ResponseContractModel):
     information_fields: list[InformationFieldSchema] | None = None
     number: int | None = None
     external_id: str | None = None
-    origin: str | None = None
+    origin: FormOriginLiteral | None = Field(
+        default=None,
+        description="De onde partiu a demanda que virou a OS. Ausente para sistemas "
+        "que não informam origem (ex.: Gaia).",
+    )
     service_type: str | None = None
     occurred_at: int | None = None
     scheduled_start_at: int | None = None
     scheduled_end_at: int | None = None
     attributes: dict[str, list[str]] = Field(default_factory=dict)
     completed_by: str | None = None
-    possession: str
+    possession: PossessionLiteral = Field(
+        description="OPEN = no pool, sem dono, visível a quem o escopo cobrir. "
+        "OWNED = direcionada (criação) ou reivindicada (claim/assign)."
+    )
     claimed_at: int | None = None
     released_at: int | None = None
-    assignment_source: str | None = None
+    assignment_source: AssignmentSourceLiteral | None = Field(
+        default=None,
+        description="Como a OS ganhou responsável: ORIGIN_SYSTEM (direcionada na "
+        "criação), CLAIM (reivindicada pelo próprio usuário) ou MANAGER (atribuída "
+        "por um Gestor/Fiscal/Admin).",
+    )

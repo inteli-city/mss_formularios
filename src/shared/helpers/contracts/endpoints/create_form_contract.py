@@ -4,7 +4,7 @@ from pydantic import Field, model_validator
 
 from src.shared.helpers.contracts.base import RequestContractModel
 from src.shared.helpers.contracts.schemas.file_upload import FileUploadSchema
-from src.shared.helpers.contracts.schemas.form import FormResponseSchema, FormSectionSchema
+from src.shared.helpers.contracts.schemas.form import FormOriginLiteral, FormResponseSchema, FormSectionSchema
 from src.shared.helpers.contracts.schemas.information_field import InformationFieldInputSchema
 from src.shared.helpers.contracts.schemas.justification import JustificationOptionSchema
 
@@ -33,7 +33,7 @@ class CreateFormRequestSchema(RequestContractModel):
     expiration_date: int | None = None
     information_fields: list[InformationFieldInputSchema] | None = None
     external_id: str | None = None
-    origin: str | None = Field(default=None, pattern="^(CITIZEN|AI|FIELD|ORIGIN_SYSTEM)$")
+    origin: FormOriginLiteral | None = None
     service_type: str | None = None
     occurred_at: int | None = None
     scheduled_start_at: int | None = None
